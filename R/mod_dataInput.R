@@ -97,101 +97,20 @@ modosin_data <- function(
         min =  "2021-03-25"
       ),
       
-  
-      # ......... RADIO BUTTONS ...........
-      # ...................................
-      
-      
-    
-      shiny::radioButtons(
-        ns("size"),translate_app("size_label", lang_declared),
-        shiny_set_names(c("Constante_label" = "const", "funcio_label" = "var"),lang_declared)),
-        
-
-      shiny:: radioButtons(
-        ns("legend"),translate_app("type_legend_label", lang_declared),
-        shiny_set_names(c("Continua_label" = "conti", "Quantil_label" = "quant"),lang_declared)),
-      
       # ......... ACCION BUTTON ...........
       # ...................................
       
       actionButton(ns("boto"), "Proyectar"),
       actionButton(ns("boto_save"), "Guardar"),
 
-      # shiny::dateInput(
-      #   ns('date_daily'), translate_app('date_daily_label', lang_declared),
-      #   value = date_daily_choices[length(date_daily_choices)],
-      #   min = date_daily_choices[1],
-      #   max = date_daily_choices[length(date_daily_choices)],
-      #   weekstart = 1, language = dates_lang
-      # ),
-
-      # # polygon sel
-      # shiny::selectInput(
-      #   ns('display_daily'), translate_app('display_daily_label', lang_declared),
-      #   choices = c(
-      #     'none', "Watersheds", "Counties", "Municipalities", "IFN plots", "file"
-      #   ) %>%
-      #     magrittr::set_names(translate_app(., lang_declared)),
-      #   selected = 'none'
-      # ),
-
-      # shinyjs::hidden(
-      #   shiny::div(
-      #     id = ns('file_upload_panel'),
-      #     shiny::fluidRow(
-      #       shiny::column(
-      #         6,
-      #         shiny::fileInput(
-      #           ns('user_file_sel'),
-      #           translate_app('user_file_sel_label', lang()),
-      #           accept = c('zip', 'gpkg'),
-      #           buttonLabel = translate_app(
-      #             'user_file_sel_buttonLabel', lang()
-      #           ),
-      #           placeholder = translate_app(
-      #             'user_file_sel_placeholder', lang()
-      #           )
-      #         )
-      #       ),
-      #       shiny::column(
-      #         6,
-      #         shiny::p(translate_app('file_text', lang()))
-      #       )
-      #     )
-      #   )
-      # ) # end of hidden file selector
-
-
+     
+      
 
     ) # end of tagList
 
   })
 
-  ## observers ####
-  # observer to show the file upload panel if needed
-  # shiny::observe({
-  #
-  #   shiny::validate(
-  #     shiny::need(input$display_daily, 'no type')
-  #   )
-  #   display_daily <- input$display_daily
-  #
-  #   if (display_daily == 'file') {
-  #     shinyjs::show('file_upload_panel')
-  #   } else {
-  #     shinyjs::hide('file_upload_panel')
-  #   }
-  # })
-  ## returning inputs ####
-  # reactive values to return and use in other modules
-
-
-
-
-
-
-
+ 
   # ..................... DEVOLVER REACTIVOS  ....................
   # ..............................................................
 
@@ -217,8 +136,6 @@ modosin_data <- function(
 
     data_reactives$fecha_reactive  <- input$fecha
     data_reactives$variable_reactive<- input$variable
-    data_reactives$size_reactive <- input$size
-    data_reactives$legend_reactive <- input$legend
     data_reactives$boto_reactive <- input$boto
     data_reactives$boto_save_reactive <- input$boto_save
      
