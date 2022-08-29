@@ -88,7 +88,7 @@ mod_mainData <- function(
     # ...................................
     
     #       .) TERCERO:
-    #       .) Definir LUGAR de aparición = ID ( en APP.R / mainPanel)
+    #       .) Definir LUGAR de apariciÃ³n = ID ( en APP.R / mainPanel)
     #       .) Definir => Get_Loader() definido anteriormente + HTML H3 + P
     
 
@@ -118,10 +118,10 @@ mod_mainData <- function(
     # ...................................
     
     #       .) Usamos MODOSIN DB (Definido en APP.R)
-    #       .) Llamamos al Método GET DATA
+    #       .) Llamamos al M?todo GET DATA
     #       .) Creamos el SF data_day
     #       .) Es el SF de TODOS los PLOTS / TODAS las fechas
-    #       .) Después ya lo filtraremos
+    #       .) Despu?s ya lo filtraremos
 
     # ..... PROVA x la APP ......
     # ...........................
@@ -182,7 +182,7 @@ mod_mainData <- function(
     # .............. DATA DAY  ...............
     # ........................................
     
-    #       .) Son los PLOTS de TODO el año
+    #       .) Son los PLOTS de TODO el a?o
     #       .) Definidio en ESTE MISMO MODULO
     
     data_day<- main_data_reactives$data_day
@@ -192,11 +192,11 @@ mod_mainData <- function(
     data_day_clicked_plot <- data_day %>% dplyr::filter(plot_id == click_plot_id)
     
     #      .) NUM_i
-    #             .) Número de la columnas de la variable
+    #             .) N?mero de la columnas de la variable
     #             .) Lo usaremos par obtener TODAS los valores de UNA VARIABLE
     
     #      .) FECHA INICIAL = 1r dia de datos
-    #             .) Lo usaremos para indicar el inicio de la fechas de gráficos
+    #             .) Lo usaremos para indicar el inicio de la fechas de gr?ficos
 
     #      .) VALUE DATE = valor de la variable en la fecha concreta
     #             .) Lo usaremos en LABEL EVENT
@@ -210,15 +210,15 @@ mod_mainData <- function(
       round(., digits = 4)
 
     #      .) LABEL EVENT
-    #             .) Texto que saldrà en el grafico
+    #             .) Texto que saldr? en el grafico
     #             .) Indica fecha seleccionada + valor de variable escogido
     
     #      .) UNITS
-    #             .) Son la DESCRIPCIÓN de la VARIABLE y las UNIDADES
+    #             .) Son la DESCRIPCI?N de la VARIABLE y las UNIDADES
     #             .) Lo usaremos al AXIS Y
     
     #      .) LABEL AXIS
-    #             .) Texto que saldrà en la coordenada Y
+    #             .) Texto que saldr? en la coordenada Y
     #             .) Indica fecha seleccionada + valor de variable escogido
     
 
@@ -232,13 +232,13 @@ mod_mainData <- function(
     #       .) Creo FORMATO TS (Time Serie)
     #       .) Aplico EDICION con DYGRAPHS
     
-    #             .) MAIN = Título
+    #             .) MAIN = T?tulo
     #             .) AXIS = edito las Y
-    #             .) OPTIONS = edito gráfico
-    #             .) SERIE = texto del menú que sale en mover el mouse
+    #             .) OPTIONS = edito gr?fico
+    #             .) SERIE = texto del men? que sale en mover el mouse
     #             .) EVENT = en la fecha concreta escribir texto
     #             .) SHADING = Sombreado entre fecha y fecha
-    #             .) RANGE SELECTOR = para hacer zoom al gráfico
+    #             .) RANGE SELECTOR = para hacer zoom al gr?fico
 
 
     data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
