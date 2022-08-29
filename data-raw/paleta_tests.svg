@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="paleta_tests.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="352.12409"
+     inkscape:cy="783.01606"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1059"
+     inkscape:window-x="1920"
+     inkscape:window-y="21"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="opacity:1;fill:#448714;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect815"
+       width="41.577381"
+       height="37.041668"
+       x="47.247021"
+       y="38.086311"
+       rx="9.1820736"
+       ry="0.35071841" />
+    <rect
+       style="opacity:1;fill:#15351e;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect815-2"
+       width="41.577381"
+       height="37.041668"
+       x="88.824402"
+       y="38.086311"
+       rx="9.1820736"
+       ry="0.35071844" />
+    <rect
+       style="opacity:1;fill:#001629;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect815-9"
+       width="41.577381"
+       height="37.041668"
+       x="47.247017"
+       y="75.127975"
+       rx="9.1820736"
+       ry="0.35071844" />
+    <rect
+       style="opacity:1;fill:#76f7a7;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect815-6"
+       width="41.577381"
+       height="37.041668"
+       x="88.824402"
+       y="75.127975"
+       rx="9.1820736"
+       ry="0.35071844" />
+    <rect
+       style="opacity:1;fill:#f0f2f0;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect815-3"
+       width="41.577381"
+       height="37.041668"
+       x="67.459808"
+       y="57.864258"
+       rx="9.1820736"
+       ry="0.35071844" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.64583325px;line-height:110.00000238%;font-family:Hack;-inkscape-font-specification:'Hack, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="81.918114"
+       y="87.460693"
+       id="text863"><tspan
+         sodipodi:role="line"
+         id="tspan861"
+         x="81.918114"
+         y="87.460693"
+         style="stroke-width:0.26458332px">fondo general</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.64583325px;line-height:110.00000238%;font-family:Hack;-inkscape-font-specification:'Hack, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="49.930767"
+       y="99.866898"
+       id="text863-7"><tspan
+         sodipodi:role="line"
+         id="tspan861-8"
+         x="49.930767"
+         y="99.866898"
+         style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1">app header</tspan><tspan
+         sodipodi:role="line"
+         x="49.930767"
+         y="102.77731"
+         style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1"
+         id="tspan883" /><tspan
+         sodipodi:role="line"
+         x="49.930767"
+         y="105.68773"
+         style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1"
+         id="tspan885">wellPanel</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.64583325px;line-height:110.00000238%;font-family:Hack;-inkscape-font-specification:'Hack, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="49.663502"
+       y="42.879391"
+       id="text863-6"><tspan
+         sodipodi:role="line"
+         id="tspan861-89"
+         x="49.663502"
+         y="42.879391"
+         style="stroke-width:0.26458332px">buttons</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.64583325px;line-height:110.00000238%;font-family:Hack;-inkscape-font-specification:'Hack, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="114.4999"
+       y="43.814831"
+       id="text863-7-1-9"><tspan
+         sodipodi:role="line"
+         x="114.4999"
+         y="43.814831"
+         style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1"
+         id="tspan885-7-4">sidebars</tspan></text>
+    <rect
+       style="opacity:1;fill:#2e645a;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect815-9-3"
+       width="41.577381"
+       height="37.041668"
+       x="21.439896"
+       y="57.447277"
+       rx="9.1820736"
+       ry="0.35071844" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.64583325px;line-height:110.00000238%;font-family:Hack;-inkscape-font-specification:'Hack, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="24.870844"
+       y="63.058235"
+       id="text863-7-1"><tspan
+         sodipodi:role="line"
+         x="24.870844"
+         y="63.058235"
+         style="fill:#fffffe;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1"
+         id="tspan885-7">active tabs</tspan></text>
+  </g>
+</svg>
