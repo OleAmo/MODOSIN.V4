@@ -167,15 +167,14 @@ mod_map <- function(
     #           .) Tengo que saber que es el 2
     #      .) Ya que USARE par AUTOMATIZAR los POPUPS y el resot  => data_filter[[2]]
     
-    
     num_i <- as.numeric(match(variable,names(data_day)))
     selected_var <- as.symbol(names(data_day)[num_i])
     
     data_filter <- data_day %>%
       dplyr::filter(!is.na(data_day[[num_i]])) %>%
-      dplyr::select(plot_id, selected_var, date, plot_origin, geom) %>%
-      dplyr::mutate(lon = sf::st_coordinates(.data$geom)[,1],
-                    lat = sf::st_coordinates(.data$geom)[,2])%>%
+      dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
+      dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
+                    lat = sf::st_coordinates(.data$geometry)[,2])%>%
       dplyr::filter(!is.na(lon) | !is.na(lat))
     
     variable_valores <- round(data_filter[[2]], digits=2)
@@ -268,7 +267,7 @@ mod_map <- function(
         fillOpacity= 0.6,
         radius = 6,
         color =  ~ pal(data_filter[[2]]),
-        popup = popInfo) %>% 
+        popup = popInfo) %>%
       leaflet::clearControls() %>%
       leaflet::addLegend(
         position = "bottomright",
@@ -277,6 +276,21 @@ mod_map <- function(
         values = data_filter[[2]],
         opacity = 1)
     
+    # leaflet::leafletProxy('map_daily') %>%
+    #   leaflet::clearGroup('plots_layer') %>%
+    #   leaflet::addCircleMarkers(
+    #     data = data_filter,
+    #     group = 'plots_layer',
+    #     layerId = ~ plot_id,
+    #     lat = as.numeric(~ lat),
+    #     lng =  as.numeric(~ lon),
+    #     weight= 1,
+    #     opacity= 0.8,
+    #     fillOpacity= 0.6,
+    #     radius = 6,
+    #     color =  ~ pal(data_filter[[2]]),
+    #     popup = popInfo) 
+
     
   })
   
