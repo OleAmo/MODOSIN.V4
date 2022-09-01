@@ -136,12 +136,33 @@ mod_map <- function(
     #            .) Necesito la FECHA = data_reactives$fecha_reactive
     #            .) Necesito el SF    = main_data_reactives$data_day
     
-    variable <- data_reactives$variable_reactive
     
+    origen <- data_reactives$origen_reactive 
+    variable <- data_reactives$variable_reactive
     fecha <- data_reactives$fecha_reactive
     sf <- main_data_reactives$data_day
  
     data_day <- table_create(fecha,sf)
+    
+    #      .) PLOT ORIGEN
+    #      .) Para definir el Plot_origen selccionado
+    #      .) Usamos el ORIGEN del COMBO
+    #      .) Y lo "traducimos" al string que usa el data_day_fire
+    
+    
+    origenSelected <- function(a) {
+      if (a == "P") {
+        return("ifn")
+      } else if (a == "A") {
+        return("aiguestortes")
+      } else if( a == "S"){
+        return("matosec")
+      } else {
+        return("tots")
+      }
+    }
+    
+    origen_selected <- origenSelected(origen)
     
    
     # ......... PROYECTAR TABLA ..............
@@ -166,14 +187,25 @@ mod_map <- function(
     #      .) Quiero SABER el ÍNDICE de la VARIABLE
     #           .) Por ejemplo si quiero PRECIPITATION
     #           .) Tengo que saber que es el 2
-    #      .) Ya que USARE par AUTOMATIZAR los POPUPS y el resot  => data_filter[[2]]
+    #      .) Ya que USARE par AUTOMATIZAR los POPUPS y el res  => data_filter[[2]]
     
     
     num_i <- as.numeric(match(variable,names(data_day)))
     selected_var <- as.symbol(names(data_day)[num_i])
     
+    
+    # ....... FILTRADO PLOT ORIGIN ...........
+    # ........................................
+    
+    #      .) la función ORGENG_SELECTED nos da 3 origenes (Aiguestortes, Nfi y Matosec)
+    #      .) Si queremos que nos lo proyecte TODO
+    #      .) Tenemo de decirle que NO FILTRE
+    #      .) Por eso hago un PIPE con IF
+    #           .) Y si ORIGEN NO ES T (T = es todos) me filtra por ORIGEN_SELECTED
+    #           .) Si ES T, no hace filtro y lo PROYECTA TODO
+    
     data_filter <- data_day %>%
-      dplyr::filter(!is.na(data_day[[num_i]])) %>%
+      {if(origen_selected != "tots") dplyr::filter(., plot_origin == origen_selected ) else . } %>%
       dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
       dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
                     lat = sf::st_coordinates(.data$geometry)[,2])%>%
@@ -186,7 +218,14 @@ mod_map <- function(
     # ........................................
     
     pal <- leaflet::colorNumeric(palette = "YlGnBu", domain = data_filter[[2]])
-    # pal <- leaflet::colorNumeric(palette = "YlGnBu", domain = 1)
+    
+    
+    # .... PROBLEM  ...........
+    # ........................
+    
+    #      .) with NA Values
+    #      .) Shiny se BLOQUEA (peta)
+    #      .) https://github.com/rstudio/leaflet/issues/615
     
     
     # ............... POP UP  ................

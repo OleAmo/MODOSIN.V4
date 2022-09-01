@@ -7,15 +7,28 @@ tibble::tribble(
   
   "Precipitation", "Precipitació (mm/dia)", "Precipitation (mm/day)", "Precipitación (mm/día)",
   "PET", "Evapo-transpiració potencial (mm/dia)", "Potential evapo-transpiration (mm/day)", "Evap-transpiración potencial (mm/día)",
+  "REW", "Aigua extraïble relativa (%)", "Relative extractable water (%)", "Agua extraible relativa (%)",
+  "REW_q", "Quantil Aigua extraïble relativa (%)", "Quantile Relative extractable water (%)", "Cuantil Agua extraible relativa (%)",
+  "DDS", "Intensitat de l'estrès (%)", "Stress intensity (%)", "Intensidad del estrés (%)",
+  "DDS_q", "Quantil Intensitat de l'estrès (%)", "Quantile Stress intensity (%)", "Cuantil Intensidad del estrés (%)",
+  "fire variables","Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
+  "LFMC", "Contingut d’Humitat de Combustible Viu", "Live Fuel Moisture Contents","Contendio de Humedad de Combustible Vivo",
+  "LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu", "Quantile Live Fuel Moisture Contents","Cuantil Contendio de Humedad de Combustible Vivo",
+  "DFMC", "Contingut d’Humitat de Combustible Mort", "Dead Fuel Moisture Contents","Contendio de Humedad de Combustible Muerto",
+  "SFP","SFP","SFP","SFP",
+  "CFP","CFP","CFP","CFP",
+  
+  
+  
   # "NetPrec", "Precipitació neta (mm)", "Net precipitation (mm)", "Precipitación neta (mm)",
   "Eplant", "Transpiració (mm/dia)", "Plant transpiration (mm/day)", "Transpiración plantas (mm/día)",
   "Esoil", "Evaporació del sòl (mm/dia)", "Soil evaporation (mm/day)", "Evaporación del suelo (mm/día)",
   "Runoff", "Escorrentia (mm/dia)", "Run-off (mm/day)", "Escorrentía (mm/día)",
   "DeepDrainage", "Drenatje a profunditat (mm/dia)", "Deep drainage (mm/day)", "Drenaje a profundidad (mm/día)",
-  "REW", "Aigua extraïble relativa (%)", "Relative extractable water (%)", "Agua extraible relativa (%)",
+  
   "Theta", "Contingut d'humitat (m3/m3)", "Soil moisture content (m3/m3)", "Contenido de humedad del suelo (m3/m3)",
   "Psi", "Potencial hídric del sòl (-MPa)", "Soil water potential (-MPa)", "Potencial hídrico del suelo (-MPa)",
-  "DDS", "Intensitat de l'estrès (%)", "Stress intensity (%)", "Intensidad del estrés (%)",
+ 
   # "NDD", "Duració de l'estrès (dies)", "Stress duration (days)", "Duración del estrés (días)",
   "LMFC", "Contingut d'humitat de el combustible viu (%)", "Live Fuel Moisture Content (%)", "Contenido de humedad del combustible vivo (%)",
   "LAI", "Índex d'àrea foliar (m2/m2)", "Leaf area index (m2/m2)", "Índice de área foliar (m2/m2)",
@@ -86,6 +99,12 @@ tibble::tribble(
   
   'entorno_hidden','Nuclis Població / Àrea (Ha)','Population centers / Area (Ha)','Nucleos Pobalción / Area (Ha)',
   
+  "plot_origin_label", 'Origen Parcel·la', 'Plot Origin', 'Origen Parcela',
+  "P", "IFN 4", "NFI 4" ,"IFN 4",
+  "A", "Parc Nacional d'Aiguestortes","Aiguestortes National Park","Parque Nacional de Aiguetortes",
+  "S", "Matosec","Matosec","Matosec",
+  "T", "Totes les Parcel·les","All Plots","Todas las Parcelas",
+ 
   
   
   

@@ -63,28 +63,28 @@ modosin_data <- function(
     
 
 
-    soil_moisture_vars <- c("Theta", "Psi", "REW") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    climate_vars <- c("PET", "Precipitation") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    evap_surface_vars <- c('LAI') %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    fwb_vars <- c("Interception", "Infiltration", 'Runoff', 'DeepDrainage', 'Esoil', 'Eplant') %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    drought_stress_vars <- c("DDS", "LFMC") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-
-    shiny::tagList(
+      climate_vars <- c("PET", "Precipitation") %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      soil_moisture_vars <- c("REW","REW_q") %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      drought_stress_vars <- c("DDS","DDS_q") %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      fire_vars <- c("LFMC","LFMC_q","DFMC","SFP","CFP") %>%
+        magrittr::set_names(translate_app(., lang_declared))
       
+      shiny::tagList(
+        
+        # ....... SELECCION VARIABLE ........
+        # ...................................
+        
       shiny::selectInput(
         ns('variable'), translate_app('var_daily_label', lang_declared),
         choices = shiny_set_names(list(
-          'Soil moisture' = soil_moisture_vars,
           'Climate' = climate_vars,
-          'Evaporative surface' = evap_surface_vars,
-          'Water balance' = fwb_vars,
-          'Drought stress' = drought_stress_vars), lang_declared)
-      ),
+          'Soil moisture' = soil_moisture_vars,
+          'Drought stress' = drought_stress_vars,
+          'fire variables' = fire_vars), lang_declared)
+        ),
 
       # ........ SELECCION FECHA ..........
       # ...................................
@@ -98,6 +98,21 @@ modosin_data <- function(
         max = '2022-08-22',
         min = '2021-08-23'
       ),
+      
+      
+      # ...... SELECCION ORIGEN PLOT ......
+      # ...................................
+      
+      shiny::selectInput(
+        ns('origen'), translate_app('plot_origin_label', lang_declared),
+        shiny_set_names(c(
+          "T"="T",
+          "P"="P", 
+          "A"="A",
+          "S"="S"), lang_declared)
+      ),
+      
+
       
       # ......... ACCION BUTTON ...........
       # ...................................
@@ -137,7 +152,8 @@ modosin_data <- function(
   shiny::observe({  
 
     data_reactives$fecha_reactive  <- input$fecha
-    data_reactives$variable_reactive<- input$variable
+    data_reactives$variable_reactive <- input$variable
+    data_reactives$origen_reactive <- input$origen
     data_reactives$boto_reactive <- input$boto
     data_reactives$boto_save_reactive <- input$boto_save
      
