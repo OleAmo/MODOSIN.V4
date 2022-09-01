@@ -91,10 +91,12 @@ modosin_data <- function(
 
       shiny::dateInput(
         ns("fecha"), translate_app('date_daily_label', lang_declared),
-        value = "2021-10-23",
+        value = "2022-2-10",
         format = "yyyy/mm/dd",
-        max = "2022-08-22",
-        min =  "2021-08-23"
+        # max = '2022-03-25',
+        # min = '2022-01-01'
+        max = '2022-08-22',
+        min = '2021-08-23'
       ),
       
       # ......... ACCION BUTTON ...........

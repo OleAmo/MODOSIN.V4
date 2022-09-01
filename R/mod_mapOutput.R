@@ -58,7 +58,7 @@ mod_map <- function(
     
 
     leaflet::leaflet() %>%
-      leaflet::setView(1.7458675,41.6922353, zoom=8) %>%
+      leaflet::setView(2.2018256,41.089058, zoom=7) %>%
       leaflet::addTiles(group = "OSM") %>%
       leaflet::addProviderTiles(
         leaflet::providers$Esri.WorldShadedRelief,
@@ -112,6 +112,7 @@ mod_map <- function(
     return(data_day)
   }
   
+
   
   # ............ MAPA PLOTS DATADAY ...............
   # ...............................................
@@ -139,10 +140,10 @@ mod_map <- function(
     
     fecha <- data_reactives$fecha_reactive
     sf <- main_data_reactives$data_day
-    
+ 
     data_day <- table_create(fecha,sf)
     
-    
+   
     # ......... PROYECTAR TABLA ..............
     # ........................................
     
@@ -167,6 +168,7 @@ mod_map <- function(
     #           .) Tengo que saber que es el 2
     #      .) Ya que USARE par AUTOMATIZAR los POPUPS y el resot  => data_filter[[2]]
     
+    
     num_i <- as.numeric(match(variable,names(data_day)))
     selected_var <- as.symbol(names(data_day)[num_i])
     
@@ -177,12 +179,14 @@ mod_map <- function(
                     lat = sf::st_coordinates(.data$geometry)[,2])%>%
       dplyr::filter(!is.na(lon) | !is.na(lat))
     
+
     variable_valores <- round(data_filter[[2]], digits=2)
     
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
     
     pal <- leaflet::colorNumeric(palette = "YlGnBu", domain = data_filter[[2]])
+    # pal <- leaflet::colorNumeric(palette = "YlGnBu", domain = 1)
     
     
     # ............... POP UP  ................
@@ -197,17 +201,6 @@ mod_map <- function(
      paste("Ubicacion: ",data_filter$plot_origin, sep=""),"<br>",
      paste("Fecha: ",data_filter$date, sep=""),"</span>"
     )
-    
-    # ........ FUNCION SIZE RADIO ............
-    # ........................................
-
-    #     .) Función que determina el tamaño del Radio/Parcela
-    #     .) En f(x) del que hayamos seleccionado en RADIO BUTTON SIZE
-    #     .) Hará que el radio se:
-    #            .) Estandard = SIMPRE VALOR 6
-    #            .) Variable = en f(x) del rango de la Variable seleccionada
-
-
     
     # ..............................................
     # ............... Función LEAFLET  .............
@@ -233,26 +226,7 @@ mod_map <- function(
     #              .) Plots   => usamos leaflet::clearGroup + Group
     #              .) Legend  => leaflet::clearControls() 
     
-    
-    # .......... MODIFICAR PLOTS ..........
-    # .....................................
-    
-    #      .) Podemos variar los PLOTS en f(x) de:
-    #               .) RADIUS
-    #               .) CUANTILES
-    
-    #      .) RADIUS = Aplicamos f(x) SIZE_RADI
-    #      .) CUANTILES = Aplicamos IF
-    #               .) LEGEND = "Conti":
-    
-    #                    .) MARKER:  color = ~ PAL
-    #                    .) LEGEND: pal = pal / values = data_filter[[2]] 
-    
-    #               .) LEGEND = "Quanti"
-    #                    .) MARKER:  color = ~ QPAL
-    #                    .) LEGEND: colors = qpal_colors / labels = qpal_labs
-   
-    
+
     
     leaflet::leafletProxy('map_daily') %>%
       leaflet::clearGroup('plots_layer') %>%
@@ -265,32 +239,16 @@ mod_map <- function(
         weight= 1,
         opacity= 0.8,
         fillOpacity= 0.6,
-        radius = 6,
+        radius= 6,
         color =  ~ pal(data_filter[[2]]),
         popup = popInfo) %>%
       leaflet::clearControls() %>%
       leaflet::addLegend(
         position = "bottomright",
-        title = paste(as.character(selected_var)),
+        title = paste(as.character(selected_var),' (Contínua) '),
         pal = pal,
         values = data_filter[[2]],
         opacity = 1)
-    
-    # leaflet::leafletProxy('map_daily') %>%
-    #   leaflet::clearGroup('plots_layer') %>%
-    #   leaflet::addCircleMarkers(
-    #     data = data_filter,
-    #     group = 'plots_layer',
-    #     layerId = ~ plot_id,
-    #     lat = as.numeric(~ lat),
-    #     lng =  as.numeric(~ lon),
-    #     weight= 1,
-    #     opacity= 0.8,
-    #     fillOpacity= 0.6,
-    #     radius = 6,
-    #     color =  ~ pal(data_filter[[2]]),
-    #     popup = popInfo) 
-
     
   })
   
