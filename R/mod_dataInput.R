@@ -91,7 +91,7 @@ modosin_data <- function(
 
       shiny::dateInput(
         ns("fecha"), translate_app('date_daily_label', lang_declared),
-        value = "2022-2-10",
+        value = "2022-1-15",
         format = "yyyy/mm/dd",
         # max = '2022-03-25',
         # min = '2022-01-01'
@@ -109,7 +109,8 @@ modosin_data <- function(
           "T"="T",
           "P"="P", 
           "A"="A",
-          "S"="S"), lang_declared)
+          "S"="S",
+          "no_p" = "no"), lang_declared)
       ),
       
       # ...... SELECCION POLIGONO ......

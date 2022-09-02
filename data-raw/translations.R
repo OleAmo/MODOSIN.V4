@@ -109,6 +109,7 @@ tibble::tribble(
   'OR',"Parque Nacional Ordesa y Monte Perdido","Parque Nacional Ordesa y Monte Perdido","Parque Nacional Ordesa y Monte Perdido",
   "ALL", "Totes les divisions","All divisions","Todas las divisiones",
   "NO", "Cap divisió","No division","Ninguna división",
+  "no_p", "Cap Parcel·la","No Plot","Ninguna Parcela",
  
   
   

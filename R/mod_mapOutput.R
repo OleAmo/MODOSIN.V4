@@ -40,6 +40,7 @@ mod_map <- function(
 ) {
   
   library(sf)
+  source('data-raw/polygon_objects_creation.R')
 
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   # ---------------------------      OUTPUT MAP     ------------------------------
@@ -55,7 +56,7 @@ mod_map <- function(
   #              .) Sin ningun tipus de GEOMETRIA
   
   output$map_daily <- leaflet::renderLeaflet({
-    
+      
 
     leaflet::leaflet() %>%
       leaflet::setView(2.2018256,41.089058, zoom=7) %>%
@@ -268,7 +269,32 @@ mod_map <- function(
     #              .) Legend  => leaflet::clearControls() 
     
     
-    leaflet::leafletProxy('map_daily') %>%
+    
+    # .............. PROYECCIÓN PLOTS  .............
+    # ..............................................
+    
+    #     .) Empieza con un CONDICIONAL
+    #     .) Si ORIGEN (Comobo Origen = No Plot) es DIFERENTE a NO PLOT
+    #     .) Proyecte en función del tipo de Plot
+    #     .) Si es NO PLOT
+    #     .) Borra todos los Plots
+    
+    
+    if(origen != "no"){
+      
+      
+      set_view_all <- leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7)
+      set_view_AT <- leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9400943,42.5614381, zoom=11)
+      # set_view_OR  # Ordesa
+      # set_view_MS  # Matosec
+      # set_view_NFI # NFI
+      
+        
+      # leaflet::leafletProxy('map_daily') %>%
+      # leaflet::setView(2.3018256,41.089058, zoom=7) %>%
+        
+        
+      set_view_AT %>% 
       leaflet::clearGroup('plots_layer') %>%
       leaflet::addCircleMarkers(
         data = data_filter,
@@ -289,8 +315,27 @@ mod_map <- function(
         pal = pal,
         values = data_filter[[2]],
         opacity = 1)
+      
+    } else {
+      leaflet::leafletProxy('map_daily') %>%
+        leaflet::clearGroup('plots_layer')
+      
+    }
+    
+    # ............ PROYECCIÓN DIVISIONES  ..........
+    # ..............................................
+    
+    #     .) Empieza con un CONDICIONAL
+    #     .) Si DIVISION (Comobo DIVISION = No Division) es DIFERENTE a NO DIVIDION
+    #     .) Proyecte en función del tipo de Division
+    #     .) Si es NO DIVISION
+    #     .) Borra todos las DIVISIONES
+    
   
-
+    #     .) FUNCIÓN DIVSION SELECT
+    #              .) En función del COMBO DIVISION 
+    #              .) Proyectara uno o otro SF (Shapes)
+    
     division_selected <- function(division) {
       if(division == "prov") {
         return(provincias_simplfy)
@@ -304,11 +349,8 @@ mod_map <- function(
     }
 
 
-    
-    leaflet::leafletProxy('map_daily') %>%
-      
-      {if(division != "no")
-        . %>%
+    if(division != "no"){
+      leaflet::leafletProxy('map_daily') %>%
         leaflet::clearGroup('divisiones') %>%
         leaflet::addPolygons(
           data = division_selected(division),
@@ -316,47 +358,14 @@ mod_map <- function(
           fillOpacity = 0,
           color = "#bf021b",
           group = "divisiones")
-        else . } %>% leaflet::clearGroup('divisiones')    
+      
+    } else {
+      leaflet::leafletProxy('map_daily') %>%
+        leaflet::clearGroup('divisiones')  
+    }
     
-    
-    # leaflet::leafletProxy('map_daily') %>%
-    #   leaflet::clearGroup('divisiones') %>%
-    #   leaflet::addPolygons(
-    #     data = division_selected(division),
-    #     weight = 2,
-    #     fillOpacity = 0,
-    #     color = "#bf021b",
-    #     group = "divisiones")
-    
-    
-    
-    # %>%
-    #   leaflet::addPolygons(
-    #     data = ordesa_simplfy,
-    #     fillColor = "#df81e6",
-    #     fillOpacity = 0.2,
-    #     weight = 1,
-    #     color = "#8e1d96",
-    #     opacity = 0.8,
-    #     group = "divisiones") %>%
-    #   leaflet::addPolygons(
-    #     data = aiguestortes_simplfy,
-    #     fillColor = "#eb7d75",
-    #     fillOpacity = 0.2,
-    #     weight = 1,
-    #     color = "#e83023",
-    #     opacity = 0.8,
-    #     group = "divisiones")
-    # 
-    # 
-    # 
-    # 
-    # aiguestortes_simplfy
-    # ordesa_simplfy
-    # provincias_simplf
-    
-    
-    
+
+
     
 })
   
