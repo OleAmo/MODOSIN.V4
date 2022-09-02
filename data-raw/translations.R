@@ -68,7 +68,6 @@ tibble::tribble(
   'Comararca_select_entorno', "Comarques", "Counties", "Comarcas",
   'Nucleos_select_entorno','Nuclis Població','Population centers','Nucleos Pobalción',
   'Embass_select_entorno','Embassaments','Reservoirs','Embalses',
-  'No_Polygon_label','Sense Polígons',"No Polygons", "Sin Polígonos",
   'Constante_label','Constant','Constant','Constante',
   'funcio_label','f(x) de la Variable','Variable Function','f(x) de la Variable',
   'Continua_label','Contínua','Continues','Continua',
@@ -104,6 +103,12 @@ tibble::tribble(
   "A", "Parc Nacional d'Aiguestortes","Aiguestortes National Park","Parque Nacional de Aiguetortes",
   "S", "Matosec","Matosec","Matosec",
   "T", "Totes les Parcel·les","All Plots","Todas las Parcelas",
+  "display_label", "Mostra divisions", "Show divisions", "Mostrar divisiones",
+  'PRO', "Provincies", "Provinces", "Provincias",
+  'AT' ,"Parque Nacional de Aigüestortes i Estany de Sant Maurici","Parque Nacional de Aigüestortes i Estany de Sant Maurici","Parque Nacional de Aigüestortes i Estany de Sant Maurici",
+  'OR',"Parque Nacional Ordesa y Monte Perdido","Parque Nacional Ordesa y Monte Perdido","Parque Nacional Ordesa y Monte Perdido",
+  "ALL", "Totes les divisions","All divisions","Todas las divisiones",
+  "NO", "Cap divisió","No division","Ninguna división",
  
   
   
@@ -111,7 +116,7 @@ tibble::tribble(
 
 
   # display_daily sel
-  "display_daily_label", "Mostra divisions", "Show divisions", "Mostrar divisiones",
+  
   'none', "Cap", "None", "Ninguno",
   "Watersheds", "Conques", "Watersheds", "Cuencas hidrológicas",
   "Counties", "Comarques", "Counties", "Comarcas",

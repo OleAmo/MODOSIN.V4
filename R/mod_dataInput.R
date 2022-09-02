@@ -112,6 +112,18 @@ modosin_data <- function(
           "S"="S"), lang_declared)
       ),
       
+      # ...... SELECCION POLIGONO ......
+      # ...................................
+      
+      shiny::selectInput(
+        ns('division'), translate_app('display_label', lang_declared),
+        shiny_set_names(c(
+          'PRO'= "prov", 
+          'AT' = "at",
+          'OR' = "or",
+          "ALL"= "all",
+          "NO" = "no"), lang_declared)
+      ),
 
       
       # ......... ACCION BUTTON ...........
@@ -154,6 +166,7 @@ modosin_data <- function(
     data_reactives$fecha_reactive  <- input$fecha
     data_reactives$variable_reactive <- input$variable
     data_reactives$origen_reactive <- input$origen
+    data_reactives$division_reactive <- input$division
     data_reactives$boto_reactive <- input$boto
     data_reactives$boto_save_reactive <- input$boto_save
      

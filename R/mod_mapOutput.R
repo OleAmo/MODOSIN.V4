@@ -139,8 +139,10 @@ mod_map <- function(
     
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
+    division <- data_reactives$division_reactive
     fecha <- data_reactives$fecha_reactive
     sf <- main_data_reactives$data_day
+  
  
     data_day <- table_create(fecha,sf)
     
@@ -265,7 +267,6 @@ mod_map <- function(
     #              .) Plots   => usamos leaflet::clearGroup + Group
     #              .) Legend  => leaflet::clearControls() 
     
-
     
     leaflet::leafletProxy('map_daily') %>%
       leaflet::clearGroup('plots_layer') %>%
@@ -288,8 +289,78 @@ mod_map <- function(
         pal = pal,
         values = data_filter[[2]],
         opacity = 1)
+  
+
+    division_selected <- function(division) {
+      if(division == "prov") {
+        return(provincias_simplfy)
+
+      } else if (division == "at") {
+        return(aiguestortes_simplfy)
+      } else if (division == "or") {
+        return(ordesa_simplfy)
+      }
+
+    }
+
+
     
-  })
+    leaflet::leafletProxy('map_daily') %>%
+      
+      {if(division != "no")
+        . %>%
+        leaflet::clearGroup('divisiones') %>%
+        leaflet::addPolygons(
+          data = division_selected(division),
+          weight = 2,
+          fillOpacity = 0,
+          color = "#bf021b",
+          group = "divisiones")
+        else . } %>% leaflet::clearGroup('divisiones')    
+    
+    
+    # leaflet::leafletProxy('map_daily') %>%
+    #   leaflet::clearGroup('divisiones') %>%
+    #   leaflet::addPolygons(
+    #     data = division_selected(division),
+    #     weight = 2,
+    #     fillOpacity = 0,
+    #     color = "#bf021b",
+    #     group = "divisiones")
+    
+    
+    
+    # %>%
+    #   leaflet::addPolygons(
+    #     data = ordesa_simplfy,
+    #     fillColor = "#df81e6",
+    #     fillOpacity = 0.2,
+    #     weight = 1,
+    #     color = "#8e1d96",
+    #     opacity = 0.8,
+    #     group = "divisiones") %>%
+    #   leaflet::addPolygons(
+    #     data = aiguestortes_simplfy,
+    #     fillColor = "#eb7d75",
+    #     fillOpacity = 0.2,
+    #     weight = 1,
+    #     color = "#e83023",
+    #     opacity = 0.8,
+    #     group = "divisiones")
+    # 
+    # 
+    # 
+    # 
+    # aiguestortes_simplfy
+    # ordesa_simplfy
+    # provincias_simplf
+    
+    
+    
+    
+})
+  
+ 
   
   
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
