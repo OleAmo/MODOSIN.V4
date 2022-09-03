@@ -282,19 +282,33 @@ mod_map <- function(
     
     if(origen != "no"){
       
+      # ........... ZOOM PLOTS  ...........
+      # ...................................
       
-      set_view_all <- leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7)
-      set_view_AT <- leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9400943,42.5614381, zoom=11)
-      # set_view_OR  # Ordesa
-      # set_view_MS  # Matosec
-      # set_view_NFI # NFI
+      #     .) Creamos f(x) SET_VIEW
+      #     .) Dentro en funcion de ORIGEN
+      #     .) Setearemos uno o otro zoom
       
+      
+      set_view <- function(a) {
+
+        if (a == "T") {
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7)
+        } else if ( a == "P" ) {
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8)
+        } else if ( a == "A") {
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12)
+        } else if ( a == "S") {
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8)
+        }
         
+      }
+
+   
       # leaflet::leafletProxy('map_daily') %>%
       # leaflet::setView(2.3018256,41.089058, zoom=7) %>%
-        
-        
-      set_view_AT %>% 
+      
+      set_view(origen) %>%
       leaflet::clearGroup('plots_layer') %>%
       leaflet::addCircleMarkers(
         data = data_filter,

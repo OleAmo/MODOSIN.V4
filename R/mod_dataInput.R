@@ -113,16 +113,17 @@ modosin_data <- function(
           "no_p" = "no"), lang_declared)
       ),
       
+      
       # ...... SELECCION POLIGONO ......
       # ...................................
       
       shiny::selectInput(
         ns('division'), translate_app('display_label', lang_declared),
         shiny_set_names(c(
-          'PRO'= "prov", 
-          'AT' = "at",
-          'OR' = "or",
-          "ALL"= "all",
+          'PRO'= "prov",     
+          'AT' = "at",    
+          'OR' = "or",     
+          "ALL"= "all",    
           "NO" = "no"), lang_declared)
       ),
 
