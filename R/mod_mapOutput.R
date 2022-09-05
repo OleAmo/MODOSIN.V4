@@ -70,7 +70,7 @@ mod_map <- function(
         group = translate_app('Imagery', lang())
       ) %>%
       leaflet::addLayersControl(
-        baseGroups = c(translate_app('Relief', lang()), translate_app('Imagery', lang()),"OSM"),
+        baseGroups = c(translate_app('Imagery', lang()),translate_app('Relief', lang()), "OSM"),
         options = leaflet::layersControlOptions(collapsed = FALSE, autoZIndex = FALSE)
       ) 
       
@@ -159,8 +159,10 @@ mod_map <- function(
       } else if (a == "A") {
         return("aiguestortes")
       } else if( a == "S"){
-        return("matosec")
-      } else {
+        return("matollar")
+      } else if( a == "O"){
+        return("ordesa")
+      }else {
         return("tots")
       }
     }
@@ -200,7 +202,7 @@ mod_map <- function(
     # ....... FILTRADO PLOT ORIGIN ...........
     # ........................................
     
-    #      .) la función ORGENG_SELECTED nos da 3 origenes (Aiguestortes, Nfi y Matosec)
+    #      .) la función ORGENG_SELECTED nos da 4 origenes (Aiguestortes, Ordesa, Nfi y Matollar)
     #      .) Si queremos que nos lo proyecte TODO
     #      .) Tenemo de decirle que NO FILTRE
     #      .) Por eso hago un PIPE con IF
@@ -216,6 +218,7 @@ mod_map <- function(
     
 
     variable_valores <- round(data_filter[[2]], digits=2)
+    
     
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
@@ -268,8 +271,8 @@ mod_map <- function(
     #              .) Plots   => usamos leaflet::clearGroup + Group
     #              .) Legend  => leaflet::clearControls() 
     
-    
-    
+   
+
     # .............. PROYECCIÓN PLOTS  .............
     # ..............................................
     
@@ -279,8 +282,7 @@ mod_map <- function(
     #     .) Si es NO PLOT
     #     .) Borra todos los Plots
     
-    
-    if(origen != "no"){
+  
       
       # ........... ZOOM PLOTS  ...........
       # ...................................
@@ -300,85 +302,76 @@ mod_map <- function(
           leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12)
         } else if ( a == "S") {
           leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8)
+        }  else if ( a == "O") {
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
+        }                                                     
+        
+      }
+      
+      # ............ PROYECCIÓN POLIGONOS  ..........
+      # ..............................................
+      
+      
+      #     .) Proyecta en función del tipo de ORIGEN
+      #     .) FUNCIÓN DIVSION SELECT
+      #              .) En función del COMBO DIVISION 
+      #              .) Proyectara uno o otro SF (Shapes)
+      
+      polygon_selected <- function(origen) {
+        
+        catalunya <- provincias_simplfy %>% dplyr::filter(., Cod_CCAA == "09")
+        
+        if(origen == "T") {  return(all_divisions_simplfy)
+        } else if (origen == "A") { return(aiguestortes_simplfy)
+        } else if (origen == "O") { return(ordesa_simplfy)
+        } else if (origen == "P") { return(catalunya)
+        } else if (origen == "S") { return(all_divisions_simplfy)
         }
         
       }
-
+      
    
-      # leaflet::leafletProxy('map_daily') %>%
-      # leaflet::setView(2.3018256,41.089058, zoom=7) %>%
+      # ........... ZOOM PLOTS  ...........
+      # ...................................
+      
+      #     .) LEYENDA
+      #     .) Creamos título traducido
+      
+      lang_declared <- lang()
+      
+      # ........ PROYECCIÓN PLOTS  ........
+      # ...................................
+      
+
       
       set_view(origen) %>%
-      leaflet::clearGroup('plots_layer') %>%
-      leaflet::addCircleMarkers(
-        data = data_filter,
-        group = 'plots_layer',
-        layerId = ~ plot_id,
-        lat = ~ lat,
-        lng = ~ lon,
-        weight= 1,
-        opacity= 0.8,
-        fillOpacity= 0.6,
-        radius= 6,
-        color =  ~ pal(data_filter[[2]]),
-        popup = popInfo) %>%
-      leaflet::clearControls() %>%
-      leaflet::addLegend(
-        position = "bottomright",
-        title = paste(as.character(selected_var),' (Contínua) '),
-        pal = pal,
-        values = data_filter[[2]],
-        opacity = 1)
-      
-    } else {
-      leaflet::leafletProxy('map_daily') %>%
-        leaflet::clearGroup('plots_layer')
-      
-    }
-    
-    # ............ PROYECCIÓN DIVISIONES  ..........
-    # ..............................................
-    
-    #     .) Empieza con un CONDICIONAL
-    #     .) Si DIVISION (Comobo DIVISION = No Division) es DIFERENTE a NO DIVIDION
-    #     .) Proyecte en función del tipo de Division
-    #     .) Si es NO DIVISION
-    #     .) Borra todos las DIVISIONES
-    
-  
-    #     .) FUNCIÓN DIVSION SELECT
-    #              .) En función del COMBO DIVISION 
-    #              .) Proyectara uno o otro SF (Shapes)
-    
-    division_selected <- function(division) {
-      if(division == "prov") {
-        return(provincias_simplfy)
-
-      } else if (division == "at") {
-        return(aiguestortes_simplfy)
-      } else if (division == "or") {
-        return(ordesa_simplfy)
-      }
-
-    }
-
-
-    if(division != "no"){
-      leaflet::leafletProxy('map_daily') %>%
-        leaflet::clearGroup('divisiones') %>%
-        leaflet::addPolygons(
-          data = division_selected(division),
-          weight = 2,
-          fillOpacity = 0,
-          color = "#bf021b",
-          group = "divisiones")
-      
-    } else {
-      leaflet::leafletProxy('map_daily') %>%
-        leaflet::clearGroup('divisiones')  
-    }
-    
-
+        leaflet::clearGroup('polygons') %>%
+        leaflet::clearGroup('plots_layer') %>%
+          leaflet::addPolygons(
+            data = polygon_selected(origen),
+            weight = 2,
+            fillOpacity = 0,
+            color = "#bf021b",
+            group = "polygons")  %>%
+          leaflet::addCircleMarkers(
+            data = data_filter,
+            group = 'plots_layer',
+            layerId = ~ plot_id,
+            lat = ~ lat,
+            lng = ~ lon,
+            weight= 1,
+            opacity= 0.8,
+            fillOpacity= 0.6,
+            radius= 6,
+            color =  ~ pal(data_filter[[2]]),
+            popup = popInfo) %>%
+          leaflet::clearControls() %>%
+          leaflet::addLegend(
+            position = "bottomright",
+            title = translate_app(variable, lang_declared),
+            pal = pal,
+            values = data_filter[[2]],
+            opacity = 1)
 
     
 })
@@ -418,7 +411,7 @@ mod_map <- function(
   # ........................................
   
   #     .) CLIC Información
-  #     .) Cada vez que hacemos CLICK aL:Ç
+  #     .) Cada vez que hacemos CLICK aL:
   #              .) 'MAIN_PANEL_TABSET' = MAPA de LEFLET (Declarado en APP.R)
   #              .) Obtenemos INFO = ID, LAT, LONG
    
@@ -433,7 +426,10 @@ mod_map <- function(
       )
     },
     priority = 1000
+    
   )
+  
+  
 
   # ..................... DEVOLVER REACTIVOS  ....................
   # ..............................................................

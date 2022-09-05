@@ -1,10 +1,10 @@
 
-# ///////////////////////////////  MODOSIN ////////////////////////////
+# ///////////////////////////////  MODOSIN  //////////////////////////////
 # ///////////////////////////////////////////////////////////////////////
 
 
-# ....... CREAR BBDD PRINCIPAL POSTGRESQL ......
-# ..............................................
+# %%%%%%%%%%%%%%%%    CREAR BBDD PRINCIPAL POSTGRESQL  %%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 #     .) CONECTAR a la BBDD principal (POSGRESQL)
 #     .) CREAR DE NUEVO la BBDD (CREAF_v4)
@@ -31,76 +31,124 @@ RPostgres::dbExecute(con, create_database)
 RPostgres::dbDisconnect(con)
 
 
-# ......... CREAR CONEXION BBDD CREAF_V4 ........
-# ...............................................
+# %%%%%%%%%%%%%%%%%%%%%%   GEOMETRÍA PLOTS_ID   %%%%%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-con <- dbConnect(RPostgres::Postgres(),
-                 dbname = 'creaf_v4',
-                 host = 'localhost',
-                 port = 5432,
-                 user = 'postgres',
-                 password = '12345database')
+#      .) Cada día se crean 5283 archivos RDS del MEDFATE
+#      .) Cada archivo RDS es UNA PARCELA
+#      .) Cada PARCELA => tiene los 365 días de datos del WHATER BALANCE
 
-
-# ........... CORREGIR PLOTIDS ..........
-# .......................................
-
-#     .) Creo una función que Corriga los PLots_Id
-#     .) Hay plots que empieza con ["8..."]
-#     .) Tendría que empezar con ["08..."]
-#         1.) Detectamos los errores => STR_DETECTED
-#         1.) Añadimos un "0" con    => PASTE0
-
-
-plotid_corrected <- function(data){
-  plot_id <- data
-  plot_id[stringr::str_detect(plot_id, "^8")] <-
-    base::paste0("0", plot_id[stringr::str_detect(plot_id, "^8")])
-  return(plot_id)
-}
+#      .) En esta PRUEVA DE APP
+#      .) Tengo un FOLDER en el LOCALHOST con 5283 RDS 
+#      .) Después en el servidor, el Script, también buscará en una carpeta 
+#      .) En esta carpeta habrá descargadas las 5283 y algo parcelas cada día
 
 
 # .......... GEOMETRÍA PLOTS_ID .........
 # .......................................
 
-#     .) La geometría NO la da el MEDFATE
-#     .) La geometría está en un GEOPACK (plot_id => geom)
-#     .) El GEOPACK lo sacamos de la web LFC (NIF_APP)
+#     .) La geometría NO la da el MEDFATE 
+#     .) La obtenemos de diferentes formas
+#              .) PLOTS PERE          (Miquel Shape) 
+#              .) PLOTS AIGUESTORTES  (Miquel TXT)
+#              .) PLOTS ORDESSA       (Miquel TXT)
+#              .) IFN4                (App NFI)
 
-#     .) En este caso La tengo guardada en mi POSTGRESQL
-#             .) BBDD = CATALUNYA
-#             .) SCHEMA/TABLE = CAREAF.NFI_APP
+# ....... PLOTS PERE ..
+# .....................
 
-
-con <- dbConnect(RPostgres::Postgres(),
-                 dbname = 'catalunya',
-                 host = 'localhost',
-                 port = 5432,
-                 user = 'postgres',
-                 password = '12345database')
-
-#     .) CREAR el SF de la tabla NIF_APP
-#     .) DESCONECTAR de la BBDD dele NIF
-#     .) CONECTAR a la BBDD donde estamos trabajando
+pere_sf <- sf::st_read('COORD_PLOTS/coords_topo.shp') %>% 
+  dplyr::mutate(plot_id = paste0("S_",Id), geom = geometry) %>%
+  dplyr::select(plot_id, geom)  %>% 
+  sf::st_transform(crs = 4326)
 
 
-parcelas_nfi <- st_read(dsn = con, Id(schema="creaf", table = "nif_app"))
+# ...PLOTS AiguesTortes
+# .....................
+
+# CSV (txt transformado a CSV) 
+aiguestortes_csv <- read.csv2('COORD_PLOTS/CSV/plots_AiguesTortes.csv') %>%
+  dplyr::mutate(longitude = x, latitude = y) %>%
+  dplyr::select(plot_id, longitude, latitude)
+
+
+aiguestortes_sf <- st_as_sf(aiguestortes_csv, coords = c("longitude", "latitude"), 
+                            crs = 25831, agr = "constant") %>% sf::st_transform(crs = 4326) %>%
+  dplyr::mutate(geom = geometry)
+
+# ...PLOTS ORDESA.....
+# .....................
+
+# CSV (txt transformado a CSV) 
+ordesa_csv <- read.csv2('COORD_PLOTS/CSV/plots_Ordesa.csv') %>%
+  dplyr::mutate(longitude = x, latitude = y) %>%
+  dplyr::select(plot_id, longitude, latitude)
+
+
+ordesa_sf <- st_as_sf(ordesa_csv, coords = c("longitude", "latitude"), 
+                      crs = 25830, agr = "constant") %>% sf::st_transform(crs = 4326) %>%
+  dplyr::mutate(geom = geometry)
+
+
+# IFN4 ............... 
+# .....................
+
+con <- DBI::dbConnect(RPostgres::Postgres(),
+                      dbname = 'catalunya', 
+                      host = 'localhost',  
+                      port = 5432,  
+                      user = 'postgres',
+                      password = '12345database')
+
+parcelas_nfi <- sf::st_read(dsn = con, Id(schema="creaf", table = "nif_app"))
 
 RPostgres::dbDisconnect(con)
+
+
+# ...... CREACIÓN PLOTS GEOM ALL ........
+# .......................................
+
+#     .) Los GUARDO los 4 SF en el PC como shapes
+#     .) Despues usando QGIS uniré los 3 shapes en 1 shape
+
+# st_write(parcelas_nfi,'SHAPE/PLOTS/SEPARADOS/polts_nfi.shp')
+# st_write(aiguestortes_sf,'SHAPE/PLOTS/SEPARADOS/polts_at.shp')
+# st_write(pere_sf,'SHAPE/PLOTS/SEPARADOS/polts_p.shp')
+# st_write(ordesa_sf,'SHAPE/PLOTS/SEPARADOS/polts_o.shp')
+
+
+
+# .......... PLOTS GEOM ALL .............
+# .......................................
+
+#     .) Es una tabla con la relación PLOT_ID Geom
+#     .) Son los Plots de:
+#          .)  NFI
+#          .)  AiguesTortes
+#          .)  Pere
+#     .) Lo he creado en QGis uniendo los 3 shapes creados
+
+plots_geom_all <- st_read('SHAPE/PLOTS/UNION/plots_geom_all.shp') %>%
+  dplyr::mutate(old_idparcela = old_dpr, old_idclasse_nfi3 = old_d_3, old_idclasse_nfi4 = old_d_4) %>%
+  dplyr::select(plot_id, old_idparcela, old_idclasse_nfi3, old_idclasse_nfi4)
+
+
+
+
+# %%%%%%%%%%%%%%%%%%%%%   REAR DATA FRAME FIRE   %%%%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 # ........ OBTENER PLOT_ID Corregidos.........
 # ............................................
 
-#     .) Obtengo los nombres de los archivos
+#     .) Obtengo los nombres de los archivos (P_15081.rds)
 #     .) les quito el .RDS
-#     .) Hago SPLIT con "_" y me quedo lo 2do (el plot_id)
-#     .) Corrijo el código
+#     .) Y me quedo lo 2do (el plot_id = P_15081)
 
-plots_id <- list.files("RDS_f", pattern="rds$") %>%
-  gsub(".rds", "", ., fixed = TRUE) %>%
-  str_split_fixed(.,"_", 2) %>%
-  .[,2] %>%
-  plotid_corrected()
+plots_id <- list.files("RDS", pattern="rds$") %>%
+  gsub(".rds", "", ., fixed = TRUE)  
 
 
 # ........ FUNCION PLOT_ORIGIN ...............
@@ -113,60 +161,57 @@ plot_origin <- function(data){
   res <- data %>%
     str_split_fixed(.,"_", 2) %>%
     .[,1]
-
-  if(res == "a"){
+  
+  if(res == "A"){
     return("aiguestortes")
-  } else if (res == "p") {
+  } else if (res == "P") {
     return("ifn")
-  } else {
-    return("NA")
+  } else if (res == "S") {
+    return("matollar")
+  } else if (res == "O") {
+    return("ordesa")
   }
-
+  
 }
 
-# ........... FUNCIÓN INSERT_DATA ............
+# .......... CREAR DATA DAY FIRE .............
 # ............................................
 
-#     .) Calculamos el TIEMPO de crear la tabla
-#     .) Tiempo Incial - Tiempo Final
-#     .) Creamos la TABLA con ST_WRITE
+#     .) Necesitamos una LISTA para empezar el proceso
+#     .) La LISTA tiene que tener un NAME y un VALUE
+#          .) NAME = me da el id corregido
+#          .) VALUE = el nombre del archivo
+
+#     .) Usaremos purrr:: IMAT_DFR (hará un LOOP)
+#          .) Creará un DATA FRAME
+#          .) Usando el VALUE de la LISTA recorrerá cada archivo RDS
+
+#          .) Cada archivo RDS, modificará fila a fila
+#          .) Añadir PLOT_ID, DATE
+#          .) Y una vez con el PLOT_ID añadir GEOM (via JOIN)
+
+#      .) Por lo tanto, al final de 5283 RDS de 365 filas cada uno
+#      .) Tendremos una DATA FRAME final de 1.928.295 filas
 
 
-
-insert_data <- function(tabla){
-
-  st_write(obj = tabla,
-           dsn = con,
-           Id(schema="public", table = "data_day"),
-           append=FALSE)
-}
-
-# ........ CREAR DATA DAY ....................
-# ............................................
-
-
-data_day <- list.files("RDS_f", pattern="rds$") %>%
-
+data_day_fire <- list.files("RDS", pattern="rds$") %>%
   set_names(plots_id) %>%
-
   purrr::imap_dfr(.f = function(archivo,id){
-    readRDS(paste0("RDS_f/",archivo)) %>%
-      dplyr::mutate(plot_id = id , date = as.Date(row.names(.)), plot_origin = plot_origin(archivo))
-  }) %>%
-
+    readRDS(paste0("RDS/",archivo)) %>%
+      dplyr::mutate(plot_id = id, date = as.Date(row.names(.)), plot_origin = plot_origin(archivo))}) %>%
   dplyr::left_join(
-    select(parcelas_nfi,old_idparcela),
-    by = c("plot_id" ="old_idparcela"))
+    select(plots_geom_all,plot_id),
+    by = c("plot_id" ="plot_id"))
 
 
 
-# .......... INSERTAR DATADAY a BBDD ...........
-# ..............................................
+
+# %%%%%%%%%%%%%%%%%%%%%   INSERTAR SF a BBDD   %%%%%%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-#     .) Creo EXTENCION POSTGIS
-#     .) DROP TABLE DataDay
-#     .) INSERT DataDay
+#     .) Creamos CONEXION
+#     .) Creamos la TABLA con ST_WRITE
 #     .) VACUUM y ANALIZE
 
 # VACUUM
@@ -181,22 +226,51 @@ data_day <- list.files("RDS_f", pattern="rds$") %>%
 # en el catálogo del sistema pg_statistic. Posteriormente, el planificador de consultas utiliza estas
 # estadísticas para ayudar a determinar los planes de ejecución más eficientes para las consultas.
 
+con <- dbConnect(RPostgres::Postgres(),
+                 dbname = 'creaf_v4',
+                 host = 'localhost',
+                 port = 5432,
+                 user = 'postgres',
+                 password = '12345database')
 
 drop_table <- glue::glue_sql("
-DROP TABLE IF EXISTS public.data_day CASCADE;", .con = con)
+DROP TABLE IF EXISTS public.data_day_fire CASCADE;", .con = con)
 
 vacuum_analyze <- glue::glue_sql("
-VACUUM ANALYZE public.data_day;", .con = con)
+VACUUM ANALYZE public.data_day_fire;", .con = con)
 
 
-rpostgis::pgPostGIS(con, topology = TRUE, sfcgal = TRUE)
+# ........... FUNCIÓN INSERT_DATA ............
+# ............................................
+
+#     .) Calculamos el TIEMPO de crear la tabla
+#     .) Tiempo Incial - Tiempo Final
+#     .) Creamos la TABLA con ST_WRITE
+
+insert_data <- function(tabla){
+  # start_time <- Sys.time()
+  st_write(obj = tabla,
+           dsn = con,
+           Id(schema="public", table = "data_day_fire"),
+           append=FALSE)
+  # end_time <- Sys.time()
+  # end_time - start_time
+}
+
+
 RPostgres::dbExecute(con, drop_table)
-insert_data(data_day)
+insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 9.54 min / UAB = 2.49 min)  
 RPostgres::dbExecute(con, vacuum_analyze)
 
 
-# .......... CREACIÓN de INDEX ...............
-# ............................................
+
+
+
+
+# %%%%%%%%%%%%%%%%%%%%%%   CREACIÓN de INDEXS  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 #     .) Uso el link = https://docs.microsoft.com/es-es/sql/relational-databases/sql-server-index-design-guide?view=sql-server-2017#nonclustered-index-architecture
 
@@ -204,38 +278,38 @@ RPostgres::dbExecute(con, vacuum_analyze)
 #     .) Usaré la tabla TERBALL.NUCLIS_POBLACIO
 
 
-drop_index_plot_origin <- glue::glue_sql("
-DROP INDEX IF EXISTS public.data_day_plot_origin CASCADE;", .con = con)
+drop_index_fire_plot_origin <- glue::glue_sql("
+DROP INDEX IF EXISTS public.data_day_fire_plot_origin CASCADE;", .con = con)
 
-drop_index_geom <- glue::glue_sql("
-DROP INDEX IF EXISTS public.data_day_gist CASCADE;", .con = con)
+drop_index_fire_geom <- glue::glue_sql("
+DROP INDEX IF EXISTS public.data_day_fire_gist CASCADE;", .con = con)
 
-drop_index_date <- glue::glue_sql("
-DROP INDEX IF EXISTS public.data_day_date CASCADE;", .con = con)
-
-
+drop_index_fire_date <- glue::glue_sql("
+DROP INDEX IF EXISTS public.data_day_fire_date CASCADE;", .con = con)
 
 
-create_index_plot_origin <- glue::glue_sql("
-CREATE INDEX data_day_plot_origin 
-ON public.data_day (plot_origin);", .con = con)
-
-create_index_geom <- glue::glue_sql("
-CREATE INDEX data_day_gist on public.data_day
-using gist(geom);", .con = con)
-
-create_index_date <- glue::glue_sql("
-CREATE INDEX data_day_date 
-ON public.data_day (date);", .con = con)
 
 
-RPostgres::dbExecute(con, drop_index_plot_origin) 
-RPostgres::dbExecute(con, drop_index_geom)
-RPostgres::dbExecute(con, drop_index_date)
+create_index_fire_plot_origin <- glue::glue_sql("
+CREATE INDEX data_day_fire_plot_origin 
+ON public.data_day_fire (plot_origin);", .con = con)
 
-RPostgres::dbExecute(con, create_index_plot_origin)
-RPostgres::dbExecute(con, create_index_date)
-RPostgres::dbExecute(con, create_index_geom)
+create_index_fire_geom <- glue::glue_sql("
+CREATE INDEX data_day_fire_gist on public.data_day_fire
+using gist(geometry);", .con = con)
+
+create_index_fire_date <- glue::glue_sql("
+CREATE INDEX data_day_fire_date 
+ON public.data_day_fire (date);", .con = con)
+
+
+RPostgres::dbExecute(con, drop_index_fire_plot_origin) 
+RPostgres::dbExecute(con, drop_index_fire_geom)
+RPostgres::dbExecute(con, drop_index_fire_date)
+
+RPostgres::dbExecute(con, create_index_fire_plot_origin)
+RPostgres::dbExecute(con, create_index_fire_geom )
+RPostgres::dbExecute(con, create_index_fire_date)
 
 
 RPostgres::dbDisconnect(con)
