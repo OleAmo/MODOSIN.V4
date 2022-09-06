@@ -110,6 +110,10 @@ tibble::tribble(
   "ALL", "Totes les divisions","All divisions","Todas las divisiones",
   "NO", "Cap divisió","No division","Ninguna división",
   "no_p", "Cap Parcel·la","No Plot","Ninguna Parcela",
+  
+  'Provincia',"Provincia:", "Province:", "Provincia:",
+  'Parque Nacional','Parc Nacional','National Park','Parque Nacional',
+  'PLOT','Parcel·la', 'Plot', 'Parcela',
  
   
   

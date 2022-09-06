@@ -128,7 +128,7 @@ RPostgres::dbDisconnect(con)
 #          .)  Pere
 #     .) Lo he creado en QGis uniendo los 3 shapes creados
 
-plots_geom_all <- st_read('SHAPE/PLOTS/UNION/plots_geom_all.shp') %>%
+plots_geom_all <- st_read('SHAPES/PLOTS/plots_geom_all.shp') %>%
   dplyr::mutate(old_idparcela = old_dpr, old_idclasse_nfi3 = old_d_3, old_idclasse_nfi4 = old_d_4) %>%
   dplyr::select(plot_id, old_idparcela, old_idclasse_nfi3, old_idclasse_nfi4)
 

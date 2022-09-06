@@ -70,7 +70,7 @@ mod_map <- function(
         group = translate_app('Imagery', lang())
       ) %>%
       leaflet::addLayersControl(
-        baseGroups = c(translate_app('Imagery', lang()),translate_app('Relief', lang()), "OSM"),
+        baseGroups = c(translate_app('Relief', lang()),translate_app('Imagery', lang()), "OSM"),
         options = leaflet::layersControlOptions(collapsed = FALSE, autoZIndex = FALSE)
       ) 
       
@@ -114,7 +114,6 @@ mod_map <- function(
   }
   
 
-  
   # ............ MAPA PLOTS DATADAY ...............
   # ...............................................
   
@@ -169,7 +168,6 @@ mod_map <- function(
     
     origen_selected <- origenSelected(origen)
     
-   
     # ......... PROYECTAR TABLA ..............
     # ........................................
     
@@ -223,7 +221,64 @@ mod_map <- function(
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
     
-    pal <- leaflet::colorNumeric(palette = "YlGnBu", domain = data_filter[[2]])
+    pal <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
+    
+    
+    
+    
+    
+    
+    
+    # ....... PROVAR TEMA PALETAS VICTOR ...........
+    # ........................................
+    
+    #      .) ESOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    #      .) ESOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    
+    # 
+    # palettes_dictionary <- list(
+    #   DDS = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE),
+    #   DeepDrainage = list(min = 0, max = 15, pal = viridis::cividis(100), rev = TRUE),
+    #   Eplant = list(min = 0, max = 5, pal = viridis::viridis(100), rev = TRUE),
+    #   Esoil = list(min = 0, max = 5, pal = viridis::viridis(100), rev = TRUE),
+    #   Infiltration = list(min = 0, max = 100, pal = viridis::plasma(100), rev = TRUE),
+    #   LAI = list(min = 0, max = 20, pal = viridis::viridis(100), rev = FALSE),
+    #   PET = list(min = 0, max = 15, pal = viridis::viridis(100), rev = TRUE),
+    #   Psi = list(min = -4, max = 0, pal = viridis::plasma(100), rev = TRUE),
+    #   REW = list(min = 0, max = 1, pal = viridis::plasma(100), rev = TRUE),
+    #   Runoff = list(min = 0, max = 15, pal = viridis::cividis(100), rev = TRUE),
+    #   Theta = list(min = 0, max = 0.5, pal = viridis::plasma(100), rev = TRUE),
+    #   Precipitation = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
+    #   Interception = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
+    #   LMFC = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE)
+    #   # NetPrec = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
+    #   # NDD = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE)
+    # )
+    # 
+    # legend_palette <- leaflet::colorNumeric(
+    #   palette = palettes_dictionary[[variable]][['pal']],
+    #   # domain = c(
+    #   #   palettes_dictionary[[var_daily]][['min']],
+    #   #   palettes_dictionary[[var_daily]][['max']]
+    #   # ),
+    #   domain = data_filter[[2]],
+    #   na.color = 'transparent',
+    #   reverse = !palettes_dictionary[[variable]][['rev']]
+    # )
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     # .... PROBLEM  ...........
@@ -271,7 +326,12 @@ mod_map <- function(
     #              .) Plots   => usamos leaflet::clearGroup + Group
     #              .) Legend  => leaflet::clearControls() 
     
-   
+    # ........ LENGUA SELECTED  .........
+    # ...................................
+    
+    #     .) Lengua Seleccionada
+    
+    lang_declared <- lang()
 
     # .............. PROYECCIÓN PLOTS  .............
     # ..............................................
@@ -319,25 +379,34 @@ mod_map <- function(
       
       polygon_selected <- function(origen) {
         
-        catalunya <- provincias_simplfy %>% dplyr::filter(., Cod_CCAA == "09")
-        
-        if(origen == "T") {  return(all_divisions_simplfy)
-        } else if (origen == "A") { return(aiguestortes_simplfy)
-        } else if (origen == "O") { return(ordesa_simplfy)
+        if(origen == "T") {  return(all_polygons)
+        } else if (origen == "A") { return(aiguestortes)
+        } else if (origen == "O") { return(ordesa )
         } else if (origen == "P") { return(catalunya)
-        } else if (origen == "S") { return(all_divisions_simplfy)
+        } else if (origen == "S") { return(provincias)
         }
         
       }
       
-   
-      # ........... ZOOM PLOTS  ...........
-      # ...................................
       
-      #     .) LEYENDA
-      #     .) Creamos título traducido
+      # ............ CREACIÓN LABELS .................
+      # ..............................................
       
-      lang_declared <- lang()
+      #     .) Creo los LABELS información que aparece 
+      #     .) Esta info aparece en pasar el Mouse por encima
+      #     .) https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/sprintf
+      #     .) SPRINTF => pasa info a STRING
+      #              .) CADA % indica un value ( s = string, g = double precision,...)
+      #              .) El ORDEN de declarar values es el ORDEN de APARICION
+      
+      poly <- polygon_selected(origen)
+      
+      labels_poly <- sprintf( "<strong>%s</strong><br/>%s ",
+                         translate_app( poly$Descrip,lang_declared), poly$name ) %>% lapply(htmltools::HTML)
+      
+                         
+      labels_plot <- sprintf( "<strong>%s</strong><br/>%s ",
+                          translate_app("PLOT",lang_declared), data_filter$plot_id ) %>% lapply(htmltools::HTML)
       
       # ........ PROYECCIÓN PLOTS  ........
       # ...................................
@@ -347,12 +416,19 @@ mod_map <- function(
       set_view(origen) %>%
         leaflet::clearGroup('polygons') %>%
         leaflet::clearGroup('plots_layer') %>%
-          leaflet::addPolygons(
-            data = polygon_selected(origen),
-            weight = 2,
-            fillOpacity = 0,
-            color = "#bf021b",
-            group = "polygons")  %>%
+        
+        leaflet::addPolygons(
+          data = polygon_selected(origen),
+          weight = 2,
+          fillOpacity = 0,
+          color = "#bf021b",
+          group = "polygons",
+          label = labels_poly,
+          highlightOptions = leaflet::highlightOptions(
+            color = "#CF000F", weight = 2,
+            bringToFront = FALSE,
+            fill = TRUE, fillOpacity = 0))  %>%
+        
           leaflet::addCircleMarkers(
             data = data_filter,
             group = 'plots_layer',
@@ -364,15 +440,32 @@ mod_map <- function(
             fillOpacity= 0.6,
             radius= 6,
             color =  ~ pal(data_filter[[2]]),
-            popup = popInfo) %>%
+            popup = popInfo,
+            label = labels_plot,
+            labelOptions =   labelOptions(interactive = TRUE)) %>%
+        
           leaflet::clearControls() %>%
           leaflet::addLegend(
             position = "bottomright",
             title = translate_app(variable, lang_declared),
             pal = pal,
+            # pal = legend_palette,
             values = data_filter[[2]],
+            labFormat = labelFormat(transform = function(x) sort(x, decreasing = FALSE)),
             opacity = 1)
-
+      
+      # colorFactor(
+      #   palette,
+      #   domain,
+      #   levels = NULL,
+      #   ordered = FALSE,
+      #   na.color = "#808080",
+      #   alpha = FALSE,
+      #   reverse = FALSE
+      # )
+      
+      
+      
     
 })
   
@@ -426,8 +519,9 @@ mod_map <- function(
       )
     },
     priority = 1000
-    
   )
+  
+
   
   
 
