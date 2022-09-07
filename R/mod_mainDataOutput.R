@@ -239,10 +239,10 @@ mod_mainData <- function(
     #       .) Creo FORMATO TS (Time Serie)
     #       .) Aplico EDICION con DYGRAPHS
     
-    #             .) MAIN = T?tulo
+    #             .) MAIN = Título
     #             .) AXIS = edito las Y
-    #             .) OPTIONS = edito gr?fico
-    #             .) SERIE = texto del men? que sale en mover el mouse
+    #             .) OPTIONS = edito gráfico
+    #             .) SERIE = texto del menú que sale en mover el mouse
     #             .) EVENT = en la fecha concreta escribir texto
     #             .) SHADING = Sombreado entre fecha y fecha
     #             .) RANGE SELECTOR = para hacer zoom al gr?fico
@@ -254,57 +254,16 @@ mod_mainData <- function(
               dygraphs::dygraph(. , main = paste(toupper(variable)," (Anual) - PLOT ( Id = ",click_plot_id," / ",fecha,")")) %>%
               dygraphs::dyAxis("y", label = label_axis )%>%
               dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
-              # dygraphs::dySeries(label = variable) %>%
+              dygraphs::dySeries(label = variable) %>%
+              dygraphs::dyLegend(show = "follow") %>%
               dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom") %>%
-              dygraphs::dyShading(from = as.Date(fecha)-7, to = as.Date(fecha)+7, color = "#f2a7a7") %>%
+              # dygraphs::dyShading(from = as.Date(fecha)-7, to = as.Date(fecha)+7, color = "#f2a7a7") %>%
               dygraphs:: dyRangeSelector()
 
     return(res)
     
-    
 
   })
-  
-  
-  
-  
-
-  # map_shape_sf_builder <- shiny::reactive({
-  #   shiny::validate(
-  #     shiny::need(map_reactives$map_daily_shape_click, 'no map click')
-  #   )
-  # 
-  #   clicked_poly <- map_reactives$map_daily_shape_click
-  #   polygon_object <- rlang::eval_tidy(
-  #     rlang::sym(glue::glue("{tolower(data_reactives$display_daily)}_polygons"))
-  #   ) %>%
-  #     dplyr::filter(
-  #       poly_id == clicked_poly$id
-  #     )
-  # 
-  #   return(polygon_object)
-  # })
-  # 
-  # nfi_plots_sf_builder <- shiny::reactive({
-  #   shiny::validate(
-  #     shiny::need(map_reactives$map_daily_marker_click, 'no map click')
-  #   )
-  # 
-  #   clicked_marker <- map_reactives$map_daily_marker_click
-  # 
-  #   point_sel <- tibble::tibble(
-  #     point_id = clicked_marker$id,
-  #     long = clicked_marker$lng,
-  #     lat = clicked_marker$lat
-  #   ) %>%
-  #     sf::st_as_sf(
-  #       coords = c('long', 'lat'),
-  #       crs = 4326
-  #     )
-  # 
-  #   return(point_sel)
-  # }
-
 
 
   # ..................... DEVOLVER REACTIVOS  ....................

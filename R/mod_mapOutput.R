@@ -454,16 +454,6 @@ mod_map <- function(
             labFormat = labelFormat(transform = function(x) sort(x, decreasing = FALSE)),
             opacity = 1)
       
-      # colorFactor(
-      #   palette,
-      #   domain,
-      #   levels = NULL,
-      #   ordered = FALSE,
-      #   na.color = "#808080",
-      #   alpha = FALSE,
-      #   reverse = FALSE
-      # )
-      
       
       
     
@@ -503,18 +493,27 @@ mod_map <- function(
   # .............. EVENTO 2ndo .............
   # ........................................
   
-  #     .) CLIC Información
-  #     .) Cada vez que hacemos CLICK aL:
-  #              .) 'MAIN_PANEL_TABSET' = MAPA de LEFLET (Declarado en APP.R)
-  #              .) Obtenemos INFO = ID, LAT, LONG
+  #     .) CLICK MAPA
+  #     .) Cada vez que hacemos CLICK obtenemos:
+  #              .) INFO del PLOT (ID, LAT, LON,...lo que indiquemos en ADD_CIRCLE_MARKERS)
+  #              .) ACTIVAR PESTAÑA TIME_SERIE
+  #     .) PROCESO:
+  #              .) Creamos un INPUT$value: 
+  #                      .) Lo enviamos fuera del archivo al final de ESTE SCRIPT
+  #                      .) Lo usaremos en MOD_MAIN_DATA_OUTPUT para saber el ID del PLOT
+  #              .) ACTIVAMOS PESTÑA
+  #                      .) Le indicamos el ID de CONTENDEOR DE TABS:s
+  #                              .) 'MAIN_PANEL_TABSET_PLOTS' = MAPA de LEFLET (Declarado en APP.R)
+  #                      .) Le indicamos la PESTAÑA A ACTIVAR:
+  #                              .) SELECTED
+
    
-  
   shiny::observeEvent(
     eventExpr = input$map_daily_marker_click,
     handlerExpr = {
-      # go to series
+      # go to series tab
       shiny::updateTabsetPanel(
-        parent_session, 'main_panel_tabset',
+        parent_session, 'main_panel_tabset_plots',
         selected = 'series_panel'
       )
     },
