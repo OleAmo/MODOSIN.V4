@@ -111,15 +111,7 @@ modosin_data <- function(
           "A"="A",
           "O"="O",
           "S"="S"), lang_declared)
-      ),
-      
-      # ......... ACCION BUTTON ...........
-      # ...................................
-      
-      actionButton(ns("boto"), "Proyectar"),
-      actionButton(ns("boto_save"), "Guardar"),
-
-     
+      )
       
 
     ) # end of tagList
@@ -153,9 +145,7 @@ modosin_data <- function(
     data_reactives$fecha_reactive  <- input$fecha
     data_reactives$variable_reactive <- input$variable
     data_reactives$origen_reactive <- input$origen
-    data_reactives$division_reactive <- input$division
-    data_reactives$boto_reactive <- input$boto
-    data_reactives$boto_save_reactive <- input$boto_save
+
      
     
 

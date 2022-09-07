@@ -40,7 +40,7 @@ mod_map <- function(
 ) {
   
   library(sf)
-  source('data-raw/polygon_objects_creation.R')
+
 
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   # ---------------------------      OUTPUT MAP     ------------------------------
@@ -75,7 +75,7 @@ mod_map <- function(
       ) 
       
     
-  })  
+  })
   
   
   
@@ -113,17 +113,51 @@ mod_map <- function(
     return(data_day)
   }
   
+  # ............. REACTIVE ZOMM ...................
+  # ...............................................
+  
+  #   .) Calcula el ZOOM en todos los momentos
+  #   .) Lo usaremos mas adelante
+  
+  # mapzoom <- shiny::reactive ({
+  #   input$map_daily_zoom
+  # })
+  
+  # base_size <- shiny::reactive({
+  #   current_zoom <- input$nfi_map_zoom
+  #   if (current_zoom <= 7) {
+  #     current_zoom <- 7
+  #   }
+  #   if (current_zoom >= 10) {
+  #     current_zoom <- 10
+  #   }
+  #   
+  #   size_transformed <- 750 + ((10 - current_zoom) * 250)
+  #   
+  #   return(size_transformed)
+  # })
+  
 
-  # ............ MAPA PLOTS DATADAY ...............
+  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  # ---------------------------      OBSERVE    --------------------------------
+  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  
+  
+  # ............ PROYECCIÓN LEFLET ................
   # ...............................................
   
   
-  #   .) Una vez el usuario APRETE BOTON PROYECTAR
-  #   .) Se proyectaran los PLOTS en f(X) de:
-  #   .) VARIABLE / SIZE / QUANTILES
+  #   .) AUTOMÁTICAMENTE 
+  #   .) Se proyectan PLOTS y POLIGON en el mapa
+  #   .) Antes de proyectar
+  #            .) Se obtienen VARIABLES (fecha, variable, polígono,...)
+  #            .) Con estas variables de filtra la tabla principal
   
   
-  leaflet_map_create <- eventReactive(data_reactives$boto_reactive, {
+  shiny::observe({
+    
+ 
     
     # ......... INICIALIZAR DATOS ............
     # ........................................
@@ -135,13 +169,22 @@ mod_map <- function(
     #            .) Uso la funcion TABLE_CREATE
     #            .) Necesito la FECHA = data_reactives$fecha_reactive
     #            .) Necesito el SF    = main_data_reactives$data_day
+    #            .) Necesito el ORIGEN, VARIABLE, DIVISION
     
+    #       .) VALIDAMOS la FECHA
+    #               .) Significa que SHINY antes de CONTINUAR espera a tener valor de FECHA
+    #               .) Osea que la variable sea ('2021-5-11')
+    #               .) Sino validamos, SHYNI se puede bloquear si al inicio el valor es NULL
     
+    shiny::validate(
+      shiny::need(data_reactives$variable_reactive, 'no variable selected') 
+    )
+    
+    fecha <- data_reactives$fecha_reactive
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
-    division <- data_reactives$division_reactive
-    fecha <- data_reactives$fecha_reactive
     sf <- main_data_reactives$data_day
+    zoom <- map_reactives$map_daily_zoom
   
  
     data_day <- table_create(fecha,sf)
@@ -217,11 +260,31 @@ mod_map <- function(
 
     variable_valores <- round(data_filter[[2]], digits=2)
     
+    # print(paste("MAX = ",max(variable_valores, na.rm=T )))
+    # print(paste("MIN = ",min(variable_valores, na.rm=T )))
+    
+    # print(variable_valores)
+    
     
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
     
-    pal <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
+    quantil <- function(variable) {
+      grepl('_', variable, fixed = TRUE)
+    }
+    
+    # c("green","white","red")
+    # c("#48cf4f","white","#d14949")
+    # "RdYlBu"
+    
+    
+    if (quantil(variable)) {
+      pal <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = FALSE)
+    } else {
+      pal <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
+    }
+    
+    
     
     
     
@@ -235,24 +298,21 @@ mod_map <- function(
     #      .) ESOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     #      .) ESOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     
-    # 
+
     # palettes_dictionary <- list(
-    #   DDS = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE),
-    #   DeepDrainage = list(min = 0, max = 15, pal = viridis::cividis(100), rev = TRUE),
-    #   Eplant = list(min = 0, max = 5, pal = viridis::viridis(100), rev = TRUE),
-    #   Esoil = list(min = 0, max = 5, pal = viridis::viridis(100), rev = TRUE),
-    #   Infiltration = list(min = 0, max = 100, pal = viridis::plasma(100), rev = TRUE),
-    #   LAI = list(min = 0, max = 20, pal = viridis::viridis(100), rev = FALSE),
     #   PET = list(min = 0, max = 15, pal = viridis::viridis(100), rev = TRUE),
-    #   Psi = list(min = -4, max = 0, pal = viridis::plasma(100), rev = TRUE),
-    #   REW = list(min = 0, max = 1, pal = viridis::plasma(100), rev = TRUE),
-    #   Runoff = list(min = 0, max = 15, pal = viridis::cividis(100), rev = TRUE),
-    #   Theta = list(min = 0, max = 0.5, pal = viridis::plasma(100), rev = TRUE),
     #   Precipitation = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
-    #   Interception = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
-    #   LMFC = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE)
-    #   # NetPrec = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
-    #   # NDD = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE)
+    #   REW = list(min = 0, max = 1, pal = viridis::plasma(100), rev = TRUE),
+    #   REW_q = list(min = 0, max = 1, pal = viridis::plasma(100), rev = TRUE),
+    #   DDS = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE),
+    #   DDS_q = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE),
+    #   LMFC = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
+    #   LMFC_q = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
+    #   
+    #   DMFC = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
+    #   SFP = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
+    #   CFP = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE)
+    #   
     # )
     # 
     # legend_palette <- leaflet::colorNumeric(
@@ -274,12 +334,23 @@ mod_map <- function(
     
     
     
+    # ......... FUNCION SIZE RADI ............
+    # ........................................
     
+    #     .) La usamos para que los plots se vean correctamentes
+    #     .) En IFN y TODOS del radio tiene que ser menor
     
-    
-    
-    
-    
+    size_radi = function(a){
+
+        if (a == "T" | a == "P") {
+          return(3)
+        } else {
+          return(6)  
+        } 
+        
+    }
+      
+ 
     
     # .... PROBLEM  ...........
     # ........................
@@ -374,7 +445,7 @@ mod_map <- function(
       
       #     .) Proyecta en función del tipo de ORIGEN
       #     .) FUNCIÓN DIVSION SELECT
-      #              .) En función del COMBO DIVISION 
+      #              .) En función del COMBO ORIGEN 
       #              .) Proyectara uno o otro SF (Shapes)
       
       polygon_selected <- function(origen) {
@@ -405,14 +476,28 @@ mod_map <- function(
                          translate_app( poly$Descrip,lang_declared), poly$name ) %>% lapply(htmltools::HTML)
       
                          
-      labels_plot <- sprintf( "<strong>%s</strong><br/>%s ",
-                          translate_app("PLOT",lang_declared), data_filter$plot_id ) %>% lapply(htmltools::HTML)
+      labels_plot <- sprintf( "<strong>%s</strong><br/> %s <br/> %s = %g ",
+                          translate_app("PLOT",lang_declared),
+                          data_filter$plot_id, variable, variable_valores) %>% lapply(htmltools::HTML)
+      
+     
+      # ........... LEYENDA NA PROBLEMA  .............
+      # ..............................................
+      
+      #     .) El valor NA en la LEYENDA da  problemas
+      #     .) Queda mal colocado
+      #     .) SOLUCION
+      #     .) https://github.com/rstudio/leaflet/issues/615
+      
+      css_fix <- "div.info.legend.leaflet-control br {clear: both;}" # CSS to correct spacing
+      html_fix <- htmltools::tags$style(type = "text/css", css_fix)  # Convert CSS to HTML
+      # m %<>% htmlwidgets::prependContent(html_fix)                   # Insert into leaflet HTML code
+      
       
       # ........ PROYECCIÓN PLOTS  ........
       # ...................................
       
-
-      
+   
       set_view(origen) %>%
         leaflet::clearGroup('polygons') %>%
         leaflet::clearGroup('plots_layer') %>%
@@ -438,7 +523,7 @@ mod_map <- function(
             weight= 1,
             opacity= 0.8,
             fillOpacity= 0.6,
-            radius= 6,
+            radius= size_radi(origen),
             color =  ~ pal(data_filter[[2]]),
             popup = popInfo,
             label = labels_plot,
@@ -452,7 +537,7 @@ mod_map <- function(
             # pal = legend_palette,
             values = data_filter[[2]],
             labFormat = labelFormat(transform = function(x) sort(x, decreasing = FALSE)),
-            opacity = 1)
+            opacity = 1)  
       
       
       
@@ -460,37 +545,14 @@ mod_map <- function(
 })
   
  
-  
-  
-  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  # ---------------------------      OBSERVER     --------------------------------
-  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  
-  #       .) Especificamos los EVENTOS
-  #      
-  #       .) PRIMERO => VALIDAMOS la FECHA
-  #               .) Significa que SHINY antes de CONTINUAR espera a tener valor de FECHA
-  #               .) Osea que la variable sea ('2021-5-11')
-  #               .) Sino validamos, SHYNI se puede bloquear si al inicio el valor es NULL
-  
-  
-  # .............. EVENTO 1r ...............
-  # ........................................
-  
-  #     .) Ejecutamos FUNCIÓN 
-  #     .) Indicamos en que casos la proyectamos
-  
-  
-  shiny::observe({
-    
-    shiny::validate(shiny::need(data_reactives$fecha_reactive, 'fecha no activated') )
-    
-    leaflet_map_create()
  
- })
+
+  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  # -------------------------    OBVSERVE EVENT     ------------------------------
+  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
   
-  # .............. EVENTO 2ndo .............
+  # ............... CLIK MAPA ..............
   # ........................................
   
   #     .) CLICK MAPA
@@ -521,8 +583,6 @@ mod_map <- function(
   )
   
 
-  
-  
 
   # ..................... DEVOLVER REACTIVOS  ....................
   # ..............................................................

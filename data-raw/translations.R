@@ -53,13 +53,13 @@ tibble::tribble(
   #       .) Diferentes LABELS de la APP
   #       .) Son los ID de la función TRANSLATE_APP
   
-  "var_daily_label", 'Tria la variable MODOSIN', 'Choose variable MODOSIN', 'Elige la variable MODOSIN',
+  "var_daily_label", 'Tria la variable', 'Choose variable', 'Elige la variable',
   "main_tab_translation", "Explora Parceles", "Plots Explore", "Explora Parcelas",
   "data_translation", "Dades", "Data", "Datos",
   "map_translation", "Mapa", "Map", "Mapa",
   "save_translation", "Guardar", "Save", "Guardar",
   "tech_specs_translation", "Especificacions tècniques", "Technical specifications", "Especificaciones técnicas",
-  "date_daily_label", 'Data MODOSIN', 'Date MODOSIN', 'Fecha MODOSIN',
+  "date_daily_label", 'Data', 'Date', 'Fecha',
   'series_tab_translation', "Sèries temporals", "Time series", "Series temporales",
   "size_label", 'Parcel·les (Tamany)', 'Plots (Size)', 'Parcelas (Tamaño)',
   "type_legend_label", "Tipus de Legenda", 'Legend Type','Tipo de Leyenda',
@@ -83,7 +83,7 @@ tibble::tribble(
   "map_translation_polygon", "Mapa", "Map", "Mapa",
   "save_translation_polygon", "Guardar", "Save", "Guardar",
   "tech_specs_translation_polygon", "Especificacions tècniques", "Technical specifications", "Especificaciones técnicas",
-  "date_daily_label_polygon", 'Data MODOSIN', 'Date MODOSIN', 'Fecha MODOSIN',
+  "date_daily_label_polygon", 'Data', 'Date', 'Fecha',
   'series_tab_translation_polygon', "Sèries temporals", "Time series", "Series temporales",
   "main_tab_polygon_polygon", "Explora Polígons", "Polygon Explore", "Explora Polígonos",
   "size_label_polygon", 'Parcel·les (Tamany)', 'Plots (Size)', 'Parcelas (Tamaño)',
@@ -98,7 +98,7 @@ tibble::tribble(
   
   'entorno_hidden','Nuclis Població / Àrea (Ha)','Population centers / Area (Ha)','Nucleos Pobalción / Area (Ha)',
   
-  "plot_origin_label", 'Origen Parcel·la', 'Plot Origin', 'Origen Parcela',
+  "plot_origin_label", 'Conjunt de Parcel·les', 'Set of Plots', 'Conjunto de Parcelas',
   "P", "IFN 4", "NFI 4" ,"IFN 4",
   "A", "Parc Nacional d'Aiguestortes","Aiguestortes National Park","Parque Nacional de Aiguetortes",
   "S", "Matollar","Scrubland","Matorral",
