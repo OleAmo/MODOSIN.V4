@@ -99,6 +99,7 @@ tibble::tribble(
   'entorno_hidden','Nuclis Població / Àrea (Ha)','Population centers / Area (Ha)','Nucleos Pobalción / Area (Ha)',
   
   "plot_origin_label", 'Conjunt de Parcel·les', 'Set of Plots', 'Conjunto de Parcelas',
+  "PN", "Parcs Nacionals","Nationals Parks","Parques Nacionales",
   "P", "IFN 4", "NFI 4" ,"IFN 4",
   "A", "Parc Nacional d'Aiguestortes","Aiguestortes National Park","Parque Nacional de Aiguetortes",
   "S", "Matollar","Scrubland","Matorral",

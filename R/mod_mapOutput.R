@@ -196,7 +196,11 @@ mod_map <- function(
     
     
     origenSelected <- function(a) {
-      if (a == "P") {
+      if (a =="T") {
+        return(c("ifn","aiguestortes","matollar","ordesa") )
+      }  else if (a == "PN") {
+        return(c("aiguestortes","ordesa"))
+      } else if (a == "P") {
         return("ifn")
       } else if (a == "A") {
         return("aiguestortes")
@@ -204,9 +208,7 @@ mod_map <- function(
         return("matollar")
       } else if( a == "O"){
         return("ordesa")
-      }else {
-        return("tots")
-      }
+      }  
     }
     
     origen_selected <- origenSelected(origen)
@@ -251,7 +253,8 @@ mod_map <- function(
     #           .) Si ES T, no hace filtro y lo PROYECTA TODO
     
     data_filter <- data_day %>%
-      {if(origen_selected != "tots") dplyr::filter(., plot_origin == origen_selected ) else . } %>%
+     
+      dplyr::filter(.,plot_origin == origen_selected, !is.na(selected_var)) %>%
       dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
       dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
                     lat = sf::st_coordinates(.data$geometry)[,2])%>%
@@ -260,16 +263,64 @@ mod_map <- function(
 
     variable_valores <- round(data_filter[[2]], digits=2)
     
-    # print(paste("MAX = ",max(variable_valores, na.rm=T )))
-    # print(paste("MIN = ",min(variable_valores, na.rm=T )))
     
-    # print(variable_valores)
+    
+    
+    # ....... ELIMINAR NA del DATA FILTER ...........
+    # ...............................................
+    
+    #      .) No me sale
+    
+    
+    # mod <- lfcdata::modosin()
+    # modosin <- mod$get_data('data_day_fire_petita_2')
+    # 
+    # data_filter <- modosin %>%
+    # 
+    #   dplyr::filter(.,plot_origin == "ifn", date == as.Date('2022-01-15'), !is.na(DDS_q)  ) %>%
+    #   dplyr::select(plot_id, DDS_q, date, plot_origin, geometry) %>%
+    #   dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
+    #                 lat = sf::st_coordinates(.data$geometry)[,2])%>%
+    #   dplyr::filter(!is.na(lon) | !is.na(lat))
+    # 
+    # variable_valores <- round(data_filter[[2]], digits=2)
+    # 
+    # length(variable_valores)
+    # 
+    # data_filter %>% dplyr::filter(.,is.na(DDS_q)  )
+    # 
+    # x <- rep(10:55)
+    # 
+    # # Using rep() method
+    # gfg <- append(x, c(0,100), 1)
+    
+    
+    
+    
     
     
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
     
-    quantil <- function(variable) {
+    #      .) Hay dos paletas = PLOT y LEGEND
+    #      .) usamos reverse = FALSE/TRUE para alterar el orden de colores (plot y legend)
+    
+    #      .) La paleta de CUANTILES tienen que ser DIVERGENTE
+    #      .) Significa que:
+    #                  .) valor 100 = son valors SUPERIORES a los útlitmos 40 años
+    #                  .) valor  50 = son valors IGUALES a los útlitmos 40 años
+    #                  .) valor   0 = son valors INFERIORES a los útlitmos 40 años
+    
+    # ..... FUNCION QUANTIL ......
+    # .............................
+    
+    #      .) Esta funcion detecta si 
+    #      .) Una variable es QUANTIL o NO
+    #      .) Devuelver TRUE o FALSE
+    
+    
+    
+    is_quantil <- function(variable) {
       grepl('_', variable, fixed = TRUE)
     }
     
@@ -278,62 +329,14 @@ mod_map <- function(
     # "RdYlBu"
     
     
-    if (quantil(variable)) {
-      pal <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = FALSE)
+    if (is_quantil(variable)) {
+      pal_plot <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = FALSE)
+      pal_legend <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = TRUE)
     } else {
-      pal <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
+      pal_plot <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
+      pal_legend <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = FALSE)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # ....... PROVAR TEMA PALETAS VICTOR ...........
-    # ........................................
-    
-    #      .) ESOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-    #      .) ESOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-    
-
-    # palettes_dictionary <- list(
-    #   PET = list(min = 0, max = 15, pal = viridis::viridis(100), rev = TRUE),
-    #   Precipitation = list(min = 0, max = 100, pal = viridis::cividis(100), rev = TRUE),
-    #   REW = list(min = 0, max = 1, pal = viridis::plasma(100), rev = TRUE),
-    #   REW_q = list(min = 0, max = 1, pal = viridis::plasma(100), rev = TRUE),
-    #   DDS = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE),
-    #   DDS_q = list(min = 0, max = 1, pal = viridis::inferno(100), rev = TRUE),
-    #   LMFC = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
-    #   LMFC_q = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
-    #   
-    #   DMFC = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
-    #   SFP = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE),
-    #   CFP = list(min = 0, max = 365, pal = viridis::inferno(100), rev = TRUE)
-    #   
-    # )
-    # 
-    # legend_palette <- leaflet::colorNumeric(
-    #   palette = palettes_dictionary[[variable]][['pal']],
-    #   # domain = c(
-    #   #   palettes_dictionary[[var_daily]][['min']],
-    #   #   palettes_dictionary[[var_daily]][['max']]
-    #   # ),
-    #   domain = data_filter[[2]],
-    #   na.color = 'transparent',
-    #   reverse = !palettes_dictionary[[variable]][['rev']]
-    # )
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     # ......... FUNCION SIZE RADI ............
     # ........................................
     
@@ -428,7 +431,9 @@ mod_map <- function(
         if (a == "T") {
           leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7)
         } else if ( a == "P" ) {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8)
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8)   
+        } else if ( a == "PN" ) {
+          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=9.5)
         } else if ( a == "A") {
           leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12)
         } else if ( a == "S") {
@@ -452,8 +457,9 @@ mod_map <- function(
         
         if(origen == "T") {  return(all_polygons)
         } else if (origen == "A") { return(aiguestortes)
-        } else if (origen == "O") { return(ordesa )
-        } else if (origen == "P") { return(catalunya)
+        } else if (origen == "PN") { return(parques)
+        } else if (origen == "O") { return(ordesa)
+        } else if (origen == "P") { return(catalunya)  
         } else if (origen == "S") { return(provincias)
         }
         
@@ -497,7 +503,8 @@ mod_map <- function(
       # ........ PROYECCIÓN PLOTS  ........
       # ...................................
       
-   
+      
+
       set_view(origen) %>%
         leaflet::clearGroup('polygons') %>%
         leaflet::clearGroup('plots_layer') %>%
@@ -524,7 +531,7 @@ mod_map <- function(
             opacity= 0.8,
             fillOpacity= 0.6,
             radius= size_radi(origen),
-            color =  ~ pal(data_filter[[2]]),
+            color = ~ pal_plot(data_filter[[2]]),
             popup = popInfo,
             label = labels_plot,
             labelOptions =   labelOptions(interactive = TRUE)) %>%
@@ -533,10 +540,14 @@ mod_map <- function(
           leaflet::addLegend(
             position = "bottomright",
             title = translate_app(variable, lang_declared),
-            pal = pal,
-            # pal = legend_palette,
+            pal = pal_legend,
             values = data_filter[[2]],
-            labFormat = labelFormat(transform = function(x) sort(x, decreasing = FALSE)),
+            labFormat = labelFormat(transform = function(x) rev(x)),
+            # labFormat = ifelse((is_quantil(variable)),
+            #                    labelFormat(transform = function(x) (x)),
+            #                    labelFormat(transform = function(x) (x))
+            #                    
+            #                    ),  # sort(x, decreasing = FALSE)),
             opacity = 1)  
       
       

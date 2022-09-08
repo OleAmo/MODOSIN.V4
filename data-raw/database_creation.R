@@ -205,7 +205,6 @@ data_day_fire <- list.files("RDS", pattern="rds$") %>%
 
 
 
-
 # %%%%%%%%%%%%%%%%%%%%%   INSERTAR SF a BBDD   %%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -259,10 +258,8 @@ insert_data <- function(tabla){
 
 
 RPostgres::dbExecute(con, drop_table)
-insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 9.54 min / UAB = 2.49 min)  
+insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 5.7 min / UAB = 2.49 min)  
 RPostgres::dbExecute(con, vacuum_analyze)
-
-
 
 
 

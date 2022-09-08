@@ -22,7 +22,7 @@ parques <- sf::st_read("SHAPES/POLYGONS/all_polygons.shp") %>%
   sf::st_transform(4326)
 
 provincias <- all_polygons %>% dplyr::filter(Tipus == "PROV")  
-catalunya <- all_polygons %>% dplyr::filter(CCAA == "Cataluña")
+catalunya <- all_polygons %>% dplyr::filter(Cod_CCAA == "09")
 
 ordesa <- parques %>% dplyr::filter(Tipus == "OR")  
 aiguestortes <- parques %>% dplyr::filter(Tipus == "AT")  

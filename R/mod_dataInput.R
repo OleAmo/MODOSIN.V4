@@ -107,6 +107,7 @@ modosin_data <- function(
         ns('origen'), translate_app('plot_origin_label', lang_declared),
         shiny_set_names(c(
           "T"="T",
+          "PN"="PN",
           "P"="P", 
           "A"="A",
           "O"="O",
