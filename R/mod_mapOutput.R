@@ -41,7 +41,6 @@ mod_map <- function(
   
   library(sf)
 
-
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   # ---------------------------      OUTPUT MAP     ------------------------------
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,29 +112,14 @@ mod_map <- function(
     return(data_day)
   }
   
+  
   # ............. REACTIVE ZOMM ...................
   # ...............................................
   
   #   .) Calcula el ZOOM en todos los momentos
   #   .) Lo usaremos mas adelante
   
-  # mapzoom <- shiny::reactive ({
-  #   input$map_daily_zoom
-  # })
-  
-  # base_size <- shiny::reactive({
-  #   current_zoom <- input$nfi_map_zoom
-  #   if (current_zoom <= 7) {
-  #     current_zoom <- 7
-  #   }
-  #   if (current_zoom >= 10) {
-  #     current_zoom <- 10
-  #   }
-  #   
-  #   size_transformed <- 750 + ((10 - current_zoom) * 250)
-  #   
-  #   return(size_transformed)
-  # })
+
   
 
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -184,8 +168,6 @@ mod_map <- function(
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
     sf <- main_data_reactives$data_day
-    zoom <- map_reactives$map_daily_zoom
-  
  
     data_day <- table_create(fecha,sf)
     
@@ -346,9 +328,10 @@ mod_map <- function(
     size_radi = function(a){
 
         if (a == "T" | a == "P") {
-          return(3)
+          return(4)
         } else {
-          return(6)  
+          return(6)
+          
         } 
         
     }
@@ -466,6 +449,7 @@ mod_map <- function(
       }
       
       
+       
       # ............ CREACIÓN LABELS .................
       # ..............................................
       
@@ -495,8 +479,8 @@ mod_map <- function(
       #     .) SOLUCION
       #     .) https://github.com/rstudio/leaflet/issues/615
       
-      css_fix <- "div.info.legend.leaflet-control br {clear: both;}" # CSS to correct spacing
-      html_fix <- htmltools::tags$style(type = "text/css", css_fix)  # Convert CSS to HTML
+      # css_fix <- "div.info.legend.leaflet-control br {clear: both;}" # CSS to correct spacing
+      # html_fix <- htmltools::tags$style(type = "text/css", css_fix)  # Convert CSS to HTML
       # m %<>% htmlwidgets::prependContent(html_fix)                   # Insert into leaflet HTML code
       
       
@@ -512,43 +496,37 @@ mod_map <- function(
         leaflet::addPolygons(
           data = polygon_selected(origen),
           weight = 2,
+          opacity = 0.7,
           fillOpacity = 0,
-          color = "#bf021b",
+          color = "#bf021b", 
           group = "polygons",
           label = labels_poly,
-          highlightOptions = leaflet::highlightOptions(
-            color = "#CF000F", weight = 2,
-            bringToFront = FALSE,
-            fill = TRUE, fillOpacity = 0))  %>%
+          highlightOptions = leaflet::highlightOptions(bringToFront = FALSE) ) %>%
         
-          leaflet::addCircleMarkers(
-            data = data_filter,
-            group = 'plots_layer',
-            layerId = ~ plot_id,
-            lat = ~ lat,
-            lng = ~ lon,
-            weight= 1,
-            opacity= 0.8,
-            fillOpacity= 0.6,
-            radius= size_radi(origen),
-            color = ~ pal_plot(data_filter[[2]]),
-            popup = popInfo,
-            label = labels_plot,
-            labelOptions =   labelOptions(interactive = TRUE)) %>%
+        leaflet::addCircleMarkers(
+          data = data_filter,
+          group = 'plots_layer',
+          layerId = ~ plot_id,
+          lat = ~ lat,
+          lng = ~ lon,
+          weight= 1,
+          opacity= 0.8,
+          fillOpacity= 0.6,
+          radius= size_radi(origen),
+          # radius = base_size(),
+          color = ~ pal_plot(data_filter[[2]]),
+          popup = popInfo,
+          label = labels_plot,
+          labelOptions =   labelOptions(interactive = TRUE)) %>%
         
-          leaflet::clearControls() %>%
-          leaflet::addLegend(
-            position = "bottomright",
-            title = translate_app(variable, lang_declared),
-            pal = pal_legend,
-            values = data_filter[[2]],
-            labFormat = labelFormat(transform = function(x) rev(x)),
-            # labFormat = ifelse((is_quantil(variable)),
-            #                    labelFormat(transform = function(x) (x)),
-            #                    labelFormat(transform = function(x) (x))
-            #                    
-            #                    ),  # sort(x, decreasing = FALSE)),
-            opacity = 1)  
+        leaflet::clearControls() %>%
+        leaflet::addLegend(
+          position = "bottomright",
+          title = translate_app(variable, lang_declared),
+          pal = pal_legend,
+          values = data_filter[[2]],
+          labFormat = labelFormat(transform = function(x) rev(x)),
+          opacity = 1)  
       
       
       
@@ -611,9 +589,7 @@ mod_map <- function(
   
   map_reactives <- shiny::reactiveValues()
   shiny::observe({
-
     map_reactives$map_daily_marker_click <- input$map_daily_marker_click
-
   })
   return(map_reactives)
 
