@@ -158,7 +158,7 @@ mod_mainData <- function(
     
     shiny::validate(
       shiny::need(main_data_reactives$data_day, 'No data_day selected'),
-      shiny::need(map_reactives$map_daily_marker_click, 'No clicked')
+      shiny::need(map_reactives$map_daily_marker_click , 'No clicked')
     )
     
     # ......... INICIALIZAR DATOS ............
@@ -176,7 +176,7 @@ mod_mainData <- function(
     # ............ CLICK PLOT ID .............
     # ........................................
     
-    #      .) USAMOS = "map_reactives$map_daily_marker_click"
+    #      .) USAMOS = "map_reactives$map_daily_click"
     #      .) DECLARADO en los EVENTOS en MOD_MAPOUTPUT.R
     
     #      .) obtengo PLOT ID 
@@ -185,6 +185,8 @@ mod_mainData <- function(
     
     
     click_plot_id <- map_reactives$map_daily_marker_click$id
+    
+    print(click_plot_id)
     
     # .............. DATA DAY  ...............
     # ........................................

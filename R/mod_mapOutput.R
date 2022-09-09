@@ -119,7 +119,30 @@ mod_map <- function(
   #   .) Calcula el ZOOM en todos los momentos
   #   .) Lo usaremos mas adelante
   
-
+  base_size <- shiny::reactive({
+    
+    current_zoom <- input$map_daily_zoom
+    
+    if (current_zoom <= 7) { size_transformed <- 3
+      
+    } else if (current_zoom == 8) { size_transformed <- 8
+      
+    } else if (current_zoom >= 9) { size_transformed <- 10
+    
+    }
+    
+    return(size_transformed)
+  })
+  
+  
+  radi_builder <- shiny::reactive({
+    size_radi <- base_size()
+    
+    
+    return(list( size_radi = size_radi))
+  })
+  
+  
   
 
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -141,7 +164,7 @@ mod_map <- function(
   
   shiny::observe({
     
- 
+  
     
     # ......... INICIALIZAR DATOS ............
     # ........................................
@@ -168,6 +191,9 @@ mod_map <- function(
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
     sf <- main_data_reactives$data_day
+    
+    
+    # radi_builder <- radi_builder()
  
     data_day <- table_create(fecha,sf)
     
@@ -438,6 +464,13 @@ mod_map <- function(
       
       polygon_selected <- function(origen) {
         
+        # switch(
+        #   origen,
+        #   "T" = all_polygons,
+        #   "A" = aiguestortes,
+        # )
+        # 
+        
         if(origen == "T") {  return(all_polygons)
         } else if (origen == "A") { return(aiguestortes)
         } else if (origen == "PN") { return(parques)
@@ -506,16 +539,17 @@ mod_map <- function(
         leaflet::addCircleMarkers(
           data = data_filter,
           group = 'plots_layer',
-          layerId = ~ plot_id,
+          layerId =  ~ plot_id,
           lat = ~ lat,
           lng = ~ lon,
           weight= 1,
           opacity= 0.8,
           fillOpacity= 0.6,
-          radius= size_radi(origen),
+          radius = size_radi(origen),
+          # radius = radi_builder$size_radi,
           # radius = base_size(),
           color = ~ pal_plot(data_filter[[2]]),
-          popup = popInfo,
+          # popup = popInfo,
           label = labels_plot,
           labelOptions =   labelOptions(interactive = TRUE)) %>%
         
@@ -562,7 +596,6 @@ mod_map <- function(
   shiny::observeEvent(
     eventExpr = input$map_daily_marker_click,
     handlerExpr = {
-      # go to series tab
       shiny::updateTabsetPanel(
         parent_session, 'main_panel_tabset_plots',
         selected = 'series_panel'
@@ -590,6 +623,7 @@ mod_map <- function(
   map_reactives <- shiny::reactiveValues()
   shiny::observe({
     map_reactives$map_daily_marker_click <- input$map_daily_marker_click
+    
   })
   return(map_reactives)
 
