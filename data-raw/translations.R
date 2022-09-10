@@ -11,12 +11,11 @@ tibble::tribble(
   "REW_q", "Quantil Aigua extraïble relativa (%)", "Quantile Relative extractable water (%)", "Cuantil Agua extraible relativa (%)",
   "DDS", "Intensitat de l'estrès (%)", "Stress intensity (%)", "Intensidad del estrés (%)",
   "DDS_q", "Quantil Intensitat de l'estrès (%)", "Quantile Stress intensity (%)", "Cuantil Intensidad del estrés (%)",
-  "fire variables","Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
   "LFMC", "Contingut d’Humitat de Combustible Viu", "Live Fuel Moisture Contents","Contendio de Humedad de Combustible Vivo",
   "LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu", "Quantile Live Fuel Moisture Contents","Cuantil Contendio de Humedad de Combustible Vivo",
   "DFMC", "Contingut d’Humitat de Combustible Mort", "Dead Fuel Moisture Contents","Contendio de Humedad de Combustible Muerto",
-  "SFP","SFP","SFP","SFP",
-  "CFP","CFP","CFP","CFP",
+  "SFP","Potencial Foc de Superfície","Potential Surface Fire","Potencial Fuego de Superficie",
+  "CFP","Potencial Foc de Capçada","Potential Crown Fire","Potencial Fuego de Copa",
   
   
   
@@ -35,7 +34,7 @@ tibble::tribble(
   "Infiltration", "Infiltració (mm/dia)", "Infiltration (mm/day)", "Infiltración (mm/día)",
   "Interception", "Intercepció (mm/dia)", "Interception (mm/day)", "Intercepción (mm/día)",
   'Soil moisture', "Humitat del sòl", 'Soil moisture', "Humedad del suelo",
-  'Climate', "Clima", 'Climate', "Clima",
+  
   'Evaporative surface', "Superficie evaporativa", 'Evaporative surface', "Superficie evaporativa",
   'Water balance', "Balanç hídric", 'Water balance', "Balance hídrico",
   'Drought stress', "Estrès hídric", 'Drought stress', "Estrés hídrico",
@@ -52,6 +51,10 @@ tibble::tribble(
   
   #       .) Diferentes LABELS de la APP
   #       .) Son los ID de la función TRANSLATE_APP
+  
+  'climate variables', "Variables Climàtiques", 'Climatic Variables', "Variables Climaticas",
+  "fire variables","Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
+  'quantiles variables','Quantils','Quantiles','Cuantiles',
   
   "var_daily_label", 'Tria la variable', 'Choose variable', 'Elige la variable',
   "main_tab_translation", "Explora Parceles", "Plots Explore", "Explora Parcelas",
@@ -71,7 +74,7 @@ tibble::tribble(
   'Constante_label','Constant','Constant','Constante',
   'funcio_label','f(x) de la Variable','Variable Function','f(x) de la Variable',
   'Continua_label','Contínua','Continues','Continua',
-  'Quantil_label','Quantils','Quantiles','Cuantiles',
+  
   "sub_layer_label","----- Capes Principals ------","----- Main Layers -----------","----- Capas Principales -----",
   "sub_layer_label_2","----- Capa Epecial ----------",  "----- Special layer ---------","----- Capa Epecial ----------",
   
@@ -92,7 +95,7 @@ tibble::tribble(
   'Constante_label_polygon','Constant','Constant','Constante',
   'funcio_label_polygon','f(x) de la Variable','Variable Function','f(x) de la Variable',
   'Continua_label_polygon','Contínua','Continues','Continua',
-  'Quantil_label_polygon','Quantils','Quantiles','Cuantiles',
+  'quantiles_vars','Quantils','Quantiles','Cuantiles',
   "progress_plots", "Obtenció de les parcel·les", "Retrieving the Plots", "Obteniendo las parcelas",
   "progress_detail_plots", "Això pot trigar una mica", "This may take some time", "Esto puede llevar algo de tiempo",
   
@@ -115,6 +118,7 @@ tibble::tribble(
   'Provincia',"Provincia:", "Province:", "Provincia:",
   'Parque Nacional','Parc Nacional','National Park','Parque Nacional',
   'PLOT','Parcel·la', 'Plot', 'Parcela',
+  
  
   
   

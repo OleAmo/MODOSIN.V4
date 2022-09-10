@@ -63,13 +63,11 @@ modosin_data <- function(
     
 
 
-      climate_vars <- c("PET", "Precipitation") %>%
+      climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
         magrittr::set_names(translate_app(., lang_declared))
-      soil_moisture_vars <- c("REW","REW_q") %>%
+      fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
         magrittr::set_names(translate_app(., lang_declared))
-      drought_stress_vars <- c("DDS","DDS_q") %>%
-        magrittr::set_names(translate_app(., lang_declared))
-      fire_vars <- c("LFMC","LFMC_q","DFMC","SFP","CFP") %>%
+      quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
         magrittr::set_names(translate_app(., lang_declared))
       
       shiny::tagList(
@@ -80,10 +78,10 @@ modosin_data <- function(
       shiny::selectInput(
         ns('variable'), translate_app('var_daily_label', lang_declared),
         choices = shiny_set_names(list(
-          'Climate' = climate_vars,
-          'Soil moisture' = soil_moisture_vars,
-          'Drought stress' = drought_stress_vars,
-          'fire variables' = fire_vars), lang_declared)
+          'climate variables' = climate_vars,
+          'fire variables' = fire_vars,
+          'quantiles variables' = quantiles_vars
+          ), lang_declared)
         ),
 
       # ........ SELECCION FECHA ..........
