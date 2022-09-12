@@ -436,22 +436,19 @@ mod_map <- function(
       
       
       set_view <- function(a) {
-
-        if (a == "T") {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7)
-        } else if ( a == "P" ) {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8)   
-        } else if ( a == "PN" ) {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=9.5)
-        } else if ( a == "A") {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12)
-        } else if ( a == "S") {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8)
-        }  else if ( a == "O") {
-          leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
-        }                                                     
         
-      }
+        switch(a,
+               
+          "T" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
+          "P"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8),  
+          "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=9.5),
+          "A"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12),
+          "S"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8),
+          "O"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
+        )
+      }       
+               
+
       
       # ............ PROYECCIÓN POLIGONOS  ..........
       # ..............................................
@@ -464,21 +461,14 @@ mod_map <- function(
       
       polygon_selected <- function(origen) {
         
-        # switch(
-        #   origen,
-        #   "T" = all_polygons,
-        #   "A" = aiguestortes,
-        # )
-        # 
-        
-        if(origen == "T") {  return(all_polygons)
-        } else if (origen == "A") { return(aiguestortes)
-        } else if (origen == "PN") { return(parques)
-        } else if (origen == "O") { return(ordesa)
-        } else if (origen == "P") { return(catalunya)  
-        } else if (origen == "S") { return(provincias)
-        }
-        
+        switch(
+          origen,
+          "T" = all_polygons,
+          "A" = aiguestortes,
+          "PN" = parques,
+          "O" = ordesa,
+          "P" = catalunya, 
+          "S" = provincias )
       }
       
       
