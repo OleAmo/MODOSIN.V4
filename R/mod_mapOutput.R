@@ -204,23 +204,19 @@ mod_map <- function(
     
     
     origenSelected <- function(a) {
-      if (a =="T") {
-        return(c("ifn","aiguestortes","matollar","ordesa") )
-      }  else if (a == "PN") {
-        return(c("aiguestortes","ordesa"))
-      } else if (a == "P") {
-        return("ifn")
-      } else if (a == "A") {
-        return("aiguestortes")
-      } else if( a == "S"){
-        return("matollar")
-      } else if( a == "O"){
-        return("ordesa")
-      }  
+      
+      switch(a,
+              "T"  = c("ifn","aiguestortes","matollar","ordesa"),
+              "PN" = c("aiguestortes","ordesa"),
+              "P"  = "ifn",
+              "A"  = "aiguestortes",
+              "S"  = "matollar",
+              "O"  = "ordesa"
+            )
     }
-    
+
     origen_selected <- origenSelected(origen)
-    
+
     # ......... PROYECTAR TABLA ..............
     # ........................................
     
@@ -278,10 +274,7 @@ mod_map <- function(
     variable_valores_legend <- variable_valores[!is.na(variable_valores)]
      
     
-    # length(variable_valores)
-    # length(variable_valores_legend)
-    
-    
+
     # ....... ELIMINAR NA del DATA FILTER ...........
     # ...............................................
     
