@@ -123,36 +123,25 @@ mod_map <- function(
     
     current_zoom <- input$map_daily_zoom
     
-    if (current_zoom <= 5) { size_transformed <- 1 
+    if (current_zoom <= 5) { size_transformed <- 750 * 0.25
       
-    } else if (current_zoom == 6) { size_transformed <- 2
+    } else if (current_zoom == 6) { size_transformed <- 750 * 4 
     
-    } else if (current_zoom == 7) { size_transformed <- 3
+    } else if (current_zoom == 7) { size_transformed <- 750 * 4
     
-    } else if (current_zoom == 8) { size_transformed <- 4
+    } else if (current_zoom == 8) { size_transformed <- 750 * 2
     
-    } else if (current_zoom == 9) { size_transformed <- 5
+    } else if (current_zoom == 9) { size_transformed <- 750  
     
-    } else if (current_zoom == 10) { size_transformed <- 6
+    } else if (current_zoom == 10) { size_transformed <- 750 
     
-    } else if (current_zoom == 11) { size_transformed <- 7
+    } else if (current_zoom == 11) { size_transformed <- 750 * 0.6
     
-    } else if (current_zoom == 12) { size_transformed <- 8
+    } else if (current_zoom == 12) { size_transformed <- 750 * 0.3
     
-    } else if (current_zoom >= 13) { size_transformed <- 9
+    } else if (current_zoom >= 13) { size_transformed <- 750 * 0.3
     
     } 
-    
-    
-    
-    # if (current_zoom <= 7) { size_transformed <- 3
-    #   
-    # } else if (current_zoom == 8) { size_transformed <- 8
-    #   
-    # } else if (current_zoom >= 9) { size_transformed <- 10
-    # 
-    # }
-    # 
     
     
     
@@ -286,11 +275,10 @@ mod_map <- function(
     
     data_filter <- data_day %>%
      
-      dplyr::filter(.,plot_origin == origen_selected, !is.na(selected_var)) %>%
+      dplyr::filter(.,plot_origin == origen_selected) %>%
       dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
       dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
-                    lat = sf::st_coordinates(.data$geometry)[,2])%>%
-      dplyr::filter(!is.na(lon) | !is.na(lat))
+                    lat = sf::st_coordinates(.data$geometry)[,2]) 
     
 
     variable_valores <- round(data_filter[[2]], digits=2)
@@ -419,16 +407,15 @@ mod_map <- function(
       
       leaflet::leafletProxy('map_daily') %>%
       leaflet::clearGroup('plots_layer') %>%
-        leaflet::addCircleMarkers(
+        leaflet::addCircles(
           data = data_filter,
           group = 'plots_layer',
-          layerId =  ~ plot_id,
+          layerId = ~plot_id,
           lat = ~ lat,
           lng = ~ lon,
-          weight= 1,
+          weight= 0,
           opacity= 0.8,
           fillOpacity= 0.6,
-          # radius = 6,
           radius = radi,
           color = ~ pal_plot(data_filter[[2]]),
           label = labels_plot,
@@ -474,7 +461,7 @@ mod_map <- function(
 
    
   shiny::observeEvent(
-    eventExpr = input$map_daily_marker_click,
+    eventExpr = input$map_daily_shape_click,
     handlerExpr = {
       shiny::updateTabsetPanel(
         parent_session, 'main_panel_tabset_plots',
@@ -519,7 +506,6 @@ mod_map <- function(
                "O"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
         )
       }       
-      
       
       
       # ............ PROYECCIÓN POLIGONOS  ..........
@@ -577,8 +563,9 @@ mod_map <- function(
   
   map_reactives <- shiny::reactiveValues()
   shiny::observe({
-    map_reactives$map_daily_marker_click <- input$map_daily_marker_click
     
+    map_reactives$click_circle <- input$map_daily_shape_click
+                             
   })
   return(map_reactives)
 

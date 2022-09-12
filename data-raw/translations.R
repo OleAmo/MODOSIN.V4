@@ -11,11 +11,11 @@ tibble::tribble(
   "REW_q", "Quantil Aigua extraïble relativa (%)", "Quantile Relative extractable water (%)", "Cuantil Agua extraible relativa (%)",
   "DDS", "Intensitat de l'estrès (%)", "Stress intensity (%)", "Intensidad del estrés (%)",
   "DDS_q", "Quantil Intensitat de l'estrès (%)", "Quantile Stress intensity (%)", "Cuantil Intensidad del estrés (%)",
-  "LFMC", "Contingut d’Humitat de Combustible Viu", "Live Fuel Moisture Contents","Contendio de Humedad de Combustible Vivo",
-  "LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu", "Quantile Live Fuel Moisture Contents","Cuantil Contendio de Humedad de Combustible Vivo",
-  "DFMC", "Contingut d’Humitat de Combustible Mort", "Dead Fuel Moisture Contents","Contendio de Humedad de Combustible Muerto",
-  "SFP","Potencial Foc de Superfície","Potential Surface Fire","Potencial Fuego de Superficie",
-  "CFP","Potencial Foc de Capçada","Potential Crown Fire","Potencial Fuego de Copa",
+  "LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Vivo (%)",
+  "LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu (%)", "Quantile Live Fuel Moisture Contents (%)","Cuantil Contendio de Humedad de Combustible Vivo (%)",
+  "DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Muerto (%)",
+  "SFP","Potencial Foc de Superfície [0-9]","Potential Surface Fire [0-9]","Potencial Fuego de Superficie [0-9]",
+  "CFP","Potencial Foc de Capçada [0-9]","Potential Crown Fire [0-9]","Potencial Fuego de Copa [0-9]",
   
   
   

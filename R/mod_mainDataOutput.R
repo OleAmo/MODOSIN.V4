@@ -158,7 +158,7 @@ mod_mainData <- function(
     
     shiny::validate(
       shiny::need(main_data_reactives$data_day, 'No data_day selected'),
-      shiny::need(map_reactives$map_daily_marker_click , 'No clicked')
+      shiny::need(map_reactives$click_circle$id , 'No clicked Circle')
     )
     
     # ......... INICIALIZAR DATOS ............
@@ -176,16 +176,15 @@ mod_mainData <- function(
     # ............ CLICK PLOT ID .............
     # ........................................
     
-    #      .) USAMOS = "map_reactives$map_daily_click"
+    #      .) USAMOS = "map_reactives$click_circle"
     #      .) DECLARADO en los EVENTOS en MOD_MAPOUTPUT.R
     
     #      .) obtengo PLOT ID 
-    #      .) Declarado en LEAFLET ADDCircleMARKERS ( layerId = ~ plot_id)
+    #      .) Declarado en LEAFLET ADDCircle ( layerId = ~ plot_id)
     #      .) Usando $id
     
     
-    click_plot_id <- map_reactives$map_daily_marker_click$id
-    
+    click_plot_id <- map_reactives$click_circle$id
     
     # .............. DATA DAY  ...............
     # ........................................
