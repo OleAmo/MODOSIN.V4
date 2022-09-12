@@ -351,16 +351,16 @@ mod_map <- function(
     #     .) La usamos para que los plots se vean correctamentes
     #     .) En IFN y TODOS del radio tiene que ser menor
     
-    size_radi = function(a){
-
-        if (a == "T" | a == "P") {
-          return(4)
-        } else {
-          return(6)
-          
-        } 
-        
-    }
+    # size_radi = function(a){
+    # 
+    #     if (a == "T" | a == "P") {
+    #       return(4)
+    #     } else {
+    #       return(6)
+    #       
+    #     } 
+    #     
+    # }
       
  
     
@@ -493,11 +493,6 @@ mod_map <- function(
       #              .) CADA % indica un value ( s = string, g = double precision,...)
       #              .) El ORDEN de declarar values es el ORDEN de APARICION
       
-      poly <- polygon_selected(origen)
-      
-      labels_poly <- sprintf( "<strong>%s</strong><br/>%s ",
-                         translate_app( poly$Descrip,lang_declared), poly$name ) %>% lapply(htmltools::HTML)
-      
                          
       labels_plot <- sprintf( "<strong>%s</strong><br/> %s <br/> %s = %g ",
                           translate_app("PLOT",lang_declared),
@@ -532,9 +527,7 @@ mod_map <- function(
           opacity = 0.7,
           fillOpacity = 0,
           color = "#bf021b", 
-          group = "polygons",
-          label = labels_poly,
-          highlightOptions = leaflet::highlightOptions(bringToFront = FALSE) ) %>%
+          group = "polygons") %>%
         
         leaflet::addCircleMarkers(
           data = data_filter,
@@ -545,7 +538,7 @@ mod_map <- function(
           weight= 1,
           opacity= 0.8,
           fillOpacity= 0.6,
-          radius = size_radi(origen),
+          radius = 6,
           # radius = radi_builder$size_radi,
           # radius = base_size(),
           color = ~ pal_plot(data_filter[[2]]),

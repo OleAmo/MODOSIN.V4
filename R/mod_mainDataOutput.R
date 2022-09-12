@@ -186,7 +186,6 @@ mod_mainData <- function(
     
     click_plot_id <- map_reactives$map_daily_marker_click$id
     
-    print(click_plot_id)
     
     # .............. DATA DAY  ...............
     # ........................................
