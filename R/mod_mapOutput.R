@@ -77,7 +77,7 @@ mod_map <- function(
   })
   
   
-  
+ 
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   # ---------------------------      REACTIVE    --------------------------------
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -94,34 +94,16 @@ mod_map <- function(
   #               .) Indicamos en que casos la proyectamos
   
   
-  
-  # ............. CREATE DATA_DAY .................
-  # ...............................................
-  
-  #   .) DATA DAY son los PLOTS de SOLO UNA FECHA
-  #   .) ARGUMENTOS:
-  #             .) FECHA
-  #             .) SF = Creado por MODOSINDB
-  
-  
-  table_create = function(fecha, sf){
-    fecha_format <- as.Date(fecha)
-    data_day <- sf %>%
-      data.frame() %>%
-      dplyr::filter(date == fecha_format)
-    return(data_day)
-  }
-  
-  
   # ............. REACTIVE ZOMM ...................
   # ...............................................
   
   #   .) Calcula el ZOOM en todos los momentos
   #   .) Lo usaremos mas adelante
   
-  base_size <- shiny::reactive({
+  radi_size <- shiny::reactive({
     
     current_zoom <- input$map_daily_zoom
+    
     
     if (current_zoom <= 5) { size_transformed <- 750 * 0.25
       
@@ -142,20 +124,10 @@ mod_map <- function(
     } else if (current_zoom >= 13) { size_transformed <- 750 * 0.3
     
     } 
-    
-    
+  
     
     return(size_transformed)
   })
-  
-  
-  data_builder <- shiny::reactive({
-    size_radi <- base_size()
-    
-    
-    return(list( size_radi = size_radi))
-  })
-  
   
   
 
@@ -186,11 +158,7 @@ mod_map <- function(
     #      .) VARIABLE:
     #            .) Es la variable a PROYECTAR
     #            .) La obtenemos del REACTIVE constante => MOD_DATAINPUT
-    #      .) DATA DAY:
-    #            .) Uso la funcion TABLE_CREATE
-    #            .) Necesito la FECHA = data_reactives$fecha_reactive
-    #            .) Necesito el SF    = main_data_reactives$data_day
-    #            .) Necesito el ORIGEN, VARIABLE, DIVISION
+    
     
     #       .) VALIDAMOS la FECHA
     #               .) Significa que SHINY antes de CONTINUAR espera a tener valor de FECHA
@@ -206,18 +174,36 @@ mod_map <- function(
     variable <- data_reactives$variable_reactive
     sf <- main_data_reactives$data_day
     
-    
-    radi_builder <- data_builder()
-    radi <- radi_builder$size_radi
+    radi <- radi_size()
     
     print(paste0('ZOOM = ',input$map_daily_zoom,' / RADI = ',radi))
     
+    # ............. CREATE DATA_DAY .................
+    # ...............................................
+    
+    #   .) DATA DAY son los PLOTS de SOLO UNA FECHA
+    #   .) Creamos una función para crearla
+    #   .) ARGUMENTOS:
+    #             .) FECHA = data_reactives$fecha_reactive
+    #             .) SF    = main_data_reactives$data_day
+    
+    
+    table_create = function(fecha, sf){
+      fecha_format <- as.Date(fecha)
+      data_day <- sf %>%
+        data.frame() %>%
+        dplyr::filter(date == fecha_format)
+      return(data_day)
+    }
+    
     data_day <- table_create(fecha,sf)
     
-    #      .) PLOT ORIGEN
-    #      .) Para definir el Plot_origen selccionado
-    #      .) Usamos el ORIGEN del COMBO
-    #      .) Y lo "traducimos" al string que usa el data_day_fire
+    # ............. PLOT ORIGEN .................
+    # ...............................................
+    
+    #   .) Para OBTENER el PLOT_ORIGIN seccionado
+    #   .) Usamos el ORIGEN del COMBO
+    #   .) Y lo "traducimos" al string que usa el DATA_DAY_FILTER
     
     
     origenSelected <- function(a) {
