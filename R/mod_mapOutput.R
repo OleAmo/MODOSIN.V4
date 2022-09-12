@@ -271,7 +271,15 @@ mod_map <- function(
 
     variable_valores <- round(data_filter[[2]], digits=2)
     
+    #      .) ELIMINAMOS los NA de la LEYENDA
+    #      .) Sino visualmente se complica
+    #      .) Y se tendría que vanviar el CSS de la Leyenda
     
+    variable_valores_legend <- variable_valores[!is.na(variable_valores)]
+     
+    
+    # length(variable_valores)
+    # length(variable_valores_legend)
     
     
     # ....... ELIMINAR NA del DATA FILTER ...........
@@ -529,24 +537,19 @@ mod_map <- function(
           opacity= 0.8,
           fillOpacity= 0.6,
           radius = 6,
-          # radius = radi_builder$size_radi,
-          # radius = base_size(),
           color = ~ pal_plot(data_filter[[2]]),
-          # popup = popInfo,
           label = labels_plot,
-          labelOptions =   labelOptions(interactive = TRUE)) %>%
+          labelOptions = labelOptions(interactive = TRUE)) %>%
         
         leaflet::clearControls() %>%
         leaflet::addLegend(
           position = "bottomright",
           title = translate_app(variable, lang_declared),
           pal = pal_legend,
-          values = data_filter[[2]],
+          values = variable_valores_legend,
           labFormat = labelFormat(transform = function(x) rev(x)),
           opacity = 1)  
-      
-      
-      
+   
     
 })
   
