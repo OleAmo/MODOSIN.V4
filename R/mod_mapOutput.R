@@ -123,19 +123,44 @@ mod_map <- function(
     
     current_zoom <- input$map_daily_zoom
     
-    if (current_zoom <= 7) { size_transformed <- 3
+    if (current_zoom <= 5) { size_transformed <- 1 
       
-    } else if (current_zoom == 8) { size_transformed <- 8
-      
-    } else if (current_zoom >= 9) { size_transformed <- 10
+    } else if (current_zoom == 6) { size_transformed <- 2
     
-    }
+    } else if (current_zoom == 7) { size_transformed <- 3
+    
+    } else if (current_zoom == 8) { size_transformed <- 4
+    
+    } else if (current_zoom == 9) { size_transformed <- 5
+    
+    } else if (current_zoom == 10) { size_transformed <- 6
+    
+    } else if (current_zoom == 11) { size_transformed <- 7
+    
+    } else if (current_zoom == 12) { size_transformed <- 8
+    
+    } else if (current_zoom >= 13) { size_transformed <- 9
+    
+    } 
+    
+    
+    
+    # if (current_zoom <= 7) { size_transformed <- 3
+    #   
+    # } else if (current_zoom == 8) { size_transformed <- 8
+    #   
+    # } else if (current_zoom >= 9) { size_transformed <- 10
+    # 
+    # }
+    # 
+    
+    
     
     return(size_transformed)
   })
   
   
-  radi_builder <- shiny::reactive({
+  data_builder <- shiny::reactive({
     size_radi <- base_size()
     
     
@@ -193,8 +218,11 @@ mod_map <- function(
     sf <- main_data_reactives$data_day
     
     
-    # radi_builder <- radi_builder()
- 
+    radi_builder <- data_builder()
+    radi <- radi_builder$size_radi
+    
+    print(paste0('ZOOM = ',input$map_daily_zoom,' / RADI = ',radi))
+    
     data_day <- table_create(fecha,sf)
     
     #      .) PLOT ORIGEN
@@ -275,39 +303,6 @@ mod_map <- function(
      
     
 
-    # ....... ELIMINAR NA del DATA FILTER ...........
-    # ...............................................
-    
-    #      .) No me sale
-    
-    
-    # mod <- lfcdata::modosin()
-    # modosin <- mod$get_data('data_day_fire_petita_2')
-    # 
-    # data_filter <- modosin %>%
-    # 
-    #   dplyr::filter(.,plot_origin == "ifn", date == as.Date('2022-01-15'), !is.na(DDS_q)  ) %>%
-    #   dplyr::select(plot_id, DDS_q, date, plot_origin, geometry) %>%
-    #   dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
-    #                 lat = sf::st_coordinates(.data$geometry)[,2])%>%
-    #   dplyr::filter(!is.na(lon) | !is.na(lat))
-    # 
-    # variable_valores <- round(data_filter[[2]], digits=2)
-    # 
-    # length(variable_valores)
-    # 
-    # data_filter %>% dplyr::filter(.,is.na(DDS_q)  )
-    # 
-    # x <- rep(10:55)
-    # 
-    # # Using rep() method
-    # gfg <- append(x, c(0,100), 1)
-    
-    
-    
-    
-    
-    
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
     
@@ -346,33 +341,6 @@ mod_map <- function(
       pal_legend <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = FALSE)
     }
   
-    # ......... FUNCION SIZE RADI ............
-    # ........................................
-    
-    #     .) La usamos para que los plots se vean correctamentes
-    #     .) En IFN y TODOS del radio tiene que ser menor
-    
-    # size_radi = function(a){
-    # 
-    #     if (a == "T" | a == "P") {
-    #       return(4)
-    #     } else {
-    #       return(6)
-    #       
-    #     } 
-    #     
-    # }
-      
- 
-    
-    # .... PROBLEM  ...........
-    # ........................
-    
-    #      .) with NA Values
-    #      .) Shiny se BLOQUEA (peta)
-    #      .) https://github.com/rstudio/leaflet/issues/615
-    
-    
     # ............... POP UP  ................
     # ........................................
     
@@ -425,52 +393,7 @@ mod_map <- function(
     #     .) Proyecte en función del tipo de Plot
     #     .) Si es NO PLOT
     #     .) Borra todos los Plots
-    
   
-      
-      # ........... ZOOM PLOTS  ...........
-      # ...................................
-      
-      #     .) Creamos f(x) SET_VIEW
-      #     .) Dentro en funcion de ORIGEN
-      #     .) Setearemos uno o otro zoom
-      
-      
-      set_view <- function(a) {
-        
-        switch(a,
-               
-          "T" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
-          "P"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8),  
-          "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=9.5),
-          "A"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12),
-          "S"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8),
-          "O"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
-        )
-      }       
-               
-
-      
-      # ............ PROYECCIÓN POLIGONOS  ..........
-      # ..............................................
-      
-      
-      #     .) Proyecta en función del tipo de ORIGEN
-      #     .) FUNCIÓN DIVSION SELECT
-      #              .) En función del COMBO ORIGEN 
-      #              .) Proyectara uno o otro SF (Shapes)
-      
-      polygon_selected <- function(origen) {
-        
-        switch(
-          origen,
-          "T" = all_polygons,
-          "A" = aiguestortes,
-          "PN" = parques,
-          "O" = ordesa,
-          "P" = catalunya, 
-          "S" = provincias )
-      }
       
       
        
@@ -490,36 +413,12 @@ mod_map <- function(
                           data_filter$plot_id, variable, variable_valores) %>% lapply(htmltools::HTML)
       
      
-      # ........... LEYENDA NA PROBLEMA  .............
-      # ..............................................
-      
-      #     .) El valor NA en la LEYENDA da  problemas
-      #     .) Queda mal colocado
-      #     .) SOLUCION
-      #     .) https://github.com/rstudio/leaflet/issues/615
-      
-      # css_fix <- "div.info.legend.leaflet-control br {clear: both;}" # CSS to correct spacing
-      # html_fix <- htmltools::tags$style(type = "text/css", css_fix)  # Convert CSS to HTML
-      # m %<>% htmlwidgets::prependContent(html_fix)                   # Insert into leaflet HTML code
-      
-      
       # ........ PROYECCIÓN PLOTS  ........
       # ...................................
       
       
-
-      set_view(origen) %>%
-        leaflet::clearGroup('polygons') %>%
-        leaflet::clearGroup('plots_layer') %>%
-        
-        leaflet::addPolygons(
-          data = polygon_selected(origen),
-          weight = 2,
-          opacity = 0.7,
-          fillOpacity = 0,
-          color = "#bf021b", 
-          group = "polygons") %>%
-        
+      leaflet::leafletProxy('map_daily') %>%
+      leaflet::clearGroup('plots_layer') %>%
         leaflet::addCircleMarkers(
           data = data_filter,
           group = 'plots_layer',
@@ -529,11 +428,12 @@ mod_map <- function(
           weight= 1,
           opacity= 0.8,
           fillOpacity= 0.6,
-          radius = 6,
+          # radius = 6,
+          radius = radi,
           color = ~ pal_plot(data_filter[[2]]),
           label = labels_plot,
           labelOptions = labelOptions(interactive = TRUE)) %>%
-        
+
         leaflet::clearControls() %>%
         leaflet::addLegend(
           position = "bottomright",
@@ -541,9 +441,10 @@ mod_map <- function(
           pal = pal_legend,
           values = variable_valores_legend,
           labFormat = labelFormat(transform = function(x) rev(x)),
-          opacity = 1)  
-   
-    
+          opacity = 1)
+      
+
+      
 })
   
  
@@ -554,8 +455,8 @@ mod_map <- function(
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
   
-  # ............... CLIK MAPA ..............
-  # ........................................
+  # =============== CLIK MAPA ==============
+  # ========================================
   
   #     .) CLICK MAPA
   #     .) Cada vez que hacemos CLICK obtenemos:
@@ -582,6 +483,81 @@ mod_map <- function(
     },
     priority = 1000
   )
+  
+  
+  # ============= ZOOM POLIGONS ============
+  # ========================================
+  
+  #     .) Dependiendo de la selección del COMOBO ORIGEN
+  #     .) Haremos un ZOOM a uno o otro polígono
+  #       
+  
+  
+  shiny::observeEvent(
+    eventExpr = data_reactives$origen_reactive,
+    handlerExpr = {
+      
+      origen <- data_reactives$origen_reactive
+      
+      # .......... ZOOM POLIGONS ..........
+      # ...................................
+      
+      #     .) Creamos f(x) SET_VIEW
+      #     .) Dentro en funcion de ORIGEN
+      #     .) Setearemos uno o otro zoom
+      
+      
+      set_view <- function(a) {
+        
+        switch(a,
+               
+               "T" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
+               "P"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8),  
+               "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=10),
+               "A"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12),
+               "S"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8),
+               "O"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
+        )
+      }       
+      
+      
+      
+      # ............ PROYECCIÓN POLIGONOS  ..........
+      # ..............................................
+      
+      
+      #     .) Proyecta en función del tipo de ORIGEN
+      #     .) FUNCIÓN DIVSION SELECT
+      #              .) En función del COMBO ORIGEN 
+      #              .) Proyectara uno o otro SF (Shapes)
+      
+      polygon_selected <- function(origen) {
+        
+        switch(
+          origen,
+          "T" = all_polygons,
+          "A" = aiguestortes,
+          "PN" = parques,
+          "O" = ordesa,
+          "P" = catalunya, 
+          "S" = provincias )
+      }
+      
+      
+      set_view(origen) %>%
+        leaflet::clearGroup('polygons') %>%
+        leaflet::addPolygons(
+          data = polygon_selected(origen),
+          weight = 2,
+          opacity = 0.7,
+          fillOpacity = 0,
+          color = "#bf021b", 
+          group = "polygons")
+      
+    },
+    priority = 1000
+  )
+  
   
 
 
