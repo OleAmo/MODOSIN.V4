@@ -100,28 +100,45 @@ mod_map <- function(
   #   .) Calcula el ZOOM en todos los momentos
   #   .) Lo usaremos mas adelante
   
+  
   radi_size <- shiny::reactive({
     
     current_zoom <- input$map_daily_zoom
     
+    #   .) MATOLLAR
+    #            .) ORIGEN = "S"
+    #            .) Hay pocas parcelas en un gran extension
+    #            .) Por eso el TAMAÑO para cada zoom serà el doble que el estandard
     
-    if (current_zoom <= 5) { size_transformed <- 750 * 0.25
+    shiny::validate( 
+      shiny::need(data_reactives$origen_reactive, 'no origen selected') 
+    )
+    
+    origen <- data_reactives$origen_reactive 
+    
+    ifelse(origen == "S", n <- 2,n <- 1)
+    
+    #   .) ZOOM ESTANDARD
+    #            .) En f(x) del zoom
+    #            .) Aplicamos un tamaño
+    
+    if (current_zoom <= 5) { size_transformed <- 750 * 0.25 * n
       
-    } else if (current_zoom == 6) { size_transformed <- 750 * 4 
+    } else if (current_zoom == 6) { size_transformed <- 750 * 4 * n 
     
-    } else if (current_zoom == 7) { size_transformed <- 750 * 4
+    } else if (current_zoom == 7) { size_transformed <- 750 * 4 * n
     
-    } else if (current_zoom == 8) { size_transformed <- 750 * 2
+    } else if (current_zoom == 8) { size_transformed <- 750 * 2 * n
     
-    } else if (current_zoom == 9) { size_transformed <- 750  
+    } else if (current_zoom == 9) { size_transformed <- 750 * n  
     
-    } else if (current_zoom == 10) { size_transformed <- 750 
+    } else if (current_zoom == 10) { size_transformed <- 750 * n 
     
-    } else if (current_zoom == 11) { size_transformed <- 750 * 0.6
+    } else if (current_zoom == 11) { size_transformed <- 750 * 0.6 * n 
     
-    } else if (current_zoom == 12) { size_transformed <- 750 * 0.3
+    } else if (current_zoom == 12) { size_transformed <- 750 * 0.3 * n
     
-    } else if (current_zoom >= 13) { size_transformed <- 750 * 0.3
+    } else if (current_zoom >= 13) { size_transformed <- 750 * 0.3 * n
     
     } 
   
@@ -520,10 +537,10 @@ mod_map <- function(
         leaflet::clearGroup('polygons') %>%
         leaflet::addPolygons(
           data = polygon_selected(origen),
-          weight = 2,
-          opacity = 0.7,
+          weight = 1,
+          opacity = 0.5,
           fillOpacity = 0,
-          color = "#bf021b", 
+          color = "#65656e", 
           group = "polygons")
       
     },
