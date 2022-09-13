@@ -532,15 +532,41 @@ mod_map <- function(
           "S" = provincias )
       }
       
+      # ............ STYLES POLIGONOS  ..........
+      # ..............................................
+      
+      
+      #     .) En funcion de PARQUES NACIONALE o NO
+      #     .) Tendremos uno o otro style
+      
+      color_polygon <- function(origen){
+        
+        if(origen == "A" | origen == "PN" | origen == "O"){ return("#c41606") } 
+        else { return("#65656e")  }
+      }
+      
+      opacity_polygon <- function(origen){
+        
+        if(origen == "A" | origen == "PN" | origen == "O"){ return(1) } 
+        else { return(0.5)  }
+      }
+      
+      weight_polygon <- function(origen){
+        
+        if(origen == "A" | origen == "PN" | origen == "O"){ return(1.5) } 
+        else { return(1)  }
+      }
+      
+      
       
       set_view(origen) %>%
         leaflet::clearGroup('polygons') %>%
         leaflet::addPolygons(
           data = polygon_selected(origen),
-          weight = 1,
-          opacity = 0.5,
+          weight = weight_polygon(origen),
+          opacity = opacity_polygon(origen),
           fillOpacity = 0,
-          color = "#65656e", 
+          color = color_polygon(origen), 
           group = "polygons")
       
     },

@@ -91,10 +91,16 @@ modosin_data <- function(
         ns("fecha"), translate_app('date_daily_label', lang_declared),
         value = "2022-1-15",
         format = "yyyy/mm/dd",
-        # max = '2022-03-25',
-        # min = '2022-01-01'
-        max = '2022-08-22',
-        min = '2021-08-23'
+        
+        # DATA DAY = petita_2
+        max = '2022-02-06',
+        min = '2022-01-01'
+        
+        # DATA DAY = datay_day_fire
+         # min = '2021-09-02', # Sys.Date() -364
+         # max = '2022-09-01' # Sys.Date() -1
+        
+       
       ),
       
       
