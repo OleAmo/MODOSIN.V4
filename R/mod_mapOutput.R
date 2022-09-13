@@ -190,6 +190,7 @@ mod_map <- function(
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
     sf <- main_data_reactives$data_day
+    legend_type <- data_reactives$legend_reactive  
     
     radi <- radi_size()
     
@@ -331,6 +332,122 @@ mod_map <- function(
       pal_plot <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
       pal_legend <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = FALSE)
     }
+    
+    
+    
+    
+    
+    # ...... PALETA DE COLORES QUANTIL .......
+    # ........................................
+    
+    #       .) Para hacer los QUANTILES
+    #       .) NECESSITAMOS: Valores Únicos de la variable (TODOS PLOTS)
+    #                .) DF_UNIQUE <-data_filter[[2]] %>% unique()
+    
+    # .ATENCIÓN:
+    
+    #       .) Si una variable tiene SIEMPRE el MISMO VALOR
+    #       .) Ejemplo DDS = (0, 0, 0, 0, ....0)
+    #       .) Tenemos que corregir para que no se bloqueo el LEAFLET
+    #                .) DF_UNIQUE = Le damos 5 valores
+    #                .) Así el QPAL_LABS = Crearà las etiquetas correctas
+    
+    
+    # modosindb <- lfcdata::modosin()
+    # data_day <- modosindb$get_data('data_day_fire_petita_2')
+    # 
+    # variable <- "REW_q"
+    # fecha <- "2022-1-15"
+    # origen_selected <- "ifn"
+    # 
+    # num_i <- as.numeric(match(variable,names(data_day)))
+    # selected_var <- as.symbol(names(data_day)[num_i])
+    # 
+    # data_filter <- data_day %>%
+    # 
+    #   dplyr::filter(.,plot_origin == origen_selected, date == fecha) %>%
+    #   dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
+    #   dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
+    #                 lat = sf::st_coordinates(.data$geometry)[,2])
+    # 
+    # 
+    # variable_valores <- round(data_filter[[2]], digits=2)
+    
+    val <- data_filter[[2]]
+    value <- val[!is.na(val)]  # eliminamos los NA
+    
+    max <- max(value) 
+    min <- min(value)
+    
+    if(    max ==  min  ) {
+      df_unique <- sort(c(max, max+0.011, max+0.012, max+0.013, max+0.014))
+    } else {
+      df_unique <- value  %>% unique()
+    }
+    
+    #       .) Creamos Función COLORQUANTILE
+    #       .) QPAL = Le indicamos:
+    #                .) PALETA ("RdYlBu")
+    #                .) DATOS (únicos)
+    #                .) N = numero de breaks
+    #       .) QPAL_COLORS = Usando la función nos da COLORES para cada BREAK
+    #       .) QPAL_LABS 1 = para cada break indicamos los valores
+    #       .) QPAL_LABS 2 = creamos el RANGO escrito
+    
+    
+    qpal <- leaflet::colorQuantile("RdYlBu", df_unique, n = 5)    # Función COLORQUANTILE
+    qpal_colors <- unique(qpal(sort(df_unique)))         # Colores para cada BRAKE
+    qpal_labs <- quantile(round(df_unique, digits = 2), seq(0, 1, .2)) # Valores para cada Break
+    
+    #       .) Aparte CREAMOS el Rango de Break (20%, 40%,...)
+    #       .) Y lo unimos con PASTE = VEC + QPAL_LABS 
+    
+    vec <- c()
+    long <- length(qpal_labs)
+    
+    # Crear VECTOR con cada break (20% 40% ...)
+    for (i in 1:long) {          
+      n <- names(qpal_labs[i])
+      vec <- append(vec, n)
+    }
+    
+    # creamos el Rango Escrito (inicial)
+    qpal_labs <- paste(lag(qpal_labs), round(qpal_labs,digits = 2), sep = " - ")[-1]
+    
+    
+    # creamos el Rango Escrito (FINAL) = QPAL_LABS + VEC + QCOLORS
+    long <- length(vec)          
+    for (i in 2:long) {
+      qpal_labs[[i-1]] <- paste('[',vec[i],'] ',qpal_labs[[i-1]])
+      
+    }
+    
+    
+    # ........... EJEMPLO CUANTIL ............
+    # ........................................
+    
+    #       .) Para la LEYENDA nos hace falta
+    #       .) QPAL_COLORS (  colores que saldran en la leyenda)
+    #       .) QPAL_LABELS ( % y Rango de Valores de la leyenda)
+    
+    
+    #       QPAL_COLORS:
+    #       [1] "#D7191C" "#FDAE61" "#FFFFBF" "#ABD9E9" "#2C7BB6"
+    
+    #       VEC:
+    #       [1] "0%"   "20%"  "40%"  "60%"  "80%"  "100%"
+    
+    #       QPAL_LABS:
+    #       [1] "0.27 - 0.27" "0.29 - 0.29" "0.3 - 0.3"   "0.32 - 0.32" "0.37 - 0.37"
+    
+    #       QPAL_LABS (unido):
+    #       [1] "[ 20% ]  0.27 - 0.27"  "[ 40% ]  0.29 - 0.29"  "[ 60% ]  0.3 - 0.3"   
+    #       [4] "[ 80% ]  0.32 - 0.32"  "[ 100% ]  0.37 - 0.37"
+    
+    
+    
+    
+    
   
     # ............... POP UP  ................
     # ........................................
@@ -408,31 +525,119 @@ mod_map <- function(
       # ...................................
       
       
-      leaflet::leafletProxy('map_daily') %>%
-      leaflet::clearGroup('plots_layer') %>%
-        leaflet::addCircles(
-          data = data_filter,
-          group = 'plots_layer',
-          layerId = ~plot_id,
-          lat = ~ lat,
-          lng = ~ lon,
-          weight= 0,
-          opacity= 0.8,
-          fillOpacity= 0.6,
-          radius = radi,
-          color = ~ pal_plot(data_filter[[2]]),
-          label = labels_plot,
-          labelOptions = labelOptions(interactive = TRUE)) %>%
-
-        leaflet::clearControls() %>%
-        leaflet::addLegend(
-          position = "bottomright",
-          title = translate_app(variable, lang_declared),
-          pal = pal_legend,
-          values = variable_valores_legend,
-          labFormat = labelFormat(transform = function(x) rev(x)),
-          opacity = 1)
       
+      
+     if (legend_type == "estandar") {
+       
+       leaflet::leafletProxy('map_daily') %>%
+         leaflet::clearGroup('plots_layer') %>%
+         leaflet::addCircles(
+           data = data_filter,
+           group = 'plots_layer',
+           layerId = ~plot_id,
+           lat = ~ lat,
+           lng = ~ lon,
+           weight= 0,
+           opacity= 0.8,
+           fillOpacity= 0.6,
+           radius = radi,
+           color = ~ pal_plot(data_filter[[2]]),
+           # color =  ~ qpal(data_filter[[2]]),
+           label = labels_plot,
+           labelOptions = labelOptions(interactive = TRUE)) %>%
+         
+         leaflet::clearControls() %>%
+         leaflet::addLegend(
+           position = "bottomright",
+           title = translate_app(variable, lang_declared),
+           
+           pal = pal_legend,
+           values = variable_valores_legend,
+           labFormat = labelFormat(transform = function(x) rev(x)),
+           
+           
+           # colors = qpal_colors,
+           # labels = qpal_labs,
+           
+           
+           opacity = 1)
+       
+       
+     } else {
+       
+       leaflet::leafletProxy('map_daily') %>%
+         leaflet::clearGroup('plots_layer') %>%
+         leaflet::addCircles(
+           data = data_filter,
+           group = 'plots_layer',
+           layerId = ~plot_id,
+           lat = ~ lat,
+           lng = ~ lon,
+           weight= 0,
+           opacity= 0.8,
+           fillOpacity= 0.6,
+           radius = radi,
+           # color = ~ pal_plot(data_filter[[2]]),
+           color =  ~ qpal(data_filter[[2]]),
+           label = labels_plot,
+           labelOptions = labelOptions(interactive = TRUE)) %>%
+         
+         leaflet::clearControls() %>%
+         leaflet::addLegend(
+           position = "bottomright",
+           title = translate_app(variable, lang_declared),
+           
+           # pal = pal_legend,
+           # values = variable_valores_legend,
+           # labFormat = labelFormat(transform = function(x) rev(x)),
+           
+           
+           colors = qpal_colors,
+           labels = qpal_labs,
+           
+           
+           opacity = 1)
+       
+       
+     }
+      
+      
+      # leaflet::leafletProxy('map_daily') %>%
+      # leaflet::clearGroup('plots_layer') %>%
+      #   leaflet::addCircles(
+      #     data = data_filter,
+      #     group = 'plots_layer',
+      #     layerId = ~plot_id,
+      #     lat = ~ lat,
+      #     lng = ~ lon,
+      #     weight= 0,
+      #     opacity= 0.8,
+      #     fillOpacity= 0.6,
+      #     radius = radi,
+      #     # color = ~ pal_plot(data_filter[[2]]),
+      #     color =  ~ qpal(data_filter[[2]]),
+      #     label = labels_plot,
+      #     labelOptions = labelOptions(interactive = TRUE)) %>%
+      # 
+      #   leaflet::clearControls() %>%
+      #   leaflet::addLegend(
+      #     position = "bottomright",
+      #     title = translate_app(variable, lang_declared),
+      #     
+      #     # pal = pal_legend,
+      #     # values = variable_valores_legend,
+      #     # labFormat = labelFormat(transform = function(x) rev(x)),
+      #     
+      #     
+      #     colors = qpal_colors,
+      #     labels = qpal_labs,
+      # 
+      #     
+      #     opacity = 1)
+      
+      
+      
+    
 
       
 })

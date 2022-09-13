@@ -55,6 +55,9 @@ tibble::tribble(
   'climate variables', "Variables Climàtiques", 'Climatic Variables', "Variables Climaticas",
   "fire variables","Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
   'quantiles variables','Quantils','Quantiles','Cuantiles',
+  'Quantil_label','Quantils','Quantiles','Cuantiles',
+  'Continua_label','Estàndar','Standard','Estándar',
+  
   
   "var_daily_label", 'Tria la variable', 'Choose variable', 'Elige la variable',
   "main_tab_translation", "Explora Parceles", "Plots Explore", "Explora Parcelas",
@@ -73,7 +76,7 @@ tibble::tribble(
   'Embass_select_entorno','Embassaments','Reservoirs','Embalses',
   'Constante_label','Constant','Constant','Constante',
   'funcio_label','f(x) de la Variable','Variable Function','f(x) de la Variable',
-  'Continua_label','Contínua','Continues','Continua',
+  
   
   "sub_layer_label","----- Capes Principals ------","----- Main Layers -----------","----- Capas Principales -----",
   "sub_layer_label_2","----- Capa Epecial ----------",  "----- Special layer ---------","----- Capa Epecial ----------",

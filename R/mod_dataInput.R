@@ -116,12 +116,22 @@ modosin_data <- function(
           "A"="A",
           "O"="O",
           "S"="S"), lang_declared)
-      )
+      ),
+      
+      # ......... RADIO BUTTONS ...........
+      # ...................................
+      
+  
+      
+      
+      shiny:: radioButtons(
+        ns("legend"),translate_app("type_legend_label", lang_declared),
+        shiny_set_names(c("Continua_label" = "estandar", "Quantil_label" = "quantil"),lang_declared)),
       
 
     ) # end of tagList
 
-  })
+  })           
 
  
   # ..................... DEVOLVER REACTIVOS  ....................
@@ -150,6 +160,7 @@ modosin_data <- function(
     data_reactives$fecha_reactive  <- input$fecha
     data_reactives$variable_reactive <- input$variable
     data_reactives$origen_reactive <- input$origen
+    data_reactives$legend_reactive <- input$legend
 
      
     
