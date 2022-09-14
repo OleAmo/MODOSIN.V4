@@ -171,6 +171,8 @@ mod_mainData <- function(
     
     variable <- data_reactives$variable_reactive
     fecha <- data_reactives$fecha_reactive
+    
+    print(variable)
  
     
     # ............ CLICK PLOT ID .............
@@ -251,13 +253,24 @@ mod_mainData <- function(
     data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
     
     res <- data_day_graph %>%
-              dygraphs::dygraph(. , main = paste(toupper(variable)," (Anual) - PLOT ( Id = ",click_plot_id," / ",fecha,")")) %>%
-              dygraphs::dyAxis("y", label = label_axis )%>%
+              dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+      
+              # ........ RANGO FIJO ........
+              # ............................
+              #      .) Si la variable es CFP i SFP
+              #      .) El rango fijo es 0 - 9 (ya que así visualmente se ve correctamente)
+      
+      
+              { if (variable == "CFP" | variable == "SFP")
+                     dygraphs::dyAxis(.,"y", label = label_axis, valueRange = c(0, 10))
+                else
+                     dygraphs::dyAxis(.,"y", label = label_axis ) 
+              } %>%
+
               dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
               dygraphs::dySeries(label = variable) %>%
               dygraphs::dyLegend(show = "follow") %>%
               dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom") %>%
-              # dygraphs::dyShading(from = as.Date(fecha)-7, to = as.Date(fecha)+7, color = "#f2a7a7") %>%
               dygraphs:: dyRangeSelector()
 
     return(res)

@@ -111,8 +111,8 @@ modosin_data <- function(
         ns('origen'), translate_app('plot_origin_label', lang_declared),
         shiny_set_names(c(
           "T"="T",
+          "P"="P",
           "PN"="PN",
-          "P"="P", 
           "A"="A",
           "O"="O",
           "S"="S"), lang_declared)
@@ -120,9 +120,7 @@ modosin_data <- function(
       
       # ......... RADIO BUTTONS ...........
       # ...................................
-      
-  
-      
+    
       
       shiny:: radioButtons(
         ns("legend"),translate_app("type_legend_label", lang_declared),
