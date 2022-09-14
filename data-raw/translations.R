@@ -54,7 +54,7 @@ tibble::tribble(
   
   'climate variables', "Variables Climàtiques", 'Climatic Variables', "Variables Climaticas",
   "fire variables","Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
-  'quantiles variables','Quantils','Quantiles','Cuantiles',
+  'quantiles variables','Quantils Històrics (40 anys)','Historical quantiles (40 years)','Cuantiles Històricos (40 años)',
   'Quantil_label','Quantils','Quantiles','Cuantiles',
   'Continua_label','Estàndar','Standard','Estándar',
   

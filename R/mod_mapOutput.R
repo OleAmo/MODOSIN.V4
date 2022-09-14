@@ -40,6 +40,7 @@ mod_map <- function(
 ) {
   
   library(sf)
+  
 
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   # ---------------------------      OUTPUT MAP     ------------------------------
@@ -324,13 +325,24 @@ mod_map <- function(
     # c("#48cf4f","white","#d14949")
     # "RdYlBu"
     
+ 
+
+    # if (is_quantil(variable)) {
+    #   pal_plot <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = FALSE)
+    #  
+    #   pal_legend <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = TRUE)
+    # } else {
+    #   pal_plot <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
+    #   pal_legend <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = FALSE)
+    # }
     
     if (is_quantil(variable)) {
-      pal_plot <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = FALSE)
-      pal_legend <- leaflet::colorNumeric(palette = "RdYlBu", domain = data_filter[[2]] , reverse = TRUE)
+      pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
+      
+      pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
     } else {
-      pal_plot <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = TRUE)
-      pal_legend <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = FALSE)
+      pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
+      pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
     }
     
     

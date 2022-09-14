@@ -7,6 +7,7 @@ modosin_app <- function() {
   library(leaflet)
   source('data-raw/translations.R')
   source('data-raw/polygon_objects_creation.R')
+  source('data-raw/palette_builder.R')
   
   ### DB access ################################################################
   modosindb <- lfcdata::modosin()
