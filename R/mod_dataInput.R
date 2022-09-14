@@ -61,7 +61,6 @@ modosin_data <- function(
     #               .) water balance: Infiltration, RunOff, DeepDrainage, Esoil, Eplant
     #               .) drought stress: DDS
     
-    
 
       climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
         magrittr::set_names(translate_app(., lang_declared))

@@ -288,13 +288,16 @@ mod_map <- function(
 
     variable_valores <- round(data_filter[[2]], digits=2)
     
+
     #      .) ELIMINAMOS los NA de la LEYENDA
     #      .) Sino visualmente se complica
     #      .) Y se tendría que vanviar el CSS de la Leyenda
+
     
     variable_valores_legend <- variable_valores[!is.na(variable_valores)]
-     
     
+
+
 
     # ...... PALETA DE COLORES CONTINUO ......
     # ........................................
@@ -336,14 +339,29 @@ mod_map <- function(
     #   pal_legend <- leaflet::colorNumeric(palette = "plasma", domain = data_filter[[2]] , reverse = FALSE)
     # }
     
-    if (is_quantil(variable)) {
-      pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
+    
+    # if(    unique(is.na(variable_valores))    ){
+    #   data_filter[[2]] <- c(0,0.1)
+    #   pal_plot <- leaflet::colorNumeric(palette = "white", domain = data_filter[[2]] , reverse = FALSE)
+    #   pal_legend <- leaflet::colorNumeric(palette = "white", domain = data_filter[[2]] , reverse = TRUE)
+    # }  
       
-      pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
-    } else {
-      pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
-      pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
-    }
+      if (is_quantil(variable)) {
+        
+        pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
+        pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
+        
+      } else {
+        pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
+        pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
+      }
+      
+      
+      
+      
+    
+    
+    
     
     
     
@@ -366,15 +384,15 @@ mod_map <- function(
     
     
     # modosindb <- lfcdata::modosin()
-    # data_day <- modosindb$get_data('data_day_fire_petita_2')
+    # data_day <- modosindb$get_data('data_day_fire_petita_2') %>% dplyr::filter(date == fecha)
     # 
     # variable <- "REW_q"
     # fecha <- "2022-1-15"
-    # origen_selected <- "ifn"
+    # origen_selected <- "ordesa"
     # 
     # num_i <- as.numeric(match(variable,names(data_day)))
     # selected_var <- as.symbol(names(data_day)[num_i])
-    # 
+
     # data_filter <- data_day %>%
     # 
     #   dplyr::filter(.,plot_origin == origen_selected, date == fecha) %>%
@@ -384,10 +402,21 @@ mod_map <- function(
     # 
     # 
     # variable_valores <- round(data_filter[[2]], digits=2)
+    # 
+    
+    
+    
+    
+    
+    
     
     val <- data_filter[[2]]
     value <- val[!is.na(val)]  # eliminamos los NA
     
+    # if(length(value) == 0) {
+    #   value <- 0
+    # }
+    # 
     max <- max(value) 
     min <- min(value)
     
