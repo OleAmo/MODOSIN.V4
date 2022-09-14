@@ -131,11 +131,11 @@ mod_mainData <- function(
     # ...............................
     # data_day <- modosindb$get_data("data_day_fire_petita")
     
-    data_day <- modosindb$get_data("data_day_fire_petita_2")
+    # data_day <- modosindb$get_data("data_day_fire_petita_2")
     
     # ..... Definitiva 2..........
     # ...........................
-    # data_day <- modosindb$get_data("data_day_fire")
+    data_day <- modosindb$get_data("data_day_fire")
     
     # ..... Definitiva 1..........
     # ...........................
@@ -171,9 +171,6 @@ mod_mainData <- function(
     
     variable <- data_reactives$variable_reactive
     fecha <- data_reactives$fecha_reactive
-    
-    print(variable)
- 
     
     # ............ CLICK PLOT ID .............
     # ........................................
@@ -252,21 +249,39 @@ mod_mainData <- function(
 
     data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
     
+    max_value <- as.numeric(max(data_day_clicked_plot[num_i][[1]]))
+    min_value <- as.numeric(min(data_day_clicked_plot[num_i][[1]]))
+    
+    # .................. RANG VALUE .....................
+    # ...................................................
+    
+    #       .) Creo una FUNCION 
+    #       .) Para una correcta visualización de los TIME SERIES
+    #       .) Necesitamos delimitar el MAX-MIN del Axis de las Y
+    #       .) CFP / SFP          de 0 - 9     ( +1 para que se vea bien)
+    #       .) REW .... LFMC_q    de 0 - 100   ( +10 para que se vea bien)
+    #       .) "PET" ...  "DFMC"  de MIN - MAX ( + 1% max para que se vea bien)
+    
+    valueRange <- function(variable){
+      switch (variable,
+          "CFP" = c(0, 10),
+          "SFP" = c(0, 10),
+          "REW" = c(0, 110),
+          "DDS" = c(0, 110),
+          "REW_q" = c(0, 110),
+          "DDS_q" = c(0, 110),
+          "LFMC_q" = c(0, 110),
+          
+          "PET"    = c(min_value, max_value + 0.01*max_value), 
+          "Precipitation"= c(min_value, max_value + 0.01*max_value),
+          "LFMC"   = c(min_value, max_value + 0.01*max_value),
+          "DFMC"   = c(min_value, max_value + 0.01*max_value)
+      )
+    }
+    
     res <- data_day_graph %>%
               dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
-      
-              # ........ RANGO FIJO ........
-              # ............................
-              #      .) Si la variable es CFP i SFP
-              #      .) El rango fijo es 0 - 9 (ya que así visualmente se ve correctamente)
-      
-      
-              { if (variable == "CFP" | variable == "SFP")
-                     dygraphs::dyAxis(.,"y", label = label_axis, valueRange = c(0, 10))
-                else
-                     dygraphs::dyAxis(.,"y", label = label_axis ) 
-              } %>%
-
+              dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
               dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
               dygraphs::dySeries(label = variable) %>%
               dygraphs::dyLegend(show = "follow") %>%
