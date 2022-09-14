@@ -340,11 +340,23 @@ mod_map <- function(
     # }
     
     
+    
+    
+    
+    # ..... PROBLEMA NA valules ORDESA ......
+    # ........................................
+    
+    #      .) intento de solucion
+    
+    
+    
     # if(    unique(is.na(variable_valores))    ){
     #   data_filter[[2]] <- c(0,0.1)
     #   pal_plot <- leaflet::colorNumeric(palette = "white", domain = data_filter[[2]] , reverse = FALSE)
     #   pal_legend <- leaflet::colorNumeric(palette = "white", domain = data_filter[[2]] , reverse = TRUE)
     # }  
+    
+    
       
       if (is_quantil(variable)) {
         
