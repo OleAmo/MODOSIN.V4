@@ -14,16 +14,7 @@ palettes_dictionary <- list(
   REW_q = list(max = 10 , min = 0,pal = "RdYlBu"),
   DDS_q = list(max = 10 , min = 0,pal = c("#0f0396","#4e57fc","#949af7","white","#f7979f","#f54c4c","#960303")),
   LFMC_q = list(max = 10 , min = 0,pal = "RdYlBu")
-  
-  # "PET", "Precipitation","REW","DDS"
-  # 
-  # "LFMC","DFMC","SFP","CFP"
-  # 
-  # "REW_q","DDS_q","LFMC_q"
-  
+
 
 )
 
-
-
- 

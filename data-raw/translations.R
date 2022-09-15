@@ -68,7 +68,7 @@ tibble::tribble(
   "date_daily_label", 'Data', 'Date', 'Fecha',
   'series_tab_translation', "Sèries temporals", "Time series", "Series temporales",
   "size_label", 'Parcel·les (Tamany)', 'Plots (Size)', 'Parcelas (Tamaño)',
-  "type_legend_label", "Tipus de Legenda", 'Legend Type','Tipo de Leyenda',
+  "type_legend_label", "Canvi Llegenda", 'Legend Change','Cambio Leyenda',
   "layers_label",'Selecció Capes','Layers Selection','Selección Capas',
   'Provincia_select_entorno', "Provincies", "Provinces", "Provincias",
   'Comararca_select_entorno', "Comarques", "Counties", "Comarcas",
@@ -121,6 +121,10 @@ tibble::tribble(
   'Provincia',"Provincia:", "Province:", "Provincia:",
   'Parque Nacional','Parc Nacional','National Park','Parque Nacional',
   'PLOT','Parcel·la', 'Plot', 'Parcela',
+  
+  "estandard_label","Estàndar","Standard","Estándar",
+  "1st_label", "Tipus A", "Type A" ,"Tipo A", 
+  "2nd_label", "Tipus B", "Type B" ,"Tipo B",
   
  
   

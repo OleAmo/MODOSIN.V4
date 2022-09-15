@@ -173,15 +173,15 @@ mod_map <- function(
     # ......... INICIALIZAR DATOS ............
     # ........................................
     
-    #      .) VARIABLE:
-    #            .) Es la variable a PROYECTAR
-    #            .) La obtenemos del REACTIVE constante => MOD_DATAINPUT
+    #      .) VARIABLES REACTIVE:
+    #            .) Son la que usaremos para PROYECTAR PLOTS
+    #            .) Vienen de DATA_REACTIVE (fecha, origen, variable)
+    #            .) Vienen de MAIN_DATA_REACTIVE (sf)
+  
+    #      .) VARIABLES FUNCION:
+    #            .) Lengua y Radi
+    #            .) Vienen de funciones tb REACTIVAS
     
-    
-    #       .) VALIDAMOS la FECHA
-    #               .) Significa que SHINY antes de CONTINUAR espera a tener valor de FECHA
-    #               .) Osea que la variable sea ('2021-5-11')
-    #               .) Sino validamos, SHYNI se puede bloquear si al inicio el valor es NULL
     
     shiny::validate(
       shiny::need(data_reactives$variable_reactive, 'no variable selected') 
@@ -190,7 +190,22 @@ mod_map <- function(
     fecha <- data_reactives$fecha_reactive
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
+    leyenda_modif <- data_reactives$legend_modify_reactive  
     sf <- main_data_reactives$data_day
+    
+    # ........ LENGUA SELECTED  .........
+    # ...................................
+    
+    #     .) Lengua Seleccionada
+    
+    lang_declared <- lang()
+    
+    # ....... SIZE en f(x) ZOOM  ........
+    # ...................................
+    
+    #     .) El radio de los PLOTS
+    #     .) Varia en f(x) del zoom usado
+    #     .) es un REACTIVE definido anteriormente
     
     radi <- radi_size()
     
@@ -350,30 +365,30 @@ mod_map <- function(
         #             .) Pero LEYENDA sin NA
       
       
-        if ( is.element(variable, c("DDS", "REW_q","DDS_q","LFMC_q")) ) { 
+        if ( is.element(variable, c("DDS", "REW_q","DDS_q","LFMC_q")) ) {
           
-            x1 <- data_filter[[2]]
-            x2 <- append(x1, 0, 0)
-            value <- append(x2, 100, 0)
-            
-            y1 <-  variable_valores_noNA
-            y2 <- append(y1, 0, 0)
-            value_legend <- append(y2, 100, 0)
+              x1 <- data_filter[[2]]
+              x2 <- append(x1, 0, 0)
+              value <- append(x2, 100, 0)
+              
+              y1 <- variable_valores_noNA
+              y2 <- append(y1, 0, 0)
+              value_legend <- append(y2, 100, 0)
           
-          }  else if (is.element(variable, c("SFP","CFP"))) {
+          } else if (is.element(variable, c("SFP","CFP"))) {
             
-            x1 <- data_filter[[2]]
-            x2 <- append(x1, 0, 0)
-            value <- append(x2, 9, 0)
-            
-            y1 <-  variable_valores_noNA
-            y2 <- append(y1, 0, 0)
-            value_legend <- append(y2, 9, 0)
+              x1 <- data_filter[[2]]
+              x2 <- append(x1, 0, 0)
+              value <- append(x2, 9, 0)
+              
+              y1 <- variable_valores_noNA
+              y2 <- append(y1, 0, 0)
+              value_legend <- append(y2, 9, 0)
             
           } else { 
           
-          value <-   data_filter[[2]] 
-          value_legend <- variable_valores_noNA
+              value <- data_filter[[2]] 
+              value_legend <- variable_valores_noNA
           
           }
       
@@ -393,29 +408,58 @@ mod_map <- function(
           
         }
         
-        # ........ LEYENDA TIPO QUANTIL ..........
+        # ...... LEYENDA VALORES EXTREMOS ........
         # ........................................
         
-        #      .) Si la variable es QUANTIL
-        #      .) El tipo de REVERSE sero uno o otro
+        #      .) Creo un leyenda para valores extremos
+        #      .) https://stackoverflow.com/questions/49126405/how-to-set-up-asymmetrical-color-gradient-for-a-numerical-variable-in-leaflet-in
+        #      .) Es una leyenda donde si hay pocs valores grandes y muchos de pequeños
+        #      .) Corrige el color para que los menores destaquen
         
+        #      .) RC1 = 20  colores para RAMPA (valores GRANDES)
+        #      .) RC2 = 180 colores para RAMPA (valores PEQUEÑOS)
+       
+       red <- "#a60818"
+       yellow <- "#f7fc60"
+       blue <- "#272cc2"
         
+       rc1 <- colorRampPalette(colors = c("red", "orange"), space = "Lab")(20)
+       rc2 <- colorRampPalette(colors = c("orange", "white"), space = "Lab")(180)
+       
+       rc3 <- colorRampPalette(colors = c(red,yellow), space = "Lab")(20)
+       rc4 <- colorRampPalette(colors = c(yellow,blue), space = "Lab")(180)
+        
+        rampcols_a <- c(rc1, rc2)
+        rampcols_b <- c(rc3, rc4)
+         
+        switch (leyenda_modif,
+                "estandard" = palete_value <- palettes_dictionary[[variable]][['pal']],
+                "tip_1"     = palete_value <- rampcols_a,
+                "tip_2"     = palete_value <- rampcols_b
+        )
+        
+       
+
         if (is_quantil(variable)) {   
           
-          pal_plot   <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
-                                              domain = value , reverse = FALSE)
-          pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
-                                              domain = value_legend , reverse = TRUE)
+          pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = FALSE)
+          pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = TRUE)
           
           
         } else {
+          
  
-          pal_plot   <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
-                                              domain = value , reverse = TRUE)
-          pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
-                                              domain = value_legend , reverse = FALSE)
+            pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = TRUE)
+            pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = FALSE)
+            
+
+     
           
         }
+        
+        
+  
+        
       
     }
 
@@ -444,12 +488,7 @@ mod_map <- function(
     #              .) Plots   => usamos leaflet::clearGroup + Group
     #              .) Legend  => leaflet::clearControls() 
     
-    # ........ LENGUA SELECTED  .........
-    # ...................................
     
-    #     .) Lengua Seleccionada
-    
-    lang_declared <- lang()
 
     # .............. PROYECCIÓN PLOTS  .............
     # ..............................................

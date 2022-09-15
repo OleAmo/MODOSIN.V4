@@ -98,7 +98,7 @@ modosin_data <- function(
         # DATA DAY = datay_day_fire
          # min = '2021-09-02', # Sys.Date() -364
          # max = '2022-09-01' # Sys.Date() -1
-        
+
        
       ),
       
@@ -115,7 +115,17 @@ modosin_data <- function(
           "A"="A",
           "O"="O",
           "S"="S"), lang_declared)
-      )
+      ),                                      
+      
+      # ......... RADIO BUTTONS ...........
+      # ...................................
+      
+      
+      shiny:: radioButtons(
+        ns("legend_modify"),translate_app("type_legend_label", lang_declared),
+        shiny_set_names(c("estandard_label" = "estandard", 
+                          "1st_label" = "tip_1", 
+                          "2nd_label" = "tip_2"),lang_declared)),
       
 
     ) # end of tagList
@@ -149,6 +159,8 @@ modosin_data <- function(
     data_reactives$fecha_reactive  <- input$fecha
     data_reactives$variable_reactive <- input$variable
     data_reactives$origen_reactive <- input$origen
+    data_reactives$legend_modify_reactive <- input$legend_modify
+    
     
 
   })
