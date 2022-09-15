@@ -310,17 +310,6 @@ mod_map <- function(
     
     
 
-    # ...... PALETA DE COLORES CONTINUO ......
-    # ........................................
-    
-    #      .) Hay dos paletas = PLOT y LEGEND
-    #      .) usamos reverse = FALSE/TRUE para alterar el orden de colores (plot y legend)
-    
-    #      .) La paleta de CUANTILES tienen que ser DIVERGENTE
-    #      .) Significa que:
-    #                  .) valor 100 = son valors SUPERIORES a los útlitmos 40 años
-    #                  .) valor  50 = son valors IGUALES a los útlitmos 40 años
-    #                  .) valor   0 = son valors INFERIORES a los útlitmos 40 años
     
 
     
@@ -340,8 +329,16 @@ mod_map <- function(
     #      .) Marca todos los plots en gris
     
     
+    # ============  CREACIÓN PALETA COLORES PLOT/LEGEND  =============
+    # ================================================================
     
-    if(    unique(is.na(variable_valores))[1] ){
+    #      .) Creo toda la ESTRUCTURA
+    #      .) El resultado final es
+    #             .) pal_plot
+    #             .) pal_legend 
+     
+    
+    if( unique(is.na(variable_valores))[1] ){
 
       value <- 0
       pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value, reverse = FALSE)
@@ -352,17 +349,22 @@ mod_map <- function(
  
     } else {
       
-        # ........ VALUE / VALUE_LEGEND .........
-        # ........................................
+      # ........ VALUE / VALUE_LEGEND .........
+      # ........................................
         
-        #      .) Valores del PLOT
-        #      .) Valores de la Leyenda ( 2 TIPOS )
+      #      .) Creo dos tipos de valores
+      #      .) VALUE        = Valores del PLOT
+      #      .) VALUE_LEGEND = Valores de la Leyenda ( 2 TIPOS )
       
-        #             .) OBLIGATORIO de 0 a 100 (Leyenda y Plot)
-        #             .) Para c("DDS", "REW_q","DDS_q","LFMC_q")
+      #      .) RESTRICCIONES:
+      #             .) SIMPRE RANGO (0-100)
+      #             .) Para c("DDS", "REW_q","DDS_q","LFMC_q")
       
-        #             .) El resto de su MAX a su MIN
-        #             .) Pero LEYENDA sin NA
+      #             .) SIMPRE RANGO (0-9)
+      #             .) Para c("SFP","CFP")
+      
+      #             .) El resto de su MAX a su MIN
+      #             .) Pero LEYENDA sin NA
       
       
         if ( is.element(variable, c("DDS", "REW_q","DDS_q","LFMC_q")) ) {
@@ -398,7 +400,7 @@ mod_map <- function(
         # ........................................
         
         #      .) Creo una f(x)
-        #      .) Si una VARIABLE es tipo QUANTIL (DDS_q,...)
+        #      .) Para saber si una VARIABLE es tipo QUANTIL (DDS_q,...)
         #      .) Devuelve TRUE
         
         
@@ -408,16 +410,20 @@ mod_map <- function(
           
         }
         
-        # ...... LEYENDA VALORES EXTREMOS ........
-        # ........................................
+        # ...... LEYENDA para VALORES EXTREMOS ........
+        # ..............................................
         
         #      .) Creo un leyenda para valores extremos
+        #      .) Son tipos de color que pueden ayudar a visualizar algunos resultados
+        
         #      .) https://stackoverflow.com/questions/49126405/how-to-set-up-asymmetrical-color-gradient-for-a-numerical-variable-in-leaflet-in
+        
         #      .) Es una leyenda donde si hay pocs valores grandes y muchos de pequeños
-        #      .) Corrige el color para que los menores destaquen
+        #      .) Corrige el rango de la escala de color para que los menores destaquen
         
         #      .) RC1 = 20  colores para RAMPA (valores GRANDES)
         #      .) RC2 = 180 colores para RAMPA (valores PEQUEÑOS)
+        
        
        red <- "#a60818"
        yellow <- "#f7fc60"
@@ -438,29 +444,32 @@ mod_map <- function(
                 "tip_2"     = palete_value <- rampcols_b
         )
         
-       
+        
+        # ........ PALETA PLOT / LEGEND  .........
+        # ........................................
+        
+        #      .) Hay dos paletas = PLOT y LEGEND
+        #      .) usamos reverse = FALSE/TRUE para alterar el orden de colores (plot y legend)
+        
+        #      .) PAL_PLOT    = Paleta Color Plots
+        #      .) PAL_LEGEND  = Paleta Color Leyenda
+        
+        #      .) SI es variable QUANTIL o NO QUANTIL
+        #      .) El sentido (REVERSE) de colores Leyenda y Plots es de diferente
+        
 
         if (is_quantil(variable)) {   
           
           pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = FALSE)
           pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = TRUE)
           
-          
         } else {
           
- 
-            pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = TRUE)
-            pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = FALSE)
+          pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = TRUE)
+          pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = FALSE)
             
-
-     
-          
         }
-        
-        
-  
-        
-      
+     
     }
 
 
