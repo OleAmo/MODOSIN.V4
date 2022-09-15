@@ -194,8 +194,6 @@ mod_map <- function(
     
     radi <- radi_size()
     
-    print(paste0('ZOOM = ',input$map_daily_zoom,' / RADI = ',radi))
-    
     # ............. CREATE DATA_DAY .................
     # ...............................................
     
@@ -311,7 +309,7 @@ mod_map <- function(
     
 
     
-    # ..... PROBLEMA NA valules ORDESA ......
+    # ..... PROBLEMA NA valores ORDESA ......
     # ........................................
     
     #      .) SOLUCIÓN
@@ -339,43 +337,46 @@ mod_map <- function(
  
     } else {
       
+        # ........ VALUE / VALUE_LEGEND .........
+        # ........................................
+        
+        #      .) Valores del PLOT
+        #      .) Valores de la Leyenda ( 2 TIPOS )
+      
+        #             .) OBLIGATORIO de 0 a 100 (Leyenda y Plot)
+        #             .) Para c("DDS", "REW_q","DDS_q","LFMC_q")
+      
+        #             .) El resto de su MAX a su MIN
+        #             .) Pero LEYENDA sin NA
+      
+      
         if ( is.element(variable, c("DDS", "REW_q","DDS_q","LFMC_q")) ) { 
           
-          # value <-  append(data_filter[[2]], c(0,100),0) 
+            x1 <- data_filter[[2]]
+            x2 <- append(x1, 0, 0)
+            value <- append(x2, 100, 0)
+            
+            y1 <-  variable_valores_noNA
+            y2 <- append(y1, 0, 0)
+            value_legend <- append(y2, 100, 0)
           
-          x1 <- data_filter[[2]]
-          x2 <- append(x1, 0, 0)
-          value <- append(x2, 100, 0)
-          
-          y1 <-  variable_valores_noNA
-          y2 <- append(y1, 0, 0)
-          value_legend <- append(y2, 100, 0)
-          
-          }  else { 
+          }  else if (is.element(variable, c("SFP","CFP"))) {
+            
+            x1 <- data_filter[[2]]
+            x2 <- append(x1, 0, 0)
+            value <- append(x2, 9, 0)
+            
+            y1 <-  variable_valores_noNA
+            y2 <- append(y1, 0, 0)
+            value_legend <- append(y2, 9, 0)
+            
+          } else { 
           
           value <-   data_filter[[2]] 
           value_legend <- variable_valores_noNA
           
           }
       
-        # if ( variable == "DDS") {
-        #   
-        #   # values_legend <- variable_valores_noNA
-        #   
-        #   x1 <- variable_valores_noNA
-        #   x2 <- append(x1, 0, 0)
-        #   values_legend <- append(x2, 100, 0)
-        #   
-        #   
-        #    
-        #   
-        # } else {
-        #   values_legend <- variable_valores_noNA
-        # }
-        # 
-        # values_legend <- variable_valores_noNA
-        
-        print(value_legend)
 
         
         # ........ VARIABLE TIPO QUANTIL .........
@@ -398,60 +399,26 @@ mod_map <- function(
         #      .) Si la variable es QUANTIL
         #      .) El tipo de REVERSE sero uno o otro
         
-        max <- max(as.numeric(data_filter[[2]]))
-        min <- min(as.numeric(data_filter[[2]]))
-        
         
         if (is_quantil(variable)) {   
           
-          # pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
-          # pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
-          
-          pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value , reverse = FALSE)
-          pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value_legend , reverse = TRUE)
-          
-          print(paste("MAX = ",max, " - MIN = ",min))
-          
+          pal_plot   <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
+                                              domain = value , reverse = FALSE)
+          pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
+                                              domain = value_legend , reverse = TRUE)
           
           
         } else {
-          # pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = TRUE)
-          # pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = data_filter[[2]] , reverse = FALSE)
-          
-          pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value , reverse = TRUE)
-          pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value_legend , reverse = FALSE)
-          
-          print(paste("MAX = ",max, " - MIN = ",min))
+ 
+          pal_plot   <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
+                                              domain = value , reverse = TRUE)
+          pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], 
+                                              domain = value_legend , reverse = FALSE)
           
         }
       
     }
 
-    
- 
-    # modosindb <- lfcdata::modosin()
-    # data_day <- modosindb$get_data('data_day_fire_petita_2') %>% dplyr::filter(date == fecha)
-    # 
-    # variable <- "REW_q"
-    # fecha <- "2022-1-15"
-    # origen_selected <- "ordesa"
-    # 
-    # num_i <- as.numeric(match(variable,names(data_day)))
-    # selected_var <- as.symbol(names(data_day)[num_i])
-    # 
-    # data_filter <- data_day %>%
-    # 
-    #   dplyr::filter(.,plot_origin == origen_selected, date == fecha) %>%
-    #   dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
-    #   dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
-    #                 lat = sf::st_coordinates(.data$geometry)[,2])
-    # 
-    # 
-    # variable_valores <- round(data_filter[[2]], digits=2)
-    # 
-    # 
-    # typeof(variable_valores)
-    
 
     # ..............................................
     # ............... Función LEAFLET  .............
