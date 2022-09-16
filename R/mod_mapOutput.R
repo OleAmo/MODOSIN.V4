@@ -250,7 +250,8 @@ mod_map <- function(
     }
 
     origen_selected <- origenSelected(origen)
-
+    
+   
     # ......... PROYECTAR TABLA ..............
     # ........................................
     
@@ -283,16 +284,21 @@ mod_map <- function(
     # ....... FILTRADO PLOT ORIGIN ...........
     # ........................................
     
-    #      .) la función ORGENG_SELECTED nos da 4 origenes (Aiguestortes, Ordesa, Nfi y Matollar)
-    #      .) Si queremos que nos lo proyecte TODO
-    #      .) Tenemo de decirle que NO FILTRE
-    #      .) Por eso hago un PIPE con IF
-    #           .) Y si ORIGEN NO ES T (T = es todos) me filtra por ORIGEN_SELECTED
-    #           .) Si ES T, no hace filtro y lo PROYECTA TODO
+    #      .) la función ORGENG_SELECTED nos da 6 origenes
+    #           .) (Todo, Paraque Nacional, Aiguestortes, Ordesa, Nfi y Matollar)
     
+    #      .) El ORIGEN_SELECTED puede dar vectores:
+    #           .) c("aiguestortes","ordesa"),
+    #           .) c("ifn","aiguestortes","matollar","ordesa"),
+    #           .) "matollar"
+    
+    #      .) Por eso usamo para filtrar el  =>  %in% 
+    #      .) Así nos filtra por MULTIPLIES VALORES
+    
+
     data_filter <- data_day %>%
      
-      dplyr::filter(.,plot_origin == origen_selected) %>%
+      dplyr::filter(.,plot_origin %in% origen_selected) %>%
       dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
       dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
                     lat = sf::st_coordinates(.data$geometry)[,2]) 

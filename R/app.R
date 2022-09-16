@@ -92,7 +92,7 @@ modosin_app <- function() {
 
     navbarPageWithInputs(
       # opts
-      title = 'PlotDrought App',
+      title = 'SiteDrought App',
       id = 'nav', collapsible = TRUE,
 
       # navbar with inputs (helpers.R) accepts an input argument, we use it for the lang
