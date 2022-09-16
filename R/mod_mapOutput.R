@@ -229,6 +229,25 @@ mod_map <- function(
     
     data_day <- table_create(fecha,sf)
     
+    
+    # ............ ALL TYPES ORIGIN .................
+    # ...............................................
+    
+    #   .) Automatizo el calculo de saber TODOS los Plots ORIGIN
+    #   .) Así la opción TODOS PLOTS del COMBO Tipos de Origen Plot
+    #   .) Siempre devolverá TOTDOS los TIPOS de Plots Origin
+    
+    origin_types <- unique(data_day$plot_origin)
+    long_ot <- length(origin_types)
+    
+    origin_types_vec <- c()
+    
+    for (i in 1:long_ot) {
+      origin_types_vec <- append(origin_types_vec, origin_types[i])
+    }
+    
+     
+    
     # ............. PLOT ORIGEN .................
     # ...............................................
     
@@ -236,11 +255,10 @@ mod_map <- function(
     #   .) Usamos el ORIGEN del COMBO
     #   .) Y lo "traducimos" al string que usa el DATA_DAY_FILTER
     
-    
     origenSelected <- function(a) {
       
       switch(a,
-              "T"  = c("ifn","aiguestortes","matollar","ordesa"),
+              "T"  = origin_types_vec,
               "PN" = c("aiguestortes","ordesa"),
               "P"  = "ifn",
               "A"  = "aiguestortes",
@@ -314,10 +332,6 @@ mod_map <- function(
     
     variable_valores_noNA <- variable_valores[!is.na(variable_valores)]
     
-    
-
-    
-
     
     # ..... PROBLEMA NA valores ORDESA ......
     # ........................................
