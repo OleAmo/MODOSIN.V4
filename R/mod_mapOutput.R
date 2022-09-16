@@ -117,29 +117,31 @@ mod_map <- function(
     
     origen <- data_reactives$origen_reactive 
     
-    ifelse(origen == "S", n <- 2,n <- 1)
+    ifelse(origen == "S", n <- 1.7,n <- 1)
     
     #   .) ZOOM ESTANDARD
     #            .) En f(x) del zoom
     #            .) Aplicamos un tamaño
     
-    if (current_zoom <= 5) { size_transformed <- 750 * 0.25 * n
+    size_base <- 650
+    
+    if (current_zoom <= 5) { size_transformed <- size_base * 0.25 * n
       
-    } else if (current_zoom == 6) { size_transformed <- 750 * 4 * n 
+    } else if (current_zoom == 6) { size_transformed <- size_base * 4 * n 
     
-    } else if (current_zoom == 7) { size_transformed <- 750 * 4 * n
+    } else if (current_zoom == 7) { size_transformed <- size_base * 4 * n
     
-    } else if (current_zoom == 8) { size_transformed <- 750 * 2 * n
+    } else if (current_zoom == 8) { size_transformed <- size_base * 2 * n
     
-    } else if (current_zoom == 9) { size_transformed <- 750 * n  
+    } else if (current_zoom == 9) { size_transformed <- size_base * n  
     
-    } else if (current_zoom == 10) { size_transformed <- 750 * n 
+    } else if (current_zoom == 10) { size_transformed <- size_base * n 
     
-    } else if (current_zoom == 11) { size_transformed <- 750 * 0.6 * n 
+    } else if (current_zoom == 11) { size_transformed <- size_base * 0.6 * n 
     
-    } else if (current_zoom == 12) { size_transformed <- 750 * 0.3 * n
+    } else if (current_zoom == 12) { size_transformed <- size_base * 0.3 * n
     
-    } else if (current_zoom >= 13) { size_transformed <- 750 * 0.3 * n
+    } else if (current_zoom >= 13) { size_transformed <- size_base * 0.3 * n
     
     } 
   
@@ -645,14 +647,14 @@ mod_map <- function(
         
         switch(a,
                
-               "T" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
-               "P"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8),  
-               "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=10),
-               "A"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699999999825,42.57097690195607, zoom=12),
-               "S"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.5213654,41.3684307, zoom=8),
-               "O"  = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
+           "T" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
+           "P" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8),  
+           "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=10),
+           "A" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699,42.5709769, zoom=12),
+           "S" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
+           "O" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
         )
-      }       
+      }        
       
       
       # ............ PROYECCIÓN POLIGONOS  ..........
