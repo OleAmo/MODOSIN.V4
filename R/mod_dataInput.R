@@ -54,12 +54,12 @@ modosin_data <- function(
     # ...................................
     
     #       .) Variables según MIQUEL
-    #               .) soil moisture: Theta, Psi, REW
-    #               .) soil moisture: Theta, Psi, REW
-    #               .) climate: PET
-    #               .) evaporative surface: LAI
-    #               .) water balance: Infiltration, RunOff, DeepDrainage, Esoil, Eplant
-    #               .) drought stress: DDS
+    #           .) soil moisture: Theta, Psi, REW
+    #           .) soil moisture: Theta, Psi, REW
+    #           .) climate: PET
+    #           .) evaporative surface: LAI
+    #           .) water balance: Infiltration, RunOff, DeepDrainage, Esoil, Eplant
+    #           .) drought stress: DDS
     
 
       climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
@@ -85,7 +85,17 @@ modosin_data <- function(
 
       # ........ SELECCION FECHA ..........
       # ...................................
-
+      
+      #       .) PROBLEMA
+      #       .) Aveces el desplegable de DATE queda devajo del NAV
+      #       .) Para solucionar-lo
+      #           .) https://developer.mozilla.org/es/docs/Web/CSS/z-index
+      #           .) Uso los Z-INDEX del CSS
+      #           .) El Z-INDEX indica PRIORIDA de aparecer ENCIMA
+      #           .) Como MAYOR el Z-INDEX mas encima de todo
+      
+      shiny::tags$style(type = "text/css", ".datepicker { z-index: 99999 !important; }"),
+     
       shiny::dateInput(
         ns("fecha"), translate_app('date_daily_label', lang_declared),
         value = "2022-1-15",

@@ -88,7 +88,7 @@ modosin_app <- function() {
     #                 .) Explora
     #                 .) Especificación Técnica
     #       .) Dropdown Lenguas  =pickerInput
-
+    
 
     navbarPageWithInputs(
       # opts
