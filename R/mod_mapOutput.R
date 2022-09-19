@@ -649,12 +649,46 @@ mod_map <- function(
                
            "T" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
            "P" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(1.7458675,41.6922353, zoom=8),  
-           "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.488007,42.6306324, zoom=10),
-           "A" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699,42.5709769, zoom=12),
+           "PN" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.502806,42.533565, zoom=10),
+           "A" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.9313699,42.5709769, zoom=11),
            "S" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(2.2018256,41.089058, zoom=7),
-           "O" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0782512,42.6215114, zoom=11)
+           "O" = leaflet::leafletProxy('map_daily') %>% leaflet::setView(0.0519259,42.6598781, zoom=11)
         )
-      }        
+      }   
+      
+      
+      # ............ PROYECCIÓN Zonas PERIFÉRICAS ...............
+      # ..............................................
+      
+      #     .) Primero PROYECTAMOS Periferia
+      #     .) Así quedará por debajo de los otro polígonos
+      
+      #     .) Proyeccion independiente a los Parques Naturales
+      #     .) El color y grosor seran diferentes
+      
+      if (origen == "A" | origen == "PN" | origen == "O") {
+        
+        switch (origen,
+                "A"  = perimetre <- peri_aiguestortes,
+                "O"  = perimetre <- peri_ordesa  ,
+                "PN" = perimetre <- peri_total
+        )
+        
+        set_view(origen) %>%
+          leaflet::clearGroup('polygons_perimetre') %>%
+          leaflet::addPolygons(
+            data = perimetre,
+            weight = 1.1,
+            opacity = 0.5,
+            fillOpacity = 0,
+            color = "#004202",
+            group = "polygons_perimetre")
+        
+      } else {
+        
+        set_view(origen) %>% 
+          leaflet::clearGroup('polygons_perimetre')
+      }
       
       
       # ............ PROYECCIÓN POLIGONOS  ..........
@@ -686,8 +720,8 @@ mod_map <- function(
       #     .) Tendremos uno o otro style
       
       color_polygon <- function(origen){
-        
-        if(origen == "A" | origen == "PN" | origen == "O"){ return("#c41606") } 
+      
+        if(origen == "A" | origen == "PN" | origen == "O"){ return("#c41606") }
         else { return("#65656e")  }
       }
       
@@ -703,8 +737,7 @@ mod_map <- function(
         else { return(1)  }
       }
       
-      
-      
+
       set_view(origen) %>%
         leaflet::clearGroup('polygons') %>%
         leaflet::addPolygons(
@@ -714,6 +747,8 @@ mod_map <- function(
           fillOpacity = 0,
           color = color_polygon(origen), 
           group = "polygons")
+      
+      
       
     },
     priority = 1000
