@@ -80,7 +80,7 @@ aiguestortes_sf <- st_as_sf(aiguestortes_csv, coords = c("longitude", "latitude"
 # .....................
 
 # CSV (txt transformado a CSV) 
-ordesa_csv <- read.csv2('COORD_PLOTS/CSV/plots_Ordesa.csv') %>%
+ordesa_csv <- read.csv2('COORD_PLOTS/CSV/plots_Ordesa_perimetre.csv') %>%
   dplyr::mutate(longitude = x, latitude = y) %>%
   dplyr::select(plot_id, longitude, latitude)
 
@@ -247,18 +247,18 @@ VACUUM ANALYZE public.data_day_fire;", .con = con)
 #     .) Creamos la TABLA con ST_WRITE
 
 insert_data <- function(tabla){
-  # start_time <- Sys.time()
+  start_time <- Sys.time()
   st_write(obj = tabla,
            dsn = con,
            Id(schema="public", table = "data_day_fire"),
            append=FALSE)
-  # end_time <- Sys.time()
-  # end_time - start_time
+  end_time <- Sys.time()
+  end_time - start_time
 }
 
 
 RPostgres::dbExecute(con, drop_table)
-insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 5.7 min / UAB = 2.49 min)  
+insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 5.7 min / UAB = 3.14 min)  
 RPostgres::dbExecute(con, vacuum_analyze)
 
 

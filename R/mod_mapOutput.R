@@ -322,28 +322,30 @@ mod_map <- function(
     #      .) En el caso de AIGUESTORTES y ORDESA
     #      .) Tenemos que agregar los PLOTS de la zona Perimetral
     #      .) PROCESO
-    #           .) Tenemos que hacer un intersect espacial
+    #           .) Tenemos que hacer un intersect espacial para AIGUESTORTES
     #           .) DATA_DAY vs PERIMETRO
     
+    #           .) Para ORDESA NO hacemo INTERSECT
+    #           .) Ya que de parcela del IFN4 de fera de Catalunya i Matollar
+    #           .) Solo hay Ordesa Interior Parque y Perímetro
     
     
-    # .............. PROVA ................
-    # .....................................
     
-    
-    # if(origen == "A" | origen == "PN" | origen == "O") {
-    
-    if(origen == "A") {
+    if(origen == "A"| origen == "PN") {
       
-      y <- peri_aiguestortes
+      switch (origen,
+              "A"  = perimetre <- peri_aiguestortes,
+              "PN" = perimetre <- peri_total
+      )
       
+      #PLOTS INTERSECT
       df_perimeter <- data_day %>% st_as_sf() %>%
       
-        sf::st_join(., y, join = st_intersects, left = FALSE  ) %>%
+        sf::st_join(., perimetre, join = st_intersects, left = FALSE  ) %>%
         dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
         dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
                       lat = sf::st_coordinates(.data$geometry)[,2])
-      
+      #PLOTS TYPE
       df <- data_day %>% st_as_sf() %>%
          
         dplyr::filter(.,plot_origin %in% origen_selected) %>%
@@ -367,19 +369,16 @@ mod_map <- function(
     }
     
     
-    # ............ ORIGINAL ...............
+    # ......... VARIABLES PALETA ..........
     # .....................................
     
+    #      .) Creamos VARIABLES VALORES  
+    #      .) Creamos VARIABLES VALORES no NA
+    #      .) Son la valores de variables que se presentan en:
+    #            .) Paleta Color Plot
+    #            .) Paleta Color Leyenda (los mismos sin valores NA)
     
-    # data_filter <- data_day %>%
-    #   
-    #   dplyr::filter(.,plot_origin %in% origen_selected) %>%
-    #   dplyr::select(plot_id, selected_var, date, plot_origin, geometry) %>%
-    #   dplyr::mutate(lon = sf::st_coordinates(.data$geometry)[,1],
-    #                 lat = sf::st_coordinates(.data$geometry)[,2])
-     
-    
-
+   
     variable_valores <- round(data_filter[[2]], digits=2)
     
 
