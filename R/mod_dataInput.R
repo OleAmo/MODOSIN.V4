@@ -34,6 +34,11 @@ modosin_data <- function(
   # renderUI ####
   output$mod_data_container <- shiny::renderUI({
     
+    
+    
+    
+    
+    
     # ......... INICIALIZAR .............
     # ...................................
     
@@ -61,25 +66,42 @@ modosin_data <- function(
     #           .) water balance: Infiltration, RunOff, DeepDrainage, Esoil, Eplant
     #           .) drought stress: DDS
     
+    
+    
+    
+    # if ( !is.null(input$origen) ) {
+    #    origen <- input$origen
+    #   switch (origen,
+    #           "S" = variables_lista <- c("LFMC","DFMC","SFP"),
+    #           variables_lista <- c("LFMC","DFMC","SFP","CFP")
+    #   )
+    # } else {
+    #   variables_lista <- c("LFMC","DFMC","SFP","CFP")
+    # }
+    
+    
+   
 
-      climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
-        magrittr::set_names(translate_app(., lang_declared))
-      fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
-        magrittr::set_names(translate_app(., lang_declared))
-      quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
+    climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
+      magrittr::set_names(translate_app(., lang_declared))
+    fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
+      magrittr::set_names(translate_app(., lang_declared))
+    quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
         magrittr::set_names(translate_app(., lang_declared))
       
-      shiny::tagList(
+      
+      
+    shiny::tagList(
         
         # ....... SELECCION VARIABLE ........
         # ...................................
         
-      shiny::selectInput(
-        ns('variable'), translate_app('var_daily_label', lang_declared),
-        choices = shiny_set_names(list(
-          'climate variables' = climate_vars,
-          'fire variables' = fire_vars,
-          'quantiles variables' = quantiles_vars
+        shiny::selectInput(
+          ns('variable'), translate_app('var_daily_label', lang_declared),
+          choices = shiny_set_names(list(
+            'climate variables' = climate_vars,
+            'fire variables' = fire_vars,
+            'quantiles variables' = quantiles_vars
           ), lang_declared)
         ),
 
@@ -125,7 +147,7 @@ modosin_data <- function(
           "A"="A",
           "O"="O",
           "S"="S"), lang_declared)
-      ),                                      
+      ),  
       
       # ......... RADIO BUTTONS ...........
       # ...................................
@@ -135,13 +157,29 @@ modosin_data <- function(
         ns("legend_modify"),translate_app("type_legend_label", lang_declared),
         shiny_set_names(c("estandard_label" = "estandard", 
                           "1st_label" = "tip_1", 
-                          "2nd_label" = "tip_2"),lang_declared)),
+                          "2nd_label" = "tip_2"),lang_declared)
+      )
       
 
     ) # end of tagList
 
   })           
 
+  
+  # shiny::observeEvent(
+  #   eventExpr = input$origen,
+  #   handlerExpr = {
+  #     if(input$origen == "S"){
+  #       list_variables <- c("LFMC","DFMC","SFP")
+  #     } else {
+  #       list_variables <- c("LFMC","DFMC","SFP","CFP")
+  #     }
+  #     
+  #     print(list_variables)
+  #     
+  #   },
+  #   priority = 1000
+  # )
  
   # ..................... DEVOLVER REACTIVOS  ....................
   # ..............................................................
@@ -174,6 +212,8 @@ modosin_data <- function(
     
 
   })
+  
+  
 
   # -------------------------- VALORES REACTIVOS ----------------------------
   # -------------------------------------------------------------------------
