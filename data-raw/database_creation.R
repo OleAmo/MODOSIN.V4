@@ -247,18 +247,18 @@ VACUUM ANALYZE public.data_day_fire;", .con = con)
 #     .) Creamos la TABLA con ST_WRITE
 
 insert_data <- function(tabla){
-  start_time <- Sys.time()
+  # start_time <- Sys.time()
   st_write(obj = tabla,
            dsn = con,
            Id(schema="public", table = "data_day_fire"),
            append=FALSE)
-  end_time <- Sys.time()
-  end_time - start_time
+  # end_time <- Sys.time()
+  # end_time - start_time
 }
 
 
 RPostgres::dbExecute(con, drop_table)
-insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 5.7 min / UAB = 3.14 min)  
+insert_data(data_day_fire)                        # Time processing data_day_fire (Casas 3.97 min / UAB = 3.14 min)  
 RPostgres::dbExecute(con, vacuum_analyze)
 
 

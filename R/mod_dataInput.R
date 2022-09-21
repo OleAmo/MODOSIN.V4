@@ -68,7 +68,26 @@ modosin_data <- function(
     
     
     
+    # aesthetics_builder_2 <- shiny::reactive({
+    #   
+    #   fecha <- shiny::isolate(input$fecha_reactive)
+    #   origen <- shiny::isolate(input$origen_reactive)
+    #   variable <- shiny::isolate(input$variable_reactive)
+    #   
+    #   
+    #   return(list(
+    #     # color
+    #     origen_sel   = origen,
+    #     fecha_sel    = fecha,
+    #     variable_sel = variable
+    #     
+    #   ))
+    # })
     
+    
+    
+    
+    # 
     # if ( !is.null(input$origen) ) {
     #    origen <- input$origen
     #   switch (origen,
@@ -80,8 +99,47 @@ modosin_data <- function(
     # }
     
     
-   
-
+    
+    
+    # variable_selected <- shiny::reactive({
+    #   
+    #   origen <- input$origen
+    #   
+    #   if(length(origen)<1){
+    #     variables_lista <- c("LFMC","DFMC","SFP","CFP")
+    #     
+    #     print("YES")
+    #     
+    #   } else {
+    #     
+    #     print("NO")
+    #     
+    #     origen <- input$origen
+    #     
+    #     switch (origen,
+    #             "S" = variables_lista <- c("LFMC","DFMC","SFP"),
+    #             variables_lista <- c("LFMC","DFMC","SFP","CFP")
+    #     )
+    #     
+    #   }
+    #   
+    #   
+    #   return(variables_lista)
+    #   
+    # })
+    
+    
+    
+    # shiny::observe({
+    #     aesthetics_data <- aesthetics_builder_2() 
+    #     
+    #     # origen    <- aesthetics_data$origen_sel
+    #     
+    #     print(aesthetics_data$origen_sel)
+    # })
+    
+    
+    
     climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
       magrittr::set_names(translate_app(., lang_declared))
     fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
@@ -89,7 +147,7 @@ modosin_data <- function(
     quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
         magrittr::set_names(translate_app(., lang_declared))
       
-      
+    
       
     shiny::tagList(
         
@@ -104,7 +162,8 @@ modosin_data <- function(
             'quantiles variables' = quantiles_vars
           ), lang_declared)
         ),
-
+        
+ 
       # ........ SELECCION FECHA ..........
       # ...................................
       
@@ -163,24 +222,11 @@ modosin_data <- function(
 
     ) # end of tagList
 
-  })           
+
+})  # end UI          
 
   
-  # shiny::observeEvent(
-  #   eventExpr = input$origen,
-  #   handlerExpr = {
-  #     if(input$origen == "S"){
-  #       list_variables <- c("LFMC","DFMC","SFP")
-  #     } else {
-  #       list_variables <- c("LFMC","DFMC","SFP","CFP")
-  #     }
-  #     
-  #     print(list_variables)
-  #     
-  #   },
-  #   priority = 1000
-  # )
- 
+
   # ..................... DEVOLVER REACTIVOS  ....................
   # ..............................................................
 
@@ -213,6 +259,11 @@ modosin_data <- function(
 
   })
   
+  
+  # data_reactives <- shiny::callModule(
+  #   modosin_data_ejemplo ,'modosin_DATA_ejemplo', modosindb, lang
+  # )
+  # 
   
 
   # -------------------------- VALORES REACTIVOS ----------------------------

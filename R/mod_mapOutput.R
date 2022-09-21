@@ -156,7 +156,6 @@ mod_map <- function(
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
   
-  
   # ............ PROYECCIÓN LEFLET ................
   # ...............................................
   
@@ -190,8 +189,9 @@ mod_map <- function(
     )
     
     fecha <- data_reactives$fecha_reactive
-    origen <- data_reactives$origen_reactive 
+    origen <- data_reactives$origen_reactive
     variable <- data_reactives$variable_reactive
+    
     leyenda_modif <- data_reactives$legend_modify_reactive  
     sf <- main_data_reactives$data_day
     

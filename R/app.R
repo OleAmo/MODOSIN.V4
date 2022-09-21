@@ -161,6 +161,7 @@ modosin_app <- function() {
                     value = 'data_inputs_panel',
                     modosin_dataInput('modosin_DATA')
                   ), # end of data panel
+                  
 
                   # .............. Pestaña GUARDAR .............
                   # ............................................
