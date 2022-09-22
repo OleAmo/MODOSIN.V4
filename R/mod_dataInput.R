@@ -82,7 +82,10 @@ modosin_data <- function(
     
    
 
-    climate_vars <- c("PET", "Precipitation","REW","DDS") %>%
+    
+    drought_vars <- c("REW","DDS") %>%
+      magrittr::set_names(translate_app(., lang_declared))
+    climate_vars <- c("PET", "Precipitation") %>%
       magrittr::set_names(translate_app(., lang_declared))
     fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
       magrittr::set_names(translate_app(., lang_declared))
@@ -99,6 +102,7 @@ modosin_data <- function(
         shiny::selectInput(
           ns('variable'), translate_app('var_daily_label', lang_declared),
           choices = shiny_set_names(list(
+            'drought variables' = drought_vars,
             'climate variables' = climate_vars,
             'fire variables' = fire_vars,
             'quantiles variables' = quantiles_vars

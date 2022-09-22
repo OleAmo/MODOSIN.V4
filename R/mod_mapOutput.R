@@ -444,32 +444,34 @@ mod_map <- function(
       #             .) Pero LEYENDA sin NA
       
       
-        if ( is.element(variable, c("DDS", "REW_q","DDS_q","LFMC_q")) ) {
-          
-              x1 <- data_filter[[2]]
-              x2 <- append(x1, 0, 0)
-              value <- append(x2, 100, 0)
-              
-              y1 <- variable_valores_noNA
-              y2 <- append(y1, 0, 0)
-              value_legend <- append(y2, 100, 0)
-          
-          } else if (is.element(variable, c("SFP","CFP"))) {
-            
-              x1 <- data_filter[[2]]
-              x2 <- append(x1, 0, 0)
-              value <- append(x2, 9, 0)
-              
-              y1 <- variable_valores_noNA
-              y2 <- append(y1, 0, 0)
-              value_legend <- append(y2, 9, 0)
-            
-          } else { 
-          
-              value <- data_filter[[2]] 
-              value_legend <- variable_valores_noNA
-          
-          }
+      
+      
+      if ( is.element(variable, c("DDS", "REW_q","DDS_q","LFMC_q")) ) {
+
+        x1 <- data_filter[[2]]
+        x2 <- append(x1, 0, 0)
+        value <- append(x2, 100, 0)
+
+        y1 <- variable_valores_noNA
+        y2 <- append(y1, 0, 0)
+        value_legend <- append(y2, 100, 0)
+
+      } else if (is.element(variable, c("SFP","CFP"))) {
+
+        x1 <- data_filter[[2]]
+        x2 <- append(x1, 0, 0)
+        value <- append(x2, 9, 0)
+
+        y1 <- variable_valores_noNA
+        y2 <- append(y1, 0, 0)
+        value_legend <- append(y2, 9, 0)
+
+      } else {
+
+        value <- data_filter[[2]]
+        value_legend <- variable_valores_noNA
+
+      }
       
 
         

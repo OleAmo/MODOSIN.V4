@@ -214,7 +214,7 @@ mod_mainData <- function(
       .[num_i] %>%
       .[[1]] %>%
       round(., digits = 4)
-
+    
     #      .) LABEL EVENT
     #             .) Texto que saldr? en el grafico
     #             .) Indica fecha seleccionada + valor de variable escogido
