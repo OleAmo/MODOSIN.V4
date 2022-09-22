@@ -79,8 +79,6 @@ modosin_data <- function(
     #   variables_lista <- c("LFMC","DFMC","SFP","CFP")
     # }
     
-    
-   
 
     
     drought_vars <- c("REW","DDS") %>%
@@ -89,6 +87,10 @@ modosin_data <- function(
       magrittr::set_names(translate_app(., lang_declared))
     fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
       magrittr::set_names(translate_app(., lang_declared))
+
+    
+    
+    
     quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
         magrittr::set_names(translate_app(., lang_declared))
       
@@ -128,12 +130,12 @@ modosin_data <- function(
         format = "yyyy/mm/dd",
         
         # DATA DAY = petita_2
-        max = '2022-02-06',
-        min = '2022-01-01'
+        # max = '2022-02-06',
+        # min = '2022-01-01'
         
         # DATA DAY = datay_day_fire
-         # min = '2021-09-02', # Sys.Date() -364
-         # max = '2022-09-01' # Sys.Date() -1
+         min = '2021-09-02', # Sys.Date() -364
+         max = '2022-09-01' # Sys.Date() -1
 
        
       ),

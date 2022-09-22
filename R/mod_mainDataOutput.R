@@ -131,11 +131,11 @@ mod_mainData <- function(
     # ...............................
     # data_day <- modosindb$get_data("data_day_fire_petita")
     
-    data_day <- modosindb$get_data("data_day_fire_petita_2")
+    # data_day <- modosindb$get_data("data_day_fire_petita_2")
     
     # ..... Definitiva 2..........
     # ...........................
-    # data_day <- modosindb$get_data("data_day_fire")
+    data_day <- modosindb$get_data("data_day_fire")
     
     # ..... Definitiva 1..........
     # ...........................
@@ -171,6 +171,8 @@ mod_mainData <- function(
     
     variable <- data_reactives$variable_reactive
     fecha <- data_reactives$fecha_reactive
+    
+    print(variable)
     
     # ............ CLICK PLOT ID .............
     # ........................................
@@ -215,8 +217,9 @@ mod_mainData <- function(
       .[[1]] %>%
       round(., digits = 4)
     
+    
     #      .) LABEL EVENT
-    #             .) Texto que saldr? en el grafico
+    #             .) Texto que saldrà en el grafico
     #             .) Indica fecha seleccionada + valor de variable escogido
     
     #      .) UNITS
@@ -252,6 +255,43 @@ mod_mainData <- function(
     max_value <- as.numeric(max(data_day_clicked_plot[num_i][[1]]))
     min_value <- as.numeric(min(data_day_clicked_plot[num_i][[1]]))
     
+    
+    # ..... VALUE DATA QUANTILE  .....
+    # ................................
+    
+    #       .) Si los values tienen value en quantil
+    #       .) Tendremos que crear A LA VEZ 2 GRÁFICOS
+    #       .) Y por lo tanto no hará falta un VALUE_DATA_QUANTILE
+    
+    # if(variable %in% c("REW","DDS","LFMC")) {
+    if(variable == "REW" | variable == "DDS"| variable =="LFMC") {  
+      
+      variable_q <- paste0(variable,"_q")
+      
+      num_i_q <- as.numeric(match(variable_q,names(data_day_clicked_plot)))
+      value_date_q <- data_day_clicked_plot %>%
+        dplyr::filter(date == fecha) %>%
+        .[num_i_q] %>%
+        .[[1]] %>%
+        round(., digits = 4)
+      
+    
+      label_event_q <- paste(fecha," = ",variable_q," (",value_date_q,") ")
+      units_q <- translate_app(variable_q, "eng")
+      label_axis_q <- paste(toupper(variable_q)," [ ",units_q," ]")
+      
+      data_day_graph_q <- ts(data_day_clicked_plot[num_i_q][[1]], frequency = 1, start = as.Date(fecha_inicial))
+      
+      max_value_q <- as.numeric(max(data_day_clicked_plot[num_i_q][[1]]))
+      min_value_q <- as.numeric(min(data_day_clicked_plot[num_i_q][[1]]))
+      
+      
+      
+      
+    }
+    
+    print(value_date_q)
+    
     # .................. RANG VALUE .....................
     # ...................................................
     
@@ -279,16 +319,66 @@ mod_mainData <- function(
       )
     }
     
-    res <- data_day_graph %>%
-              dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
-              dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
-              dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
-              dygraphs::dySeries(label = variable) %>%
-              dygraphs::dyLegend(show = "follow") %>%
-              dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom") %>%
-              dygraphs:: dyRangeSelector()
+    # res <- data_day_graph %>%
+    #           dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+    #           dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
+    #           dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
+    #           dygraphs::dySeries(label = variable) %>% 
+    #           { if (variable %in% c("LFMC_q","DDS_q","REW_q")) dygraphs::dyLimit(.,as.numeric(50), color = "red", label = "Média Històrica 40 años") else .  } %>%
+    #           dygraphs::dyLegend(show = "follow") %>%
+    #           dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom") %>%
+    #           dygraphs:: dyRangeSelector()
+    
+    # res <- data_day_graph %>%
+    #   dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+    #   dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
+    #   dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
+    #   dygraphs::dySeries(label = variable) %>%
+    #   dygraphs::dyLegend(show = "follow") %>%
+    #   dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom")
+    # 
+    # res_q <- data_day_graph_q %>%
+    #   dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+    #   dygraphs::dyAxis("y", label = label_axis_q, valueRange = valueRange(variable_q)) %>%
+    #   dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
+    #   dygraphs::dySeries(label = variable_q) %>%
+    #   dygraphs::dyLegend(show = "follow") %>%
+    #   dygraphs::dyEvent(fecha, label_event_q, labelLoc = "bottom")
+    
+    
+    mix <- cbind(data_day_graph,data_day_graph_q)
+    
+    dygraphs::dygraph(mix)
+    
+    
+    # temperature <- ts(frequency = 12, start = c(1980, 1),
+    #                   data = c(7.0, 6.9, 9.5, 14.5, 18.2, 21.5,
+    #                            25.2, 26.5, 23.3, 18.3, 13.9, 9.6))
+    # rainfall <- ts(frequency = 12, start = c(1980, 1),
+    #                data = c(49.9, 71.5, 106.4, 129.2, 144.0, 176.0,
+    #                         135.6, 148.5, 216.4, 194.1, 95.6, 54.4))
+    # 
+    # dygraphs::dygraph(temperature, group = "ejemplo")
+    # dygraphs::dygraph(rainfall, group = "ejemplo")
+    
+    
+    # weather <- cbind(rainfall, temperature)
 
-    return(res)
+
+    # res <- dygraphs::dygraph(weather) %>%
+    #   dygraphs::dySeries("rainfall", axis = 'y2')%>% 
+    #   dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    # return(res)
     
 
   })
