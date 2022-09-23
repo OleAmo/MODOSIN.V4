@@ -59,14 +59,20 @@ modosin_data <- function(
     # ...................................
     
     #       .) Variables según MIQUEL
-    #           .) soil moisture: Theta, Psi, REW
-    #           .) soil moisture: Theta, Psi, REW
-    #           .) climate: PET
-    #           .) evaporative surface: LAI
-    #           .) water balance: Infiltration, RunOff, DeepDrainage, Esoil, Eplant
-    #           .) drought stress: DDS
+    #           .) sequía:              REW, DDS
+    #           .) variable climáticas: PET, Precipitation
+    #           .) variables incendio:  "LFMC","DFMC","SFP","CFP"
+    #           .) quantiles :          "REW_q","DDS_q","LFMC_q"
+  
     
-    
+    drought_vars <- c("REW","DDS") %>%
+      magrittr::set_names(translate_app(., lang_declared))
+    climate_vars <- c("PET", "Precipitation") %>%
+      magrittr::set_names(translate_app(., lang_declared))
+    fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
+      magrittr::set_names(translate_app(., lang_declared))
+    quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
+      magrittr::set_names(translate_app(., lang_declared))
     
     
     # if ( !is.null(input$origen) ) {
@@ -81,21 +87,31 @@ modosin_data <- function(
     
 
     
-    drought_vars <- c("REW","DDS") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    climate_vars <- c("PET", "Precipitation") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-
+    # ....... FECHAS SELECT INPUT ........
+    # ...................................
+    
+    #       .) Calculo MAX / MIN fecha
+    #       .) En función de las dif pruebas de DDBB
+    
+      
+    # DATA DAY = petita_2
+    # date_max <- '2022-02-06'
+    # date_min <- '2022-01-01'
+    
+    # DATA DAY = petita_3
+    date_max <- '2022-07-06'
+    date_min <- '2022-06-01'
     
     
+    # DATA DAY = datay_day_fire
+    # date_max <- '2022-09-18'
+    # date_min <- '2021-09-19'
     
-    quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
-        magrittr::set_names(translate_app(., lang_declared))
-      
-      
-      
+    dif_days <- as.numeric(difftime(date_max, date_min, units = "days"))
+    
+    date_midel <- as.Date(date_min) + dif_days
+    
+     
     shiny::tagList(
         
         # ....... SELECCION VARIABLE ........
@@ -124,20 +140,13 @@ modosin_data <- function(
       
       shiny::tags$style(type = "text/css", ".datepicker { z-index: 99999 !important; }"),
      
+        
       shiny::dateInput(
         ns("fecha"), translate_app('date_daily_label', lang_declared),
-        value = "2022-1-15",
+        value = date_midel,
         format = "yyyy/mm/dd",
-        
-        # DATA DAY = petita_2
-        # max = '2022-02-06',
-        # min = '2022-01-01'
-        
-        # DATA DAY = datay_day_fire
-         min = '2021-09-02', # Sys.Date() -364
-         max = '2022-09-01' # Sys.Date() -1
-
-       
+        max = date_max,
+        min = date_min
       ),
       
       
