@@ -109,7 +109,7 @@ modosin_data <- function(
     
     dif_days <- as.numeric(difftime(date_max, date_min, units = "days"))
     
-    date_midel <- as.Date(date_min) + dif_days
+    date_midel <- as.Date(date_min) + round(dif_days/2, digits = 0)
     
      
     shiny::tagList(

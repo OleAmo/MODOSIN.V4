@@ -55,6 +55,8 @@ mod_mainData <- function(
     progress_type = 'fill',
     fill_direction = 'btt'
   ))
+  
+  
 
   
   # **************************************************************************************
@@ -156,6 +158,21 @@ mod_mainData <- function(
   
   time_serie <- shiny::reactive({
     
+    # ......... INICIALIZAR .............
+    # ...................................
+    
+    #       .) LANG = F(x) definida en APP.R
+    #       .) DATES_LANG = Cambio de nomenclatura de lengua
+    
+    
+    lang_declared <- lang()
+    dates_lang <- switch(
+      lang_declared,
+      'cat' = 'ca',
+      'spa' = 'es',
+      'eng' = 'en'
+    )
+    
     
     shiny::validate(
       shiny::need(main_data_reactives$data_day, 'No data_day selected'),
@@ -172,8 +189,6 @@ mod_mainData <- function(
     
     variable <- data_reactives$variable_reactive
     fecha <- data_reactives$fecha_reactive
-    
-    print(variable)
     
     # ............ CLICK PLOT ID .............
     # ........................................
@@ -196,8 +211,6 @@ mod_mainData <- function(
     
     data_day<- main_data_reactives$data_day
 
-    
-    
     data_day_clicked_plot <- data_day %>% dplyr::filter(plot_id == click_plot_id)
     
     #      .) NUM_i
@@ -212,11 +225,7 @@ mod_mainData <- function(
     
     num_i <- as.numeric(match(variable,names(data_day_clicked_plot)))
     fecha_inicial <- data_day_clicked_plot$date[1]
-    value_date <- data_day_clicked_plot %>%
-      dplyr::filter(date == fecha) %>%
-      .[num_i] %>%
-      .[[1]] %>%
-      round(., digits = 4)
+
     
     
     #      .) LABEL EVENT
@@ -231,9 +240,7 @@ mod_mainData <- function(
     #             .) Texto que saldr? en la coordenada Y
     #             .) Indica fecha seleccionada + valor de variable escogido
     
-
-    label_event <- paste(fecha," = ",variable," (",value_date,") ")
-    units <- translate_app(variable, "eng")
+    units <- translate_app(variable, lang_declared)
     label_axis <- paste(toupper(variable)," [ ",units," ]")
     
     # ..................... GRAPHS ......................
@@ -256,6 +263,8 @@ mod_mainData <- function(
     max_value <- as.numeric(max(data_day_clicked_plot[num_i][[1]]))
     min_value <- as.numeric(min(data_day_clicked_plot[num_i][[1]]))
     
+    data_days_layers <- cbind(data_day_graph)
+    
     
     # ..... VALUE DATA QUANTILE  .....
     # ................................
@@ -264,21 +273,16 @@ mod_mainData <- function(
     #       .) Tendremos que crear A LA VEZ 2 GRÁFICOS
     #       .) Y por lo tanto no hará falta un VALUE_DATA_QUANTILE
     
-    # if(variable %in% c("REW","DDS","LFMC")) {
-    if(variable == "REW" | variable == "DDS"| variable =="LFMC") {  
+    
+    variables_quantiles <- c("REW_q","DDS_q","LFMC_q")
+    variables_pre_quantiles <- c("REW","DDS","LFMC")
+    
+    if( variable %in% variables_quantiles | variable %in% variables_pre_quantiles ) {  
       
-      variable_q <- paste0(variable,"_q")
+      variable_q <- if (variable %in% variables_pre_quantiles) paste0(variable,"_q") else variable      
       
       num_i_q <- as.numeric(match(variable_q,names(data_day_clicked_plot)))
-      value_date_q <- data_day_clicked_plot %>%
-        dplyr::filter(date == fecha) %>%
-        .[num_i_q] %>%
-        .[[1]] %>%
-        round(., digits = 4)
-      
-    
-      label_event_q <- paste(fecha," = ",variable_q," (",value_date_q,") ")
-      units_q <- translate_app(variable_q, "eng")
+      units_q <- translate_app(variable_q, lang_declared)
       label_axis_q <- paste(toupper(variable_q)," [ ",units_q," ]")
       
       data_day_graph_q <- ts(data_day_clicked_plot[num_i_q][[1]], frequency = 1, start = as.Date(fecha_inicial))
@@ -286,12 +290,10 @@ mod_mainData <- function(
       max_value_q <- as.numeric(max(data_day_clicked_plot[num_i_q][[1]]))
       min_value_q <- as.numeric(min(data_day_clicked_plot[num_i_q][[1]]))
       
-      
-      
+      data_days_layers <- cbind(data_day_graph,data_day_graph_q)
       
     }
     
-    print(value_date_q)
     
     # .................. RANG VALUE .....................
     # ...................................................
@@ -320,15 +322,23 @@ mod_mainData <- function(
       )
     }
     
+    # .......... ORIGINAL ...............
+    # ...................................
+    
     # res <- data_day_graph %>%
     #           dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
     #           dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
     #           dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
-    #           dygraphs::dySeries(label = variable) %>% 
+    #           dygraphs::dySeries(label = variable) %>%
     #           { if (variable %in% c("LFMC_q","DDS_q","REW_q")) dygraphs::dyLimit(.,as.numeric(50), color = "red", label = "Média Històrica 40 años") else .  } %>%
     #           dygraphs::dyLegend(show = "follow") %>%
     #           dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom") %>%
     #           dygraphs:: dyRangeSelector()
+    
+    
+    # ........ 2 SEPARADOS ..............
+    # ...................................
+    
     
     # res <- data_day_graph %>%
     #   dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
@@ -347,37 +357,51 @@ mod_mainData <- function(
     #   dygraphs::dyEvent(fecha, label_event_q, labelLoc = "bottom")
     
     
-    mix <- cbind(data_day_graph,data_day_graph_q)
+  
     
-    dygraphs::dygraph(mix)
+    # .......... FUNCIONA ...............
+    # ...................................
     
-    
-    # temperature <- ts(frequency = 12, start = c(1980, 1),
-    #                   data = c(7.0, 6.9, 9.5, 14.5, 18.2, 21.5,
-    #                            25.2, 26.5, 23.3, 18.3, 13.9, 9.6))
-    # rainfall <- ts(frequency = 12, start = c(1980, 1),
-    #                data = c(49.9, 71.5, 106.4, 129.2, 144.0, 176.0,
-    #                         135.6, 148.5, 216.4, 194.1, 95.6, 54.4))
-    # 
-    # dygraphs::dygraph(temperature, group = "ejemplo")
-    # dygraphs::dygraph(rainfall, group = "ejemplo")
-    
-    
-    # weather <- cbind(rainfall, temperature)
+    #    .) Excepto quando SELECCIONAMOS 1ro VARIBALBE Quantil
+    #    .) El gráfico doble es SOLO de QUANTILES
+    #    .) Tendria que ser QUANTIL + NO QUANTIL
 
+    data_days_layers %>%
+      dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+      dygraphs::dySeries(label = variable, axis = 'y') %>%
 
-    # res <- dygraphs::dygraph(weather) %>%
-    #   dygraphs::dySeries("rainfall", axis = 'y2')%>% 
-    #   dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) 
+      
+      { if (variable %in% variables_pre_quantiles | variable %in% variables_quantiles )
+        dygraphs::dySeries(.,label = variable_q, axis = 'y2') %>%
+          dygraphs::dyAxis(.,"y2", label = label_axis_q, valueRange = valueRange(variable_q))
+        else .  } %>%
+
+      
+      # .... PRUEVA DOBLE IF .........
+      # ..............................
+      
+      #    .) Prueva DOBLE IF interno
+
+      # { if (variable %in% variables_pre_quantiles)
+      #   dygraphs::dySeries(.,label = variable_q, axis = 'y2') %>%
+      #     dygraphs::dyAxis(.,"y2", label = label_axis_q, valueRange = valueRange(variable_q))
+      # 
+      #   else .  } %>%
+      #   
+      # { if (variable %in% variables_quantiles)
+      #   dygraphs::dySeries(.,label = variable, axis = 'y2') %>%
+      #     dygraphs::dyAxis(.,"y2", label = label_axis, valueRange = valueRange(variable))
+      # 
+      #     else .  } %>%
+        
+     
+     
+      dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
+      dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.1)  %>%
+      dygraphs::dyEvent(fecha, fecha, labelLoc = "top")
+
     
-    
-    
-    
-    
-    
-    
-    
-    
+
 
     # return(res)
     
