@@ -73,11 +73,18 @@ modosin_app <- function() {
     shiny::tags$head(
       # js script,
       shiny::tags$script(keep_alive_script),
-      # custom css
-      shiny::includeCSS(system.file('resources', 'modosin.css', package = 'modosinApp')),
-      # corporative image css
-      shiny::includeCSS(system.file('resources', 'corp_image.css', package = 'modosinApp'))
+      # shiny::includeCSS("inst/resources/plotdrought_v2.css"),
+      # # custom css
+      # shiny::includeCSS(system.file('resources', 'plotdrought.css', package = 'modosinApp')),
+      # # corporative image css
+      # shiny::includeCSS(system.file('resources', 'corp_image.css', package = 'modosinApp')),
+      
+      shiny::includeCSS("inst/resources/plotdrought.css"),
+      shiny::includeCSS("inst/resources/corp_image.css"),
+      
     ),
+    
+    
 
     # **************************************************************************************
     # ------------------------------  //  NAVBAR   // --------------------------------------

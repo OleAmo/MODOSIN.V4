@@ -1,0 +1,17 @@
+.waiter-overlay-content > h3 {
+  width: 100%;
+  left: 0%;
+  text-align: center;
+  color: #1C1C20;
+}
+.waiter-overlay-content > p {
+  width: 100%;
+  left: 0%;
+  text-align: center;
+  color: #1C1C20;
+}
+
+.ldBar-label {
+  color: #1C1C20;
+}
+  
