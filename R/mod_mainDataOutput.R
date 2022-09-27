@@ -288,50 +288,38 @@ mod_mainData <- function(
     variables_quantiles <- c("REW_q","DDS_q","LFMC_q")
     variables_pre_quantiles <- c("REW","DDS","LFMC")
     
-    if( variable %in% variables_pre_quantiles) {  
+    
+
+    if(variable %in% variables_pre_quantiles | variable %in% variables_quantiles) { 
       
-      var <- variable
-      var_q <-paste0(variable,"_q")       
       
+      
+      var   <- ifelse(variable %in% variables_pre_quantiles, variable , strsplit(variable,"_q")[[1]][1])
+      var_q <- ifelse(variable %in% variables_pre_quantiles, paste0(variable,"_q"), variable)
+      
+      num_i <- as.numeric(match(var,names(data_day_clicked_plot)))
       num_i_q <- as.numeric(match(var_q,names(data_day_clicked_plot)))
- 
-      label_axis_q <- translate_app("quantiles_axis_label", lang_declared)
       
+      data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
       data_day_graph_q <- ts(data_day_clicked_plot[num_i_q][[1]], frequency = 1, start = as.Date(fecha_inicial))
       
-
+      data_days_layers <- cbind(data_day_graph, data_day_graph_q)
       
-      data_days_layers <- cbind(data_day_graph , data_day_graph_q)
-      
-      
-    } else if (variable %in% variables_quantiles) {
-      
-      var_q <- variable
-      var <-strsplit(var_q,"_q")[[1]][1]
+      # .... ESTIL DYGRAPH ....
+      # .......................
       
       var_def <- translate_app(var, lang_declared)
       var_short <- translate_app(paste0("short_",var), lang_declared)
-
       
-      # .....TRANSFORMACION ...
-      # .......................
-    
-      
-      max_value_q <- max_value
-      min_value_q <- min_value
-
-      data_day_graph_q <- data_day_graph
-
-      num_i <- as.numeric(match(var,names(data_day_clicked_plot)))
-      units <- translate_app(var, lang_declared)
       label_axis_q <- translate_app("quantiles_axis_label", lang_declared)
-
-      data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
-
-      data_days_layers <- cbind(data_day_graph, data_day_graph_q)
       
-      
-    } 
+    }
+    
+    
+    
+    
+    
+    
     
     # .................. RANG VALUE .....................
     # ...................................................
