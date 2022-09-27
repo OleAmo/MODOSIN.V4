@@ -237,31 +237,42 @@ mod_mainData <- function(
     #             .) Lo usaremos al AXIS Y
     
     #      .) LABEL AXIS
-    #             .) Texto que saldr? en la coordenada Y
+    #             .) Texto que saldrá en la coordenada Y
     #             .) Indica fecha seleccionada + valor de variable escogido
     
-    units <- translate_app(variable, lang_declared)
-    label_axis <- paste(toupper(variable)," [ ",units," ]")
+    #      .) VAR DEF
+    #             .) xxxxxxxxxxxxxxxx
     
-    # ..................... GRAPHS ......................
+    #      .) VAR SHORT
+    #             .) yyyyyyyyyyyyyyyy
+    
+    var_def <- translate_app(variable, lang_declared)
+    var_short <- translate_app(paste0("short_",variable), lang_declared)
+    var_short_q <- translate_app("short_Quantile", lang_declared)
+
+    
+    # ................ DYGRAPHS DATOS ...................
     # ...................................................
     
     #       .) Creo FORMATO TS (Time Serie)
-    #       .) Aplico EDICION con DYGRAPHS
-    
-    #             .) MAIN = Título
-    #             .) AXIS = edito las Y
-    #             .) OPTIONS = edito gráfico
-    #             .) SERIE = texto del menú que sale en mover el mouse
-    #             .) EVENT = en la fecha concreta escribir texto
-    #             .) SHADING = Sombreado entre fecha y fecha
-    #             .) RANGE SELECTOR = para hacer zoom al gr?fico
+    #       .) Es el formato que define los VALORES a Reprentar
+    #       .) Definimos Frecuencia y fecha start
 
 
     data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
     
     max_value <- as.numeric(max(data_day_clicked_plot[num_i][[1]]))
     min_value <- as.numeric(min(data_day_clicked_plot[num_i][[1]]))
+    
+    # ................ LAYER DYGRAPH ....................
+    # ...................................................
+    
+    #       .) Si queremos representar 2 grpaficos a la vez
+    #       .) Necesitamos un LAYER con todas la capas
+    #       .) Usamos el CBIND para unirlar
+    #       .) En este caso es UNA SOLCA CAPA
+    #       .) Mas adelante especificamos que si la VARIABLES es QUANTIL
+    #       .) El LAYER tendrá 2 capas
     
     data_days_layers <- cbind(data_day_graph)
     
@@ -277,23 +288,50 @@ mod_mainData <- function(
     variables_quantiles <- c("REW_q","DDS_q","LFMC_q")
     variables_pre_quantiles <- c("REW","DDS","LFMC")
     
-    if( variable %in% variables_quantiles | variable %in% variables_pre_quantiles ) {  
+    if( variable %in% variables_pre_quantiles) {  
       
-      variable_q <- if (variable %in% variables_pre_quantiles) paste0(variable,"_q") else variable      
+      var <- variable
+      var_q <-paste0(variable,"_q")       
       
-      num_i_q <- as.numeric(match(variable_q,names(data_day_clicked_plot)))
-      units_q <- translate_app(variable_q, lang_declared)
-      label_axis_q <- paste(toupper(variable_q)," [ ",units_q," ]")
+      num_i_q <- as.numeric(match(var_q,names(data_day_clicked_plot)))
+ 
+      label_axis_q <- translate_app("quantiles_axis_label", lang_declared)
       
       data_day_graph_q <- ts(data_day_clicked_plot[num_i_q][[1]], frequency = 1, start = as.Date(fecha_inicial))
       
-      max_value_q <- as.numeric(max(data_day_clicked_plot[num_i_q][[1]]))
-      min_value_q <- as.numeric(min(data_day_clicked_plot[num_i_q][[1]]))
+
       
-      data_days_layers <- cbind(data_day_graph,data_day_graph_q)
+      data_days_layers <- cbind(data_day_graph , data_day_graph_q)
       
-    }
+      
+    } else if (variable %in% variables_quantiles) {
+      
+      var_q <- variable
+      var <-strsplit(var_q,"_q")[[1]][1]
+      
+      var_def <- translate_app(var, lang_declared)
+      var_short <- translate_app(paste0("short_",var), lang_declared)
+
+      
+      # .....TRANSFORMACION ...
+      # .......................
     
+      
+      max_value_q <- max_value
+      min_value_q <- min_value
+
+      data_day_graph_q <- data_day_graph
+
+      num_i <- as.numeric(match(var,names(data_day_clicked_plot)))
+      units <- translate_app(var, lang_declared)
+      label_axis_q <- translate_app("quantiles_axis_label", lang_declared)
+
+      data_day_graph <- ts(data_day_clicked_plot[num_i][[1]], frequency = 1, start = as.Date(fecha_inicial))
+
+      data_days_layers <- cbind(data_day_graph, data_day_graph_q)
+      
+      
+    } 
     
     # .................. RANG VALUE .....................
     # ...................................................
@@ -322,85 +360,61 @@ mod_mainData <- function(
       )
     }
     
-    # .......... ORIGINAL ...............
-    # ...................................
+
+    # ............... DYGRAPHS EDICION ..................
+    # ...................................................
     
-    # res <- data_day_graph %>%
-    #           dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
-    #           dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
-    #           dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
-    #           dygraphs::dySeries(label = variable) %>%
-    #           { if (variable %in% c("LFMC_q","DDS_q","REW_q")) dygraphs::dyLimit(.,as.numeric(50), color = "red", label = "Média Històrica 40 años") else .  } %>%
-    #           dygraphs::dyLegend(show = "follow") %>%
-    #           dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom") %>%
-    #           dygraphs:: dyRangeSelector()
+    #       .) Aplico EDICION con DYGRAPHS
     
-    
-    # ........ 2 SEPARADOS ..............
-    # ...................................
-    
-    
-    # res <- data_day_graph %>%
-    #   dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
-    #   dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
-    #   dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
-    #   dygraphs::dySeries(label = variable) %>%
-    #   dygraphs::dyLegend(show = "follow") %>%
-    #   dygraphs::dyEvent(fecha, label_event, labelLoc = "bottom")
-    # 
-    # res_q <- data_day_graph_q %>%
-    #   dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
-    #   dygraphs::dyAxis("y", label = label_axis_q, valueRange = valueRange(variable_q)) %>%
-    #   dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.4) %>%
-    #   dygraphs::dySeries(label = variable_q) %>%
-    #   dygraphs::dyLegend(show = "follow") %>%
-    #   dygraphs::dyEvent(fecha, label_event_q, labelLoc = "bottom")
-    
+    #             .) MAIN = Título
+    #             .) AXIS = edito las Y
+    #             .) OPTIONS = edito gráfico
+    #             .) SERIE = texto del menú que sale en mover el mouse
+    #             .) EVENT = en la fecha concreta escribir texto
+    #             .) SHADING = Sombreado entre fecha y fecha
+    #             .) RANGE SELECTOR = para hacer zoom al gráfico
     
   
     
-    # .......... FUNCIONA ...............
-    # ...................................
-    
-    #    .) Excepto quando SELECCIONAMOS 1ro VARIBALBE Quantil
-    #    .) El gráfico doble es SOLO de QUANTILES
-    #    .) Tendria que ser QUANTIL + NO QUANTIL
+    if (variable %in% variables_pre_quantiles ) {
 
     data_days_layers %>%
       dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
-      dygraphs::dySeries(label = variable, axis = 'y') %>%
-
       
-      { if (variable %in% variables_pre_quantiles | variable %in% variables_quantiles )
-        dygraphs::dySeries(.,label = variable_q, axis = 'y2') %>%
-          dygraphs::dyAxis(.,"y2", label = label_axis_q, valueRange = valueRange(variable_q))
-        else .  } %>%
+      dygraphs::dySeries(label = var_short, axis = 'y') %>%
+      dygraphs::dyAxis("y", label = var_def, valueRange = valueRange(var)) %>%
 
+      dygraphs::dySeries(label = var_short_q, axis = 'y2') %>%
+      dygraphs::dyAxis("y2", label = label_axis_q, valueRange = valueRange(var_q)) %>%
       
-      # .... PRUEVA DOBLE IF .........
-      # ..............................
-      
-      #    .) Prueva DOBLE IF interno
-
-      # { if (variable %in% variables_pre_quantiles)
-      #   dygraphs::dySeries(.,label = variable_q, axis = 'y2') %>%
-      #     dygraphs::dyAxis(.,"y2", label = label_axis_q, valueRange = valueRange(variable_q))
-      # 
-      #   else .  } %>%
-      #   
-      # { if (variable %in% variables_quantiles)
-      #   dygraphs::dySeries(.,label = variable, axis = 'y2') %>%
-      #     dygraphs::dyAxis(.,"y2", label = label_axis, valueRange = valueRange(variable))
-      # 
-      #     else .  } %>%
-        
-     
-     
-      dygraphs::dyAxis("y", label = label_axis, valueRange = valueRange(variable)) %>%
       dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.1)  %>%
       dygraphs::dyEvent(fecha, fecha, labelLoc = "top")
 
-    
+    } else if (variable  %in% variables_quantiles) {
+      
+      data_days_layers %>%
+        dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+        
+        dygraphs::dySeries(label = var_short, axis = 'y') %>%
+        dygraphs::dyAxis("y", label = var_def, valueRange = valueRange(var)) %>%
+        
+        dygraphs::dySeries(label = var_short_q, axis = 'y2') %>%
+        dygraphs::dyAxis("y2", label = label_axis_q, valueRange = valueRange(var_q)) %>%
+      
+        dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.1)  %>%
+        dygraphs::dyEvent(fecha, fecha, labelLoc = "top")
+      
+      
+    } else {
+      data_days_layers %>%
+        dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
+        
+        dygraphs::dySeries(label = var_short, axis = 'y') %>%
+        dygraphs::dyAxis("y", label = var_def, valueRange = valueRange(variable)) %>%
+        
+        dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.1)  %>%
+        dygraphs::dyEvent(fecha, fecha, labelLoc = "top")
+    }
 
 
     # return(res)

@@ -33,6 +33,23 @@ tibble::tribble(
   "SFP","Potencial Foc de Superfície [0-9]","Potential Surface Fire [0-9]","Potencial Fuego de Superficie [0-9]",
   "CFP","Potencial Foc de Capçada [0-9]","Potential Crown Fire [0-9]","Potencial Fuego de Copa [0-9]",
   
+  
+  
+  # .......... VARIABLES .........
+  # ..............................
+  
+  "short_Precipitation", "Precipitació", "Precipitation", "Precipitación ",
+  "short_PET", "Evapo-transpiració", "Pvapo-transpiration", "Evap-transpiración potencial (mm/día)",
+  
+  "short_Quantile", "Quantil Històric", "Historical Quantile", "Cuantil Histórico",
+  "short_REW", "Aigua disponible", "Available soil", "Agua disponible",
+  "short_DDS", "Estrés vegetació", "Stress vegetation", "Estrés",
+  "short_LFMC", "H.Combustible Viu", "L.Fuel Moisture","H.Combustible Vivo",
+ 
+  "short_DFMC", "H.Combustible Mort", "D.Fuel Moisture","H. Combustible Muerto",
+  "short_SFP","P.Foc Superfície","P.Surface Fire","P.Fuego Superficie",
+  "short_CFP","P.Foc Capçada","P.Crown Fire","P.Fuego Copa",
+  
 
   # ....... COMBO VARIABLES ......
   # ..............................
@@ -56,6 +73,7 @@ tibble::tribble(
   "date_daily_label", 'Data', 'Date', 'Fecha',
   'series_tab_translation', "Sèries temporals", "Time series", "Series temporales",
   "type_legend_label", "Canvi Llegenda", 'Legend Change','Cambio Leyenda',
+  'quantiles_axis_label','Quantils Comparació Històrica (1981 - 2020)','Quantiles Historical Comparison (1981 - 2020)','Cuantiles Comparación Histórica (1981 - 2020)',
   
   # ....... SCREEN WAITING .......
   # ..............................
