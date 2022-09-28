@@ -361,20 +361,31 @@ mod_mainData <- function(
     
     #             .) MAIN = Título
     #             .) SERIE = texto del menú que sale en mover el mouse
+    #                    .) strokewidth = en función de la variable seleccionada
     #             .) AXIS = edito las Y
     #             .) OPTIONS = edito gráfico
-    #             .) EVENT = en la fecha concreta escribir texto (tambien en este caso es la fecha)
+    #             .) EVENT = en la fecha concreta escribir texto (también en este caso es la fecha)
 
     
     if (variable %in% variables_quantiles) {
+      
+      if(grepl("_q",variable)) {
+        width_1 <- 1 
+        width_2 <- 2
+        
+      } else {
+        width_1 <- 2 
+        width_2 <- 1
+      }
+             
 
     data_days_layers %>%
       dygraphs::dygraph(. , main = paste("Plot_id = ",click_plot_id)) %>%
       
-      dygraphs::dySeries(label = var_short, axis = 'y') %>%
+      dygraphs::dySeries(label = var_short, axis = 'y', strokeWidth = width_1) %>%
       dygraphs::dyAxis("y", label = var_def, valueRange = valueRange(var)) %>%
 
-      dygraphs::dySeries(label = var_short_q, axis = 'y2') %>%
+      dygraphs::dySeries(label = var_short_q, axis = 'y2', strokeWidth = width_2) %>%
       dygraphs::dyAxis("y2", label = label_axis_q, valueRange = valueRange(var_q)) %>%
       
       dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.1)  %>%
