@@ -1,31 +1,16 @@
 # library(tidyverse)
-# source('data-raw/polygon_objects_creation.R')
+# 
 # source('data-raw/translations.R')
+# source('data-raw/polygon_objects_creation.R')
 # source('data-raw/palette_builder.R')
 # 
-# # use_data internal for all
-# # usethis::use_data(
-# #   app_traduccions,
-# #   comarcas, provincias,
-# #   provincias_simplify, comarcas_simplify,
-# #   internal = TRUE, overwrite = TRUE
-# # )
-# 
-# 
-# # devtools::use_data(
-# #   app_traduccions,
-# #   comarcas, provincias,
-# #   provincias_simplify, comarcas_simplify,
-# #   internal = TRUE, overwrite = TRUE
-# # )
-# # 
-# 
 # usethis::use_data(
-#   app_traduccions,
-#   comarcas,provincias,
-#   provincias_simplify,comarcas_simplify,
+#   
+#   all_polygons, all_parques, provincias, catalunya, parques, ordesa, aiguestortes, peri_total, peri_ordesa, peri_aiguestortes,
+#   palettes_dictionary,
+#   language_dictionary,
+#   
+#   internal = TRUE, overwrite = TRUE
+# )
 # 
-#   internal = TRUE, overwrite = TRUE)
-# 
-# 
-# 
+#  
