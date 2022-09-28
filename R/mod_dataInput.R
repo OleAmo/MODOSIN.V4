@@ -74,17 +74,6 @@ modosin_data <- function(
     quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
       magrittr::set_names(translate_app(., lang_declared))
     
-    
-    # if ( !is.null(input$origen) ) {
-    #    origen <- input$origen
-    #   switch (origen,
-    #           "S" = variables_lista <- c("LFMC","DFMC","SFP"),
-    #           variables_lista <- c("LFMC","DFMC","SFP","CFP")
-    #   )
-    # } else {
-    #   variables_lista <- c("LFMC","DFMC","SFP","CFP")
-    # }
-    
 
     
     # ....... FECHAS SELECT INPUT ........
