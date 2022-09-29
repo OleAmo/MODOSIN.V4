@@ -54,12 +54,14 @@ mod_map <- function(
   #              .) Definimos un MAPA BASE ESTANDAR
   #              .) Con tipos de fondo (OSM, RELIEF,...)
   #              .) Sin ningun tipus de GEOMETRIA
+  #              .) Añadimos RESET BUTTON (para resetear view)
   
   output$map_daily <- leaflet::renderLeaflet({
       
 
     leaflet::leaflet() %>%
       leaflet::setView(2.2018256,41.089058, zoom=7) %>%
+      leaflet.extras::addResetMapButton() %>%
       leaflet::addTiles(group = "OSM") %>%
       leaflet::addProviderTiles(
         leaflet::providers$Esri.WorldShadedRelief,
@@ -72,7 +74,7 @@ mod_map <- function(
       leaflet::addLayersControl(
         baseGroups = c(translate_app('Relief', lang()),translate_app('Imagery', lang()), "OSM"),
         options = leaflet::layersControlOptions(collapsed = FALSE, autoZIndex = FALSE)
-      ) 
+      )     
       
     
   })
@@ -625,7 +627,6 @@ mod_map <- function(
           color = ~ pal_plot(data_filter[[2]]),
           label = labels_plot,
           labelOptions = labelOptions(interactive = TRUE)) %>%
-
         leaflet::clearControls() %>%
         leaflet::addLegend(
           position = "bottomright",
@@ -633,7 +634,7 @@ mod_map <- function(
           pal = pal_legend,
           values = value_legend,
           labFormat = labelFormat(transform = function(x) rev(x)),
-          opacity = 1)
+          opacity = 1)  
 
       
 
