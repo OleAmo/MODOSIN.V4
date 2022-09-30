@@ -271,7 +271,9 @@ modosin_app <- function() {
     # ..............................
     
     data_reactives <- shiny::callModule(
-      modosin_data ,'modosin_DATA', modosindb, lang
+      modosin_data ,'modosin_DATA', modosindb, 
+      lang,  main_data_reactives
+     
     )
     
     # map

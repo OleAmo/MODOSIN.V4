@@ -28,16 +28,12 @@ modosin_dataInput <- function(id) {
 #' @export
 modosin_data <- function(
   input, output, session,
-  modosindb, lang
+  modosindb, lang, main_data_reactives
+   
 ) {
 
   # renderUI ####
   output$mod_data_container <- shiny::renderUI({
-    
-    
-    
-    
-    
     
     # ......... INICIALIZAR .............
     # ...................................
@@ -62,6 +58,47 @@ modosin_data <- function(
     #       .) Calculo MAX / MIN fecha
     #       .) En función de las dif pruebas de DDBB
     
+   
+    
+    
+    
+    
+    
+    # ....... SCRIPT DEFINITIVO .........
+    # ...................................
+    
+    #       .) Script definitivo para la APP
+    #       .) Calculará el max/min de la TABLA disponible en la BBDD
+    
+    
+    # data_day <- main_data_reactives$data_day
+    # 
+    # print(paste("data_day = ",data_day))
+    # 
+    # if( is.null((data_day))){
+    #   date_max <- '2022-07-06'
+    #   date_min <- '2022-07-04'
+    #   # print("NULL")
+    #   # print(date_max)
+    #   
+    #   
+    # } else {
+    #   data_day <- main_data_reactives$data_day
+    #   
+    #   date_max <- max(data_day$date)
+    #   date_min <- min(data_day$date)
+    #   
+    #   print("NO NULL")
+    # }
+    # 
+    # print(paste(date_max,'-',date_min))
+    # 
+    
+    
+    
+    
+    
+    
       
     # DATA DAY = petita_2
     # date_max <- '2022-02-06'
@@ -71,9 +108,10 @@ modosin_data <- function(
     date_max <- '2022-07-06'
     date_min <- '2022-06-01'
     
+
     
     # DATA DAY = datay_day_fire
-    # date_max <- '2022-09-18'
+    # date_max <- '2022-09-18'  
     # date_min <- '2021-09-19'
     
     dif_days <- as.numeric(difftime(date_max, date_min, units = "days"))
