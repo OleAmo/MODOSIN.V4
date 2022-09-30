@@ -55,27 +55,7 @@ modosin_data <- function(
       'eng' = 'en'              
     )
 
-    # ....... SELECCION VARIABLE ........
-    # ...................................
-    
-    #       .) Variables según MIQUEL
-    #           .) sequía:              REW, DDS
-    #           .) variable climáticas: PET, Precipitation
-    #           .) variables incendio:  "LFMC","DFMC","SFP","CFP"
-    #           .) quantiles :          "REW_q","DDS_q","LFMC_q"
-  
-    
-    drought_vars <- c("REW","DDS") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    climate_vars <- c("PET", "Precipitation") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    fire_vars <- c("LFMC","DFMC","SFP","CFP") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
-      magrittr::set_names(translate_app(., lang_declared))
-    
 
-    
     # ....... FECHAS SELECT INPUT ........
     # ...................................
     
@@ -103,18 +83,20 @@ modosin_data <- function(
      
     shiny::tagList(
         
-        # ....... SELECCION VARIABLE ........
-        # ...................................
+      
+        # ...... SELECCION VARIABLE CAMBIENTE .....
+        # .........................................
         
-        shiny::selectInput(
-          ns('variable'), translate_app('var_daily_label', lang_declared),
-          choices = shiny_set_names(list(
-            'drought variables' = drought_vars,
-            'climate variables' = climate_vars,
-            'fire variables' = fire_vars,
-            'quantiles variables' = quantiles_vars
-          ), lang_declared)
+        #      .) Creamos un UIOUTPUT
+        #      .) Queremos un SELECTINPUT que varie en f(x) de ORIGEN
+        #      .) Si el ORIGEN es = MATOLLAR
+        #      .) El select INPUT varia
+        
+        
+        shiny::uiOutput(
+          ns('selectInput_vars')
         ),
+        
 
       # ........ SELECCION FECHA ..........
       # ...................................
@@ -170,20 +152,7 @@ modosin_data <- function(
   })           
 
   
-  # shiny::observeEvent(
-  #   eventExpr = input$origen,
-  #   handlerExpr = {
-  #     if(input$origen == "S"){
-  #       list_variables <- c("LFMC","DFMC","SFP")
-  #     } else {
-  #       list_variables <- c("LFMC","DFMC","SFP","CFP")
-  #     }
-  #     
-  #     print(list_variables)
-  #     
-  #   },
-  #   priority = 1000
-  # )
+
  
   # ..................... DEVOLVER REACTIVOS  ....................
   # ..............................................................
@@ -218,13 +187,102 @@ modosin_data <- function(
   })
   
   
+  # ............ OBSERVE EVENT ................
+  # ...........................................
+  
+  #      .) Es un OBSERVER de un SOLO REACTIVO
+  #      .) En este caso el ORIGEN
+  
+  #      .) En variar ORIGEN (Combo)
+  #      .) Hay un SWITCH que definie FIRE_VARS
+  #      .) Y un OUTPUT RENDER UI
+  #      .) Defeine un NUEVO SelectInput
+  #      .) El SelectInput SE CREA donde el OUTPUT define ( $selectInput_vars )
+  
+  
+  shiny::observeEvent(
+    eventExpr = input$origen,
+    handlerExpr = {
+      
+      # ......... INICIALIZAR .............
+      # ...................................
+      
+      #       .) NS = IDs únicos
+      #       .) LANG = F(x) definida en APP.R
+      #       .) DATES_LANG = Cambio de nomenclatura de lengua
+      
+      ns <- session$ns
+      
+      lang_declared <- lang()
+      dates_lang <- switch(
+        lang_declared,
+        'cat' = 'ca',
+        'spa' = 'es',
+        'eng' = 'en'              
+      )
+      
+      # ....... VARIABLES MATOLLAR ........
+      # ...................................
+      
+      #       .) En el caso MATOLLAR
+      #       .) NO HAY POTENCIAL FUEGO COPA (Ya que son tienen suficiente altura)
+      #       .) Por lo tanto:
+      #       .) Cuando se seleccione MATOLLAR ("S")
+      #       .) No aparecerá CFP
+      
+      origen <-  input$origen
+      
+      switch (origen,
+              "S" = fire_variables <- c("LFMC","DFMC","SFP"),
+              fire_variables <- c("LFMC","DFMC","SFP","CFP")
+      )
+      
+      # ...... VARIABLE SELECTINPUT .......
+      # ...................................
+      
+      #       .) Variables según MIQUEL
+      #           .) sequía:              REW, DDS
+      #           .) variable climáticas: PET, Precipitation
+      #           .) variables incendio:  "LFMC","DFMC","SFP","CFP"
+      #           .) quantiles : 
+      
+      drought_vars <- c("REW","DDS") %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      climate_vars <- c("PET", "Precipitation") %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      fire_vars <- fire_variables %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
+        magrittr::set_names(translate_app(., lang_declared))
+      
+
+      output$selectInput_vars <- shiny::renderUI({
+        
+        shiny::selectInput(
+          ns('variable'), translate_app('var_daily_label', lang_declared),
+          choices = shiny_set_names(list(
+            'drought variables' = drought_vars,
+            'climate variables' = climate_vars,
+            'fire variables' = fire_vars,
+            'quantiles variables' = quantiles_vars
+          ), lang_declared)
+        )
+        
+        
+      })
+      
+      
+      
+    })
+  
 
   # -------------------------- VALORES REACTIVOS ----------------------------
   # -------------------------------------------------------------------------
 
-  #      .) Quiero tener constantemente 2 valores ACTIVOS
-  #      .) FECHA / VARIABLE
-  #      .) Son los que me darán la TABLA y la VARIABLE a VISUALIZAR
+  #      .) Quiero tener constantemente 4 valores CONTROLADOS
+  #      .) FECHA / VARIABLE / ORIGEN / LEGEND MODIFY
+  #      .) Cuando VARIAN
+  #      .) Las RETORNO para que otros MÓDULOS los aprovechen (el MAPS de LEAFLET)
 
 
 
