@@ -38,17 +38,29 @@ tibble::tribble(
   # .......... VARIABLES .........
   # ..............................
   
-  "short_Precipitation", "Precipitació", "Precipitation", "Precipitación ",
-  "short_PET", "Evapo-transpiració", "Pvapo-transpiration", "Evap-transpiración potencial (mm/día)",
+  # "short_Precipitation", "Precipitació", "Precipitation", "Precipitación ",
+  # "short_PET", "Evapo-transpiració", "Evapo-transpiration", "Evap-transpiración potencial (mm/día)",
+  # 
+  # "short_Quantile", "Quantil Històric", "Historical Quantile", "Cuantil Histórico",
+  # "short_REW", "Aigua disponible", "Available soil", "Agua disponible",
+  # "short_DDS", "Estrés vegetació", "Stress vegetation", "Estrés vegetación",
+  # "short_LFMC", "H.Combustible Viu", "L.Fuel Moisture","H.Combustible Vivo",
+  # 
+  # "short_DFMC", "H.Combustible Mort", "D.Fuel Moisture","H. Combustible Muerto",
+  # "short_SFP","P.Foc Superfície","P.Surface Fire","P.Fuego Superficie",
+  # "short_CFP","P.Foc Capçada","P.Crown Fire","P.Fuego Copa",
   
-  "short_Quantile", "Quantil Històric", "Historical Quantile", "Cuantil Histórico",
-  "short_REW", "Aigua disponible", "Available soil", "Agua disponible",
-  "short_DDS", "Estrés vegetació", "Stress vegetation", "Estrés",
-  "short_LFMC", "H.Combustible Viu", "L.Fuel Moisture","H.Combustible Vivo",
- 
-  "short_DFMC", "H.Combustible Mort", "D.Fuel Moisture","H. Combustible Muerto",
-  "short_SFP","P.Foc Superfície","P.Surface Fire","P.Fuego Superficie",
-  "short_CFP","P.Foc Capçada","P.Crown Fire","P.Fuego Copa",
+  "short_Precipitation", "Precip.", "Precip.", "Precip. ",
+  "short_PET", "E-T", "E-T", "E-T",
+  
+  "short_Quantile", "Q.Històric", "Historical.Q", "C.Histórico",
+  "short_REW", "Aigua dis.", "Avai.water", "Agua dis.",
+  "short_DDS", "Estrés veg.", "Stress veg.", "Estrés veg.",
+  "short_LFMC", "H.C.Viu", "L.F.Contents","H.C.Vivo",
+  
+  "short_DFMC", "H.C.Mort", "D.F.Contents","H.C.Muerto",
+  "short_SFP","P.Foc.Sup.","P.Surf.Fire","P.Fuego.Sup.",
+  "short_CFP","P.Foc.Cap.","P.Crown.Fire","P.Fuego.Copa",
   
 
   # ....... COMBO VARIABLES ......
