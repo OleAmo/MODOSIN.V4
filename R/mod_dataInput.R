@@ -51,73 +51,60 @@ modosin_data <- function(
       'eng' = 'en'              
     )
 
+    # ********************************************
+    # ------       FECHAS DATE INPUT     ---------
+    # ********************************************
+    
+    #       .) OBJETIVO
+    #       .) Quiero LIMITAR el CALENDARIO (DateInput)
+    
+    #       .) NECESITO
+    #       .) Date Max / Date Min
+    #       .) En función de la TABLA (Data_day) de la BBDD
+    
+    #       .) PROBLEMA
+    #       .) Mientras se CARGA la TABLA dela BBDD
+    #       .) Necesitamos UNA DATA para que el CALENDARIO no se BLOQUE
+    
+    #       .) SOLUCION
+    #       .) Cuando DATA_DAY es NULL (se està cargando la TABLA)
+    #       .) Asignaré al CALENDARIO una MAX DATE y MIN DATE respecto la data de HOY
+    #       .) Después usarà el MAX y MIN en f(x) de la TABLA
+    
+    data_day <- main_data_reactives$data_day
 
-    # ....... FECHAS SELECT INPUT ........
-    # ...................................
-    
-    #       .) Calculo MAX / MIN fecha
-    #       .) En función de las dif pruebas de DDBB
-    
-   
-    
-    
-    
-    
-    
-    # ....... SCRIPT DEFINITIVO .........
-    # ...................................
-    
-    #       .) Script definitivo para la APP
-    #       .) Calculará el max/min de la TABLA disponible en la BBDD
-    
-    
-    # data_day <- main_data_reactives$data_day
-    # 
-    # print(paste("data_day = ",data_day))
-    # 
-    # if( is.null((data_day))){
-    #   date_max <- '2022-07-06'
-    #   date_min <- '2022-07-04'
-    #   # print("NULL")
-    #   # print(date_max)
-    #   
-    #   
-    # } else {
-    #   data_day <- main_data_reactives$data_day
-    #   
-    #   date_max <- max(data_day$date)
-    #   date_min <- min(data_day$date)
-    #   
-    #   print("NO NULL")
-    # }
-    # 
-    # print(paste(date_max,'-',date_min))
-    # 
-    
-    
-    
-    
-    
-    
+
+    if( is.null((data_day))){
       
-    # DATA DAY = petita_2
-    # date_max <- '2022-02-06'
-    # date_min <- '2022-01-01'
-    
-    # DATA DAY = petita_3
-    date_max <- '2022-07-06'
-    date_min <- '2022-06-01'
-    
+      date_max <- Sys.Date()+1
+      date_min <- Sys.Date()-1
 
-    
-    # DATA DAY = datay_day_fire
-    # date_max <- '2022-09-18'  
-    # date_min <- '2021-09-19'
+    } else {
+      
+      # data_day <- main_data_reactives$data_day
+
+      date_max <- max(data_day$date)
+      date_min <- min(data_day$date)
+
+     
+    }
+
     
     dif_days <- as.numeric(difftime(date_max, date_min, units = "days"))
-    
     date_midel <- as.Date(date_min) + round(dif_days/2, digits = 0)
     
+    
+    
+    
+    
+    
+    # ********************************************
+    # ----------     ETIQUETAS HTML5    ----------
+    # ********************************************
+    
+    #       .) TAGLIST rea una definición de etiqueta HTML
+    #       .) Creamos los elementos HTML5 con TAGS
+    #       .) DROPDOWNS (SelectIntpu),...
      
     shiny::tagList(
         
@@ -136,11 +123,11 @@ modosin_data <- function(
         ),
         
 
-      # ........ SELECCION FECHA ..........
+      # ........ PROBLEMA FECHA ...........
       # ...................................
       
       #       .) PROBLEMA
-      #       .) Aveces el desplegable de DATE queda devajo del NAV
+      #       .) Aveces el desplegable de DATE queda debajo del NAV
       #       .) Para solucionar-lo
       #           .) https://developer.mozilla.org/es/docs/Web/CSS/z-index
       #           .) Uso los Z-INDEX del CSS
