@@ -33,6 +33,24 @@ tibble::tribble(
   "SFP","Potencial Foc de Superfície [0-9]","Potential Surface Fire [0-9]","Potencial Fuego de Superficie [0-9]",
   "CFP","Potencial Foc de Capçada [0-9]","Potential Crown Fire [0-9]","Potencial Fuego de Copa [0-9]",
   
+  # .......... VARIABLES HELP .........
+  # ...................................
+  
+  "help_Precipitation", "Precipitació (mm/dia)", "Precipitation (mm/day)", "Precipitación (mm/día)",
+  "help_PET", "Evapo-transpiració potencial (mm/dia)", "Potential evapo-transpiration (mm/day)", "Evap-transpiración potencial (mm/día)",
+  
+  "help_REW", "Aigua disponible sòl (%)", "Available soil water (%)", "Agua disponible suelo (%)",
+  "help_REW_q", "Quantil Aigua disponible sòl (%)", "Quantile Available soil water (%)", "Cuantil Agua disponible suelo (%)",
+  
+  "help_DDS", "Estrés de la vegetació (%)", "Stress on vegetation (%)", "Estrés de la vegetación (%)",
+  "help_DDS_q", "Quantil Estrés de la vegetació  (%)", "Quantile Stress on vegetation (%)", "Cuantil Estrés de la vegetación (%)",
+  
+  "help_LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Vivo (%)",
+  "help_LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu (%)", "Quantile Live Fuel Moisture Contents (%)","Cuantil Contendio de Humedad de Combustible Vivo (%)",
+  
+  "help_DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Muerto (%)",
+  "help_SFP","Potencial Foc de Superfície [0-9]","Potential Surface Fire [0-9]","Potencial Fuego de Superficie [0-9]",
+  "help_CFP","Potencial Foc de Capçada [0-9]","Potential Crown Fire [0-9]","Potencial Fuego de Copa [0-9]",
   
   
   # .......... VARIABLES .........
@@ -81,6 +99,7 @@ tibble::tribble(
   "data_translation", "Dades", "Data", "Datos",
   "map_translation", "Mapa", "Map", "Mapa",
   "save_translation", "Guardar", "Save", "Guardar",
+  'help_translation','Ajuda','Help','Ayuda',
   "tech_specs_translation", "Especificacions tècniques", "Technical specifications", "Especificaciones técnicas",
   "date_daily_label", 'Data', 'Date', 'Fecha',
   'series_tab_translation', "Sèries temporals", "Time series", "Series temporales",

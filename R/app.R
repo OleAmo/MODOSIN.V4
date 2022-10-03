@@ -40,6 +40,7 @@ modosin_app <- function() {
     glue::glue("<img class='flag-image' src='images/spa.png' width=20px><div class='flag-lang'>%s</div></img>"),
     glue::glue("<img class='flag-image' src='images/eng.png' width=20px><div class='flag-lang'>%s</div></img>")
   )
+  
 
   # ++++++++++++++++++++++++++++++++ //  UI // ++++++++++++++++++++++++++++++++
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -142,9 +143,10 @@ modosin_app <- function() {
           # ------------    MENÚ IZQUIERDA   -------------
           # //////////////////////////////////////////////
 
-          #       .) 2 Pestañas
+          #       .) 3 Pestañas
           #              .) DATOS
           #              .) GUARDAR
+          #              .) AYUDA
 
           sidebarPanel = shiny::sidebarPanel(
             width = 4,
@@ -164,7 +166,7 @@ modosin_app <- function() {
                   shiny::tabPanel(
                     title = mod_tab_translateOutput('data_translation'),
                     value = 'data_inputs_panel',
-                    modosin_dataInput('modosin_DATA')
+                    mod_dataInput('modosin_DATA')
                   ), # end of data panel
 
                   # .............. Pestaña GUARDAR .............
@@ -179,6 +181,21 @@ modosin_app <- function() {
                     title = mod_tab_translateOutput('save_translation'),
                     value = 'save_panel',
                     # mod_saveOutput('mod_saveOutput')
+                  ),
+                  
+                  # .............. Pestaña AYUDA ...............
+                  # ............................................
+                  
+                  #       .) Pestaña de AYUDA
+                  #       .) Ofrece descripción de diferentes VARIABLES
+                  #       .) Es una descripción corta
+                  
+                  # help panel
+                  shiny::tabPanel(
+                    # title = mod_tab_translateOutput('help_translation'),
+                    title = mod_tab_translateOutput('help_translation'),
+                    value = 'help_panel',
+                    mod_helpInput('help_data')
                   )
             )
           ), # end of sidebarPanel
@@ -270,10 +287,18 @@ modosin_app <- function() {
     # ....... 1ra PESTAÑA ..........
     # ..............................
     
+    # data_input
     data_reactives <- shiny::callModule(
       modosin_data ,'modosin_DATA', modosindb, 
       lang,  main_data_reactives
      
+    )
+    
+    # help_input
+    help_reactives <- shiny::callModule(
+      help_data ,'help_data', modosindb, 
+      lang,  main_data_reactives
+      
     )
     
     # map
@@ -283,7 +308,7 @@ modosin_app <- function() {
       session, lang
     )
     
-    # # main data
+    # main data
     main_data_reactives <- shiny::callModule(
       mod_mainData, 'mod_mainDataOutput',
       data_reactives, map_reactives,
@@ -327,7 +352,7 @@ modosin_app <- function() {
     # TODAS las etiquetas a TRADUCIR
     tabs <- c('main_tab_translation','data_translation',
               'map_translation','series_tab_translation','save_translation',
-              'save_translation','tech_specs_translation')
+              'save_translation','tech_specs_translation','help_translation')
     
     # Funcion que llama a TODOS los CALL MODULES
     callModule_function(tabs,lang)

@@ -1,11 +1,11 @@
-#' @title modosin_dataInput  and modosin_data
+#' @title mod_dataInput and modosin_data
 #'
 #' @description A shiny module to create and populate the data inputs
 #'
 #' @param id shiny id
 #'
 #' @export
-modosin_dataInput <- function(id) {
+mod_dataInput <- function(id) {
   # ns
   ns <- shiny::NS(id)
 

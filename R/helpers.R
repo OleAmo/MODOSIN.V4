@@ -86,7 +86,7 @@ shiny_set_names <- function(nom,lang) {
 #       .) Hago una FUNCIÓN para automatizar y no reescribir de nuevo
 
 #       .) Para pasar de un STRING a CODE R usamos
-#       .) GLUE + EVAL + PARES (TEXT) + EVAL
+#       .) GLUE + EVAL + PARSE (TEXT) + EVAL
 
 callModule_function <- function(tabs,lang){
   

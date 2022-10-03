@@ -4,7 +4,7 @@
 \alias{modosin_data}
 \title{modosin_data server function}
 \usage{
-modosin_data(input, output, session, modosindb, lang)
+modosin_data(input, output, session, modosindb, lang, main_data_reactives)
 }
 \arguments{
 \item{input}{internal}
