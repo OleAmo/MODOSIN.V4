@@ -180,7 +180,7 @@ modosin_app <- function() {
                   shiny::tabPanel(
                     title = mod_tab_translateOutput('save_translation'),
                     value = 'save_panel',
-                    # mod_saveOutput('mod_saveOutput')
+                    mod_saveOutput('mod_saveOutput')
                   ),
                   
                   # .............. Pestaña AYUDA ...............
@@ -325,12 +325,14 @@ modosin_app <- function() {
       lang
     )
     
-    # # save
-    # shiny::callModule(
-    #   mod_save, 'mod_saveOutput',
-    #   main_data_reactives, data_reactives,
-    #   lang
-    # )
+    # ........... SAVE .............
+    # ..............................
+    
+    shiny::callModule(
+      mod_save, 'mod_saveOutput',
+      main_data_reactives, data_reactives, lang
+    )
+    
     # # technical specifications module
     # shiny::callModule(
     #   mod_techSpecs, 'mod_techSpecsOutput',
@@ -352,7 +354,8 @@ modosin_app <- function() {
     # TODAS las etiquetas a TRADUCIR
     tabs <- c('main_tab_translation','data_translation',
               'map_translation','series_tab_translation','save_translation',
-              'save_translation','tech_specs_translation','help_translation')
+              'save_translation','tech_specs_translation','help_translation',
+              'mod_saveOutput')
     
     # Funcion que llama a TODOS los CALL MODULES
     callModule_function(tabs,lang)

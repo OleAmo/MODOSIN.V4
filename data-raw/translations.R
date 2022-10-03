@@ -105,6 +105,10 @@ tibble::tribble(
   'series_tab_translation', "Sèries temporals", "Time series", "Series temporales",
   "type_legend_label", "Canvi Llegenda", 'Legend Change','Cambio Leyenda',
   'quantiles_axis_label','Quantils Comparació Històrica (1981 - 2020)','Quantiles Historical Comparison (1981 - 2020)','Cuantiles Comparación Histórica (1981 - 2020)',
+  "save_main_label","Selecciona format per descargar les dades","Select format for downloading data","Selecciona formato para descargas los datos",
+  "save_map_button","Guardar el mapa", "Save the map", "Guardar el mapa", 
+  "save_table_button", "Guardar la taula","Save the table", "Guardar la tabla", 
+  
   
   # ....... SCREEN WAITING .......
   # ..............................
