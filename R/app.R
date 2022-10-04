@@ -360,6 +360,17 @@ modosin_app <- function() {
     # Funcion que llama a TODOS los CALL MODULES
     callModule_function(tabs,lang)
     
+    
+    
+    output$table_save <- downloadHandler(
+      filename = function() {
+        paste("prova", ".csv", sep = "")
+      },
+      content = function(file) {
+        write.csv(sf_procesed, file, row.names = FALSE)
+      }
+    )
+    
   
 
   } # end of server function

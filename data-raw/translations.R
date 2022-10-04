@@ -109,6 +109,17 @@ tibble::tribble(
   "save_map_button","Guardar el mapa", "Save the map", "Guardar el mapa", 
   "save_table_button", "Guardar la taula","Save the table", "Guardar la tabla", 
   
+  # ........... SAVE .............
+  # ..............................
+  
+  "col_vis",  "Columnes visibles","Visible columns", "Columnas visibles",
+  "col_all", "Totes les columnes","All columns", "Todas las columnas", 
+  
+  "data_colum_label","¿Totes les dades o només les columnes visibles?", "All data or visible data?", "¿Todos los datos o solo las columnas visibles?", 
+  "select_format_label", "Selecciona el format","Choose the output format", "Selecciona el formato", 
+  "csv", "Text (csv)","Text (csv)", "Texto (csv)", 
+  "xlsx", "MS Excel (xlsx)","MS Excel (xlsx)", "MS Excel (xlsx)",
+  
   
   # ....... SCREEN WAITING .......
   # ..............................
