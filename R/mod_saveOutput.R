@@ -141,14 +141,48 @@ mod_save <- function(
   # ...................................
   
   datasetInput <- reactive({
-    sf <- main_data_reactives$data_day
-    sf_procesed <- head(sf) %>% data.frame()
+
+    
+    fecha <- data_reactives$fecha_reactive
+    sf <- main_data_reactives$data_day  
+
+    variable <- data_reactives$variable_reactive
+    num_i <- as.numeric(match(variable,names(sf)))
+    selected_var <- as.symbol(names(sf)[num_i])
+    
+    
+    if( input$data_columns == "col_all" ) {
+      sf  %>%
+        dplyr::filter(date == fecha) %>%
+        dplyr::mutate(lon_WGS84 = sf::st_coordinates(.data$geometry)[,1],
+                      lat_WGS84 = sf::st_coordinates(.data$geometry)[,2],
+                      lon_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,1],
+                      lat_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,2]
+        ) %>% data.frame() %>% dplyr::select(-geometry)  
+      
+    } else {
+      sf %>%
+        dplyr::filter(date == fecha) %>%
+        dplyr::select(plot_id, selected_var, date, plot_origin) %>%
+        dplyr::mutate(lon_WGS84 = sf::st_coordinates(.data$geometry)[,1],
+                      lat_WGS84 = sf::st_coordinates(.data$geometry)[,2],
+                      lon_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,1],
+                      lat_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,2]
+        ) %>% data.frame() %>% dplyr::select(-geometry)
+    }
     
   })
   
   
   # ........ DOWNLOADHANDLER ..........
   # ...................................
+  
+  
+  
+  # ....... FORMATO SELECTED ..........
+  # ...................................
+  
+  #      .) XXXXXXXXXXXXX
   
   format_selected <- function() {
     switch (input$data_format,
@@ -157,23 +191,46 @@ mod_save <- function(
     )
   }
   
+  # ....... COLUMN SELECTED ...........
+  # ...................................
+  
+  #      .) XXXXXXXXXXXXX
+  
+  column_selected <- function() {
+    switch (input$data_columns,
+            "col_vis" = format <- "_specific_columns", 
+            "col_all" = format <- "_all_columns" 
+    )
+  }
+  
+  # ......... DATE STRING .............
+  # ...................................
+  
+  #      .) XXXXXXXXXXXXX
+  
+  date_str <- toString(Sys.Date()) %>% 
+    stringr::str_split(.,"-") %>% .[[1]] %>%
+    stringr::str_c(., collapse = "")
+  
+  
+
   output$table_save <- downloadHandler(
     filename = function() {
-      paste("prova", format_selected(), sep = "")
+      paste(date_str,column_selected(),format_selected(), sep = "")
     },
     content = function(file) {
       
-      write.csv(datasetInput(), file, row.names = FALSE)
+      # ....... WRITE TYPE ...........
+      # .............................
       
-      # ........ WRITE to XLSX ............
-      # ...................................
-      
-      #     .) https://community.rstudio.com/t/r-shiny-to-download-xlsx-file/18441
-      #     .) Intentar que funcione
-      
-      # ifelse( a == 1 , x , y)
+      #      .) XXXXXXXXXXXXX
+   
+      switch (input$data_format,
+              "csv" = write.csv(datasetInput(), file, row.names = FALSE),
+              "xlsx" = writexl::write_xlsx(datasetInput(), file) 
+              )
+     
 
-      # write.csv(datasetInput(), file, row.names = FALSE)
     }
   )
 
