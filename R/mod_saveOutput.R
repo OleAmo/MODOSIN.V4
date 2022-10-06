@@ -146,8 +146,19 @@ mod_save <- function(
   # ****************  REACTIVE TABLE  ******************
   # ****************************************************
   
-  datasetInput_table <- reactive({
+  #      .) REACTIVE
+  #      .) En f(x) del tipo de DATA_COLUMNS
+  #      .) Nos devuelve un DF 
+  #               .) con TODAS COLUMNAS
+  #               .) con SOLO COLUMNA VARIABLE SELECCIONADA
+  #      .) CREAMOS
+  #               .) lat/long (ETRS89)
+  #               .) lat/long (WGS84)
+  #      .) ELIMINAMOS
+  #               .) Columna GEOMETRY
+  #               .) Ya que en el EXCEL y CSV no aporta info
 
+  datasetInput <- reactive({
     
     fecha <- data_reactives$fecha_reactive
     sf <- main_data_reactives$data_day  
@@ -155,6 +166,7 @@ mod_save <- function(
     variable <- data_reactives$variable_reactive
     num_i <- as.numeric(match(variable,names(sf)))
     selected_var <- as.symbol(names(sf)[num_i])
+    
     
     
     if( input$data_columns == "col_all" ) {
@@ -166,7 +178,7 @@ mod_save <- function(
                       lat_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,2]
         ) %>% data.frame() %>% dplyr::select(-geometry)  
       
-    } else {
+    } else if (input$data_columns == "col_vis") {
       sf %>%
         dplyr::filter(date == fecha) %>%
         dplyr::select(plot_id, selected_var, date, plot_origin) %>%
@@ -175,7 +187,33 @@ mod_save <- function(
                       lon_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,1],
                       lat_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,2]
         ) %>% data.frame() %>% dplyr::select(-geometry)
-    }
+    } 
+    
+  })
+  
+  # *****************  REACTIVE MAP  *******************
+  # ****************************************************
+  
+  #      .) REACTIVE
+  #      .) SIEMPRE devuelve el mismo DF
+  #      .) INCLUYE Gemoetry (ya que es un GEOPACK)
+  
+  mapInput <- reactive({
+    
+    fecha <- data_reactives$fecha_reactive
+    sf <- main_data_reactives$data_day  
+    
+    variable <- data_reactives$variable_reactive
+    num_i <- as.numeric(match(variable,names(sf)))
+    selected_var <- as.symbol(names(sf)[num_i])
+    
+    sf  %>%
+      dplyr::filter(date == fecha) %>%
+      dplyr::mutate(lon_WGS84 = sf::st_coordinates(.data$geometry)[,1],
+                    lat_WGS84 = sf::st_coordinates(.data$geometry)[,2],
+                    lon_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,1],
+                    lat_ETRS89 = sf::st_coordinates(sf::st_transform(.data$geometry, 25831))[,2]
+      ) %>% data.frame()
     
   })
   
@@ -184,16 +222,17 @@ mod_save <- function(
   # ****************************************************
   
   #      .) NECEISITA
-  #               .) FILENAME Function  => nombre de archivo
-  #               .) CONTENT  Function  => f(x) WRITE
+  #           .) FILENAME Function  => nombre de archivo
+  #           .) CONTENT  Function  => f(x) WRITE
   
   
   # ................ VARIABLES ...................
   # ..............................................
   
-  #      .) FORMATO
-  #      .) COLUMN_SELECTED
-  #      .) DATE_STRING
+  #      .) Variables Necesarias para el SAVE TABLE
+  #          .) FORMATO
+  #          .) COLUMN_SELECTED
+  #          .) DATE_STRING
   
   # ----- FORMATO SELECTED -----
   # ----------------------------
@@ -241,8 +280,16 @@ mod_save <- function(
   #      .) ESTRUCUTRA:
   #               .) FILENAME Function  => nombre de archivo
   #               .) CONTENT  Function  => f(x) WRITE
+  
+  
+  # ******** TABLE SAVE ********
+  # ****************************
+  
+  #      .) DOWNLOADHANDLER
+  #      .) Para crear f(x) TABLE DWONLOAD
 
-  output$table_save <- downloadHandler(
+ 
+   output$table_save <- downloadHandler(
     filename = function() {
       paste(date_str,column_selected(),format_selected(), sep = "")
     },
@@ -255,15 +302,39 @@ mod_save <- function(
       #      .) usaremos WRITE.CSV o WRITE_XLSX para descargar
    
       switch (input$data_format,
-              "csv" = write.csv(datasetInput_table(), file, row.names = FALSE),
-              "xlsx" = writexl::write_xlsx(datasetInput_table(), file) 
+              "csv" = write.csv(datasetInput(), file, row.names = FALSE),
+              "xlsx" = writexl::write_xlsx(datasetInput(), file) 
               )
      
 
     }
   )
-
    
+   
+   
+   # ******** TABLE SAVE ********
+   # ****************************
+   
+   #      .) DOWNLOADHANDLER
+   #      .) Para crear f(x) MAP DWONLOAD
+
+   output$map_save <- downloadHandler(
+     filename = function() {
+       paste(date_str,'_map.gpkg', sep = "")
+     },
+     content = function(file) {
+       
+       # ....... WRITE GEOPACK ...........
+       # .............................
+       
+       #      .) Usamos f(x) ST_WRITE
+       #      .) La extensión en FILENAME es .GPKG
+       
+       sf::st_write(mapInput(), file)
+       
+       
+     }
+   )
   
  
   
