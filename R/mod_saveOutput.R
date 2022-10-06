@@ -70,47 +70,59 @@ mod_save <- function(
         
         shiny::fluidRow(translate_app("save_main_label", lang_declared), style = "text-align: center;"),  
         br(),
-          
         shiny::fluidRow(
             
-            shiny::column(6,
+            shiny::column(6, 
                           
-                   shiny::downloadButton(ns("map_save"), translate_app("save_map_button", lang_declared))
-                   ),
+                  # .......... BUTTON MAP .............
+                  # ...................................
+                  
+                  #       .) Button que DESCARGA GEOPACK
+                  
+                          
+                  shiny::downloadButton(ns("map_save"), translate_app("save_map_button", lang_declared))),
             
             shiny::column(6,
                           
-                    # ......... ACTION BUTTON ...........
-                    # ...................................
+                  # ........... TABLE MAP .............
+                  # ...................................
+                  
+                  #       .) Button que DESCARGA TABLA
+                  #       .) Puede ser en formato CSV/XLSX 
+                  #       .) Puede tener TODAS COLUMNAS VARIABLES / UN COLUMNA VARIABLE
                           
-                   shiny::downloadButton(ns("table_save"), translate_app("save_table_button",lang_declared)),
-                   br(),
-                   br(),
-                   # shiny::p(,, style = "text-align: center;")
-                   
-                   # ......... RADIO BUTTONS ...........
-                   # ...................................
+                  shiny::downloadButton(ns("table_save"), translate_app("save_table_button",lang_declared)),
+                  br(),
+                  br(),
+                  
+                  # ......... RADIO BUTTONS ...........
+                  # ...................................
+                  
+                  #       .) Botones selección COLUMNAS
+                  #       .) Dos tipos = TODAS COLUMNAS VARIABLE / UNA COLUMNA VARIABLE
                    
                   
-                   shiny:: radioButtons(
+                  shiny:: radioButtons(
                      ns("data_columns"),translate_app("data_colum_label", lang_declared),
                      shiny_set_names(c("col_vis" = "col_vis", 
                                        "col_all" = "col_all"),lang_declared)
-                   ),
+                  ),
                    
                    
-                   # shiny::p(, style = "text-align: center;"),
-                   # ......... RADIO BUTTONS ...........
-                   # ...................................
+                  # ......... RADIO BUTTONS ...........
+                  # ...................................
+                  
+                  #       .) Botones selección FORMATO
+                  #       .) Dos tipos = CSV / XLSX
                    
                    
-                   shiny:: radioButtons(
-                     ns("data_format"),translate_app("select_format_label", lang_declared),
-                     shiny_set_names(c("csv" = "csv", 
-                                       "xlsx" = "xlsx"),lang_declared)
-                   )
-                   
+                  shiny:: radioButtons(
+                   ns("data_format"),translate_app("select_format_label", lang_declared),
+                   shiny_set_names(c("csv"  = "csv", 
+                                     "xlsx" = "xlsx"),lang_declared)
                   )
+                   
+                )
   
         ) # end fluid_Row
       ) # end div
@@ -122,25 +134,19 @@ mod_save <- function(
 
   
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  # --------------------------  DOWNLOAD REACTIVE   ------------------------------
+  # ---------------------    ESTRUCTURA BOTON DOWNLOAD  --------------------------
   # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
 
-  #      .) Es un OBSERVER de un SOLO REACTIVO - ESPECIAL
-  #      .) se divide en 2 PARTES:
-  #               .) REACTIVE VALUE
-  #               .) DonlLoadHandler
+  #      .) Se compone de 2 ESTRUCTURAS
+  #               .) REACTIVE
+  #               .) DOWNLOADHANDLER
   
-  #      .) DOWNLOADHANDLER
-  #      .) NECEISITA
-  #               .) FILENAME Function  => nombre de archivo
-  #               .) CONTENT  Function  => f(x) WRITE
+
+  # ****************  REACTIVE TABLE  ******************
+  # ****************************************************
   
- 
-  # .......... REACTIVE ...............
-  # ...................................
-  
-  datasetInput <- reactive({
+  datasetInput_table <- reactive({
 
     
     fecha <- data_reactives$fecha_reactive
@@ -174,15 +180,26 @@ mod_save <- function(
   })
   
   
-  # ........ DOWNLOADHANDLER ..........
-  # ...................................
+  # ****************  DOWNLOADHANDLER  ******************
+  # ****************************************************
+  
+  #      .) NECEISITA
+  #               .) FILENAME Function  => nombre de archivo
+  #               .) CONTENT  Function  => f(x) WRITE
   
   
+  # ................ VARIABLES ...................
+  # ..............................................
   
-  # ....... FORMATO SELECTED ..........
-  # ...................................
+  #      .) FORMATO
+  #      .) COLUMN_SELECTED
+  #      .) DATE_STRING
   
-  #      .) XXXXXXXXXXXXX
+  # ----- FORMATO SELECTED -----
+  # ----------------------------
+  
+  #      .) Función que asigna EXENCIÓN del archivo
+  #      .) CSV o XLSX
   
   format_selected <- function() {
     switch (input$data_format,
@@ -191,10 +208,11 @@ mod_save <- function(
     )
   }
   
-  # ....... COLUMN SELECTED ...........
-  # ...................................
+  # ----- COLUMN SELECTED ------
+  # ----------------------------
   
-  #      .) XXXXXXXXXXXXX
+  #      .) Función que asigna parte del nombre
+  #      .) Del archivo a descargar
   
   column_selected <- function() {
     switch (input$data_columns,
@@ -203,16 +221,26 @@ mod_save <- function(
     )
   }
   
-  # ......... DATE STRING .............
-  # ...................................
+  # ----- DATE STRING ----------
+  # ----------------------------
   
-  #      .) XXXXXXXXXXXXX
+  #      .) Función que asigna crea STRING DATE
+  #      .) Une Year/month/day en un solo STRING sin guiones
   
   date_str <- toString(Sys.Date()) %>% 
     stringr::str_split(.,"-") %>% .[[1]] %>%
     stringr::str_c(., collapse = "")
   
   
+ 
+  # .............. DOWNLOADHANDLER ...............
+  # ..............................................
+  
+  #      .) Es un OUTPUT
+  #      .) En este caso irá al ID = TABLE_SAVE
+  #      .) ESTRUCUTRA:
+  #               .) FILENAME Function  => nombre de archivo
+  #               .) CONTENT  Function  => f(x) WRITE
 
   output$table_save <- downloadHandler(
     filename = function() {
@@ -223,11 +251,12 @@ mod_save <- function(
       # ....... WRITE TYPE ...........
       # .............................
       
-      #      .) XXXXXXXXXXXXX
+      #      .) en f(x) del formato
+      #      .) usaremos WRITE.CSV o WRITE_XLSX para descargar
    
       switch (input$data_format,
-              "csv" = write.csv(datasetInput(), file, row.names = FALSE),
-              "xlsx" = writexl::write_xlsx(datasetInput(), file) 
+              "csv" = write.csv(datasetInput_table(), file, row.names = FALSE),
+              "xlsx" = writexl::write_xlsx(datasetInput_table(), file) 
               )
      
 
