@@ -66,66 +66,63 @@ mod_save <- function(
     #       .) DROPDOWNS (SelectIntpu),...
      
     shiny::tagList(
-      shiny::div(
+      
         
         shiny::fluidRow(translate_app("save_main_label", lang_declared), style = "text-align: center;"),  
-        br(),
+        shiny::br(),
+        
         shiny::fluidRow(
-            
-            shiny::column(6, 
-                          
-                  # .......... BUTTON MAP .............
-                  # ...................................
-                  
-                  #       .) Button que DESCARGA GEOPACK
-                  
-                          
-                  shiny::downloadButton(ns("map_save"), translate_app("save_map_button", lang_declared))),
-            
-            shiny::column(6,
-                          
-                  # ........... TABLE MAP .............
-                  # ...................................
-                  
-                  #       .) Button que DESCARGA TABLA
-                  #       .) Puede ser en formato CSV/XLSX 
-                  #       .) Puede tener TODAS COLUMNAS VARIABLES / UN COLUMNA VARIABLE
-                          
-                  shiny::downloadButton(ns("table_save"), translate_app("save_table_button",lang_declared)),
-                  br(),
-                  br(),
-                  
-                  # ......... RADIO BUTTONS ...........
-                  # ...................................
-                  
-                  #       .) Botones selección COLUMNAS
-                  #       .) Dos tipos = TODAS COLUMNAS VARIABLE / UNA COLUMNA VARIABLE
-                   
-                  
-                  shiny:: radioButtons(
-                     ns("data_columns"),translate_app("data_colum_label", lang_declared),
-                     shiny_set_names(c("col_vis" = "col_vis", 
-                                       "col_all" = "col_all"),lang_declared)
-                  ),
-                   
-                   
-                  # ......... RADIO BUTTONS ...........
-                  # ...................................
-                  
-                  #       .) Botones selección FORMATO
-                  #       .) Dos tipos = CSV / XLSX
-                   
-                   
-                  shiny:: radioButtons(
-                   ns("data_format"),translate_app("select_format_label", lang_declared),
-                   shiny_set_names(c("csv"  = "csv", 
-                                     "xlsx" = "xlsx"),lang_declared)
-                  )
-                   
-                )
-  
+          shiny::column(6,
+                        
+              # .......... BUTTON MAP .............
+              # ...................................
+              
+              #       .) Button que DESCARGA GEOPACK 
+              
+              shiny::downloadButton(ns("map_save"), translate_app("save_map_button", lang_declared))
+          ),
+          
+          shiny::column(6,
+                        
+              # ........... TABLE MAP .............
+              # ...................................
+              
+              #       .) Button que DESCARGA TABLA
+              #       .) Puede ser en formato CSV/XLSX
+              #       .) Puede tener TODAS COLUMNAS VARIABLES / UN COLUMNA VARIABLE  
+              
+              
+              shiny::downloadButton(ns("table_save"), translate_app("save_table_button",lang_declared)),
+              shiny::br(),
+              shiny::br(),
+              
+              # ......... RADIO BUTTONS ...........
+              # ...................................
+              
+              #       .) Botones selección COLUMNAS
+              #       .) Dos tipos = TODAS COLUMNAS VARIABLE / UNA COLUMNA VARIABLE
+              
+              shiny:: radioButtons(
+                ns("data_columns"),translate_app("data_colum_label", lang_declared),
+                shiny_set_names(c("col_vis" = "col_vis",
+                                  "col_all" = "col_all"),lang_declared)
+              ),
+              
+              # ......... RADIO BUTTONS ...........
+              # ...................................
+              
+              #       .) Botones selección FORMATO
+              #       .) Dos tipos = CSV / XLSX
+              
+              shiny:: radioButtons(
+                ns("data_format"),translate_app("select_format_label", lang_declared),
+                shiny_set_names(c("csv"  = "csv",
+                                  "xlsx" = "xlsx"),lang_declared)
+              )
+              
+              
+          ) # end column (6,
         ) # end fluid_Row
-      ) # end div
     ) # end of tagList
 
   })  

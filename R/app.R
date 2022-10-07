@@ -79,7 +79,7 @@ modosin_app <- function() {
       # corporative image css
       shiny::includeCSS("inst/resources/corp_image.css"),
       
-      # shiny::includeCSS("inst/resources/plotdrought_v2.css"),
+      shiny::includeCSS("inst/resources/plotdrought_responsive_v2.css"),
       
     ),
     
@@ -153,7 +153,8 @@ modosin_app <- function() {
             # this is gonna be a tabsetPanel, for data selection, save and help.
             # tabset panel
             shiny::tabsetPanel(
-                  id = 'sidebar_tabset', type = 'pills',
+                  # id = 'sidebar_tabset', type = 'pills',
+                  id = 'menu_izq', type = 'pills',
 
                   # ............... Pestaña PLOTS ..............
                   # ............................................
