@@ -79,7 +79,7 @@ modosin_app <- function() {
       # corporative image css
       shiny::includeCSS("inst/resources/corp_image.css"),
       
-      shiny::includeCSS("inst/resources/plotdrought_responsive_v2.css"),
+      # shiny::includeCSS("inst/resources/plotdrought_responsive_v2.css"),
       
     ),
     

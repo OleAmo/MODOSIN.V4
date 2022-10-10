@@ -70,31 +70,50 @@ mod_save <- function(
         
         shiny::fluidRow(translate_app("save_main_label", lang_declared), style = "text-align: center;"),  
         shiny::br(),
-        
         shiny::fluidRow(
-          shiny::column(6,
-                        
-              # .......... BUTTON MAP .............
-              # ...................................
-              
-              #       .) Button que DESCARGA GEOPACK 
-              
-              shiny::downloadButton(ns("map_save"), translate_app("save_map_button", lang_declared))
+          
+  
+          # -----------------     ROW BUTTONS    ----------------
+          # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+          
+          #       .) Fila de BUTTONS
+          #       .) MAP_SAVE / TABLE_SAVE
+          
+          shiny::br(),
+          shiny::fluidRow(
+            shiny::column(6, align = 'center',
+                          
+                # .......... BUTTON MAP .............
+                # ...................................
+                
+                #       .) Button que DESCARGA GEOPACK 
+                            
+                shiny::downloadButton(ns("map_save"), translate_app("save_map_button", lang_declared))
+            ),
+            
+            shiny::column(6, align = 'center',
+                          
+                # ......... TABLE BUTTON ............
+                # ...................................
+                
+                #       .) Button que DESCARGA TABLA
+                #       .) Puede ser en formato CSV/XLSX
+                #       .) Puede tener TODAS COLUMNAS VARIABLES / UN COLUMNA VARIABLE              
+                            
+                shiny::downloadButton(ns("table_save"), translate_app("save_table_button",lang_declared))
+            )
           ),
           
-          shiny::column(6,
-                        
-              # ........... TABLE MAP .............
-              # ...................................
-              
-              #       .) Button que DESCARGA TABLA
-              #       .) Puede ser en formato CSV/XLSX
-              #       .) Puede tener TODAS COLUMNAS VARIABLES / UN COLUMNA VARIABLE  
-              
-              
-              shiny::downloadButton(ns("table_save"), translate_app("save_table_button",lang_declared)),
-              shiny::br(),
-              shiny::br(),
+         
+          # ------------------    ROW COLUMNS    ----------------
+          # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+          
+          #       .) Fila de COLUMNAS
+          #       .) DATA_COLUMN / FORMAT COLUMNS
+          
+          shiny::br(),
+          shiny::fluidRow(
+            shiny::column(6, offset = 6, align = 'center',
               
               # ......... RADIO BUTTONS ...........
               # ...................................
@@ -102,10 +121,13 @@ mod_save <- function(
               #       .) Botones selección COLUMNAS
               #       .) Dos tipos = TODAS COLUMNAS VARIABLE / UNA COLUMNA VARIABLE
               
-              shiny:: radioButtons(
+              
+              shinyWidgets::prettyRadioButtons(
                 ns("data_columns"),translate_app("data_colum_label", lang_declared),
                 shiny_set_names(c("col_vis" = "col_vis",
-                                  "col_all" = "col_all"),lang_declared)
+                                  "col_all" = "col_all"),lang_declared),
+                status = 'success', fill = TRUE, shape = 'round'
+                
               ),
               
               # ......... RADIO BUTTONS ...........
@@ -114,15 +136,17 @@ mod_save <- function(
               #       .) Botones selección FORMATO
               #       .) Dos tipos = CSV / XLSX
               
-              shiny:: radioButtons(
+              shinyWidgets::prettyRadioButtons(
                 ns("data_format"),translate_app("select_format_label", lang_declared),
                 shiny_set_names(c("csv"  = "csv",
-                                  "xlsx" = "xlsx"),lang_declared)
+                                  "xlsx" = "xlsx"),lang_declared),
+                status = 'success', fill = TRUE, shape = 'round'
               )
               
               
-          ) # end column (6,
-        ) # end fluid_Row
+            ) # end colum
+          )# end fluid row
+        )# end fluid row  
     ) # end of tagList
 
   })  
