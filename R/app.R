@@ -79,6 +79,7 @@ siteDrought_app <- function() {
       # # corporative image css
       # shiny::includeCSS("inst/resources/corp_image.css"),
 
+      # # responsive css
       # shiny::includeCSS("inst/resources/siteDrought_responsive_v2.css"),
       
     ),
