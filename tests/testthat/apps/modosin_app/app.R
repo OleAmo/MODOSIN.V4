@@ -1,2 +1,2 @@
-library(modosinApp)
-modosin_app()
+library(siteDroughtApp)
+siteDrought_app()

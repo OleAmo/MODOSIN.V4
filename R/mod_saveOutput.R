@@ -1,4 +1,4 @@
-#' @title mod_saveOutput and modosin_data
+#' @title mod_saveOutput and siteDrought_data
 #'
 #' @description A shiny module to create and populate the data inputs
 #'
@@ -18,7 +18,7 @@ mod_saveOutput <- function(id) {
   )
 }
 
-#' modosin_data server function
+#' siteDrought_data server function
 #' @param input internal
 #' @param output internal
 #' @param session internal

@@ -2,7 +2,7 @@
 % Please edit documentation in R/mod_saveOutput.R
 \name{mod_save}
 \alias{mod_save}
-\title{modosin_data server function}
+\title{siteDrought_data server function}
 \usage{
 mod_save(input, output, session, main_data_reactives, data_reactives, lang)
 }
@@ -16,5 +16,5 @@ mod_save(input, output, session, main_data_reactives, data_reactives, lang)
 \item{lang}{lang reactive}
 }
 \description{
-modosin_data server function
+siteDrought_data server function
 }

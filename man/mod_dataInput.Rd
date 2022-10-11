@@ -2,7 +2,7 @@
 % Please edit documentation in R/mod_dataInput.R
 \name{mod_dataInput}
 \alias{mod_dataInput}
-\title{mod_dataInput and modosin_data}
+\title{mod_dataInput and siteDrought_data}
 \usage{
 mod_dataInput(id)
 }

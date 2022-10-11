@@ -30,7 +30,7 @@ mod_mainDataOutput <- function(id) {
 mod_mainData <- function(
   input, output, session,
   data_reactives, map_reactives,
-  modosindb, lang
+  siteDroughtdb, lang
 ) {
   
 
@@ -113,7 +113,7 @@ mod_mainData <- function(
     # ........... GET DATA ..............
     # ...................................
     
-    #       .) Usamos MODOSIN DB (Definido en APP.R)
+    #       .) Usamos siteDrought DB (Definido en APP.R)
     #       .) Llamamos al M?todo GET DATA
     #       .) Creamos el SF data_day
     #       .) Es el SF de TODOS los PLOTS / TODAS las fechas
@@ -121,21 +121,21 @@ mod_mainData <- function(
 
     # ............ PROBES ...........
     # ...............................
-    # data_day <- modosindb$get_data("data_day_petita")
+    # data_day <- siteDroughtdb$get_data("data_day_petita")
     
-    # data_day <- modosindb$get_data("data_day_fire_petita")
+    # data_day <- siteDroughtdb$get_data("data_day_fire_petita")
     
-    # data_day <- modosindb$get_data("data_day_fire_petita_2")
+    # data_day <- siteDroughtdb$get_data("data_day_fire_petita_2")
     
-    data_day <- modosindb$get_data("data_day_fire_petita_3")
+    data_day <- siteDroughtdb$get_data("data_day_fire_petita_3")
     
     # ..... Definitiva 2..........
     # ...........................
-    # data_day <- modosindb$get_data("data_day_fire")
+    # data_day <- siteDroughtdb$get_data("data_day_fire")
     
     # ..... Definitiva 1..........
     # ...........................
-    # data_day <- modosindb$get_data()
+    # data_day <- siteDroughtdb$get_data()
     
     return(data_day)
   })

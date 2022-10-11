@@ -1,4 +1,4 @@
-#' @title mod_helpInput and modosin_data
+#' @title mod_helpInput and siteDrought_data
 #'
 #' @description A shiny module to create and populate the data inputs
 #'
@@ -18,7 +18,7 @@ mod_helpInput <- function(id) {
   )
 }
 
-#' modosin_data server function
+#' siteDrought_data server function
 #' @param input internal
 #' @param output internal
 #' @param session internal
@@ -28,7 +28,7 @@ mod_helpInput <- function(id) {
 #' @export
 help_data <- function(
   input, output, session,
-  modosindb, lang, main_data_reactives
+  siteDroughtdb, lang, main_data_reactives
    
 ) {
 

@@ -10,7 +10,7 @@ mod_mainData(
   session,
   data_reactives,
   map_reactives,
-  modosindb,
+  siteDroughtdb,
   lang
 )
 }

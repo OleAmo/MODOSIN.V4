@@ -1,16 +1,16 @@
-#' function to launch the catdrought app
+#' function to launch the siteDrought app
 #'
 #' @importFrom magrittr %>%
 #'
 #' @export
-modosin_app <- function() {
+siteDrought_app <- function() {
   library(leaflet)
   source('data-raw/translations.R')
   source('data-raw/polygon_objects_creation.R')
   source('data-raw/palette_builder.R')
   
   ### DB access ################################################################
-  modosindb <- lfcdata::modosin()
+  siteDroughtdb <- lfcdata::siteDrought()
 
   ## JS code needed ############################################################
   keep_alive_script <- shiny::HTML(
@@ -32,7 +32,7 @@ modosin_app <- function() {
 
   ### Language input ###########################################################
   shiny::addResourcePath(
-    'images', system.file('resources', 'images', package = 'modosinApp')
+    'images', system.file('resources', 'images', package = 'siteDroughtApp')
   )
   lang_choices <- c('cat', 'spa', 'eng')
   lang_flags <- c(
@@ -41,7 +41,7 @@ modosin_app <- function() {
     glue::glue("<img class='flag-image' src='images/eng.png' width=20px><div class='flag-lang'>%s</div></img>")
   )
   
-
+   
   # ++++++++++++++++++++++++++++++++ //  UI // ++++++++++++++++++++++++++++++++
   # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   ## UI ####
@@ -69,17 +69,17 @@ modosin_app <- function() {
       shiny::tags$script(keep_alive_script),
       
       
-      # # custom css
-      # shiny::includeCSS(system.file('resources', 'plotdrought.css', package = 'modosinApp')),
-      # # corporative image css
-      # shiny::includeCSS(system.file('resources', 'corp_image.css', package = 'modosinApp')),
-
       # custom css
-      shiny::includeCSS("inst/resources/plotdrought.css"),
+      shiny::includeCSS(system.file('resources', 'siteDrought.css', package = 'siteDroughtApp')),
       # corporative image css
-      shiny::includeCSS("inst/resources/corp_image.css"),
-      
-      # shiny::includeCSS("inst/resources/plotdrought_responsive_v2.css"),
+      shiny::includeCSS(system.file('resources', 'corp_image.css', package = 'siteDroughtApp')),
+
+      # # custom css
+      # shiny::includeCSS("inst/resources/siteDrought.css"),
+      # # corporative image css
+      # shiny::includeCSS("inst/resources/corp_image.css"),
+
+      # shiny::includeCSS("inst/resources/siteDrought_responsive_v2.css"),
       
     ),
     
@@ -167,7 +167,7 @@ modosin_app <- function() {
                   shiny::tabPanel(
                     title = mod_tab_translateOutput('data_translation'),
                     value = 'data_inputs_panel',
-                    mod_dataInput('modosin_DATA')
+                    mod_dataInput('siteDrought_DATA')
                   ), # end of data panel
 
                   # .............. Pestaña GUARDAR .............
@@ -279,9 +279,9 @@ modosin_app <- function() {
     # ....... DATA INPUTS ..........
     # ..............................
 
-    #       .) modosin_data  = f(x) a LLAMAR ( principal del Módulo )
-    #       .) modosin_DATA  = Es el ID usaremos a la UI cuando llamemos la f(x)
-    #       .) modosindb     = DDBB del LfcData
+    #       .) siteDrought_data  = f(x) a LLAMAR ( principal del Módulo )
+    #       .) siteDrought_DATA  = Es el ID usaremos a la UI cuando llamemos la f(x)
+    #       .) siteDroughtdb     = DDBB del LfcData
     #       .) Lang          = lenguaje del REACTIVE
 
     
@@ -290,14 +290,14 @@ modosin_app <- function() {
     
     # data_input
     data_reactives <- shiny::callModule(
-      modosin_data ,'modosin_DATA', modosindb, 
+      siteDrought_data ,'siteDrought_DATA', siteDroughtdb, 
       lang,  main_data_reactives
      
     )
     
     # help_input
     help_reactives <- shiny::callModule(
-      help_data ,'help_data', modosindb, 
+      help_data ,'help_data', siteDroughtdb, 
       lang,  main_data_reactives
       
     )
@@ -313,7 +313,7 @@ modosin_app <- function() {
     main_data_reactives <- shiny::callModule(
       mod_mainData, 'mod_mainDataOutput',
       data_reactives, map_reactives,
-      modosindb, lang
+      siteDroughtdb, lang
     )
     
    
@@ -361,27 +361,16 @@ modosin_app <- function() {
     # Funcion que llama a TODOS los CALL MODULES
     callModule_function(tabs,lang)
     
-    
-    
-    output$table_save <- downloadHandler(
-      filename = function() {
-        paste("prova", ".csv", sep = "")
-      },
-      content = function(file) {
-        write.csv(sf_procesed, file, row.names = FALSE)
-      }
-    )
-    
   
 
   } # end of server function
 
   # Run the application
-  modosinApp <- shiny::shinyApp(
+  siteDroughtApp <- shiny::shinyApp(
     ui = ui, server = server
   )
 
   # shiny::runApp(nfi_app)
-  return(modosinApp)
+  return(siteDroughtApp)
 
 }

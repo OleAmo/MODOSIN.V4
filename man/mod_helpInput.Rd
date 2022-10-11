@@ -2,7 +2,7 @@
 % Please edit documentation in R/mod_helpInput.R
 \name{mod_helpInput}
 \alias{mod_helpInput}
-\title{mod_helpInput and modosin_data}
+\title{mod_helpInput and siteDrought_data}
 \usage{
 mod_helpInput(id)
 }
