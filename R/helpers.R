@@ -58,8 +58,6 @@ translate_app <- function(id, lang) {
              Encoding(text) <- "UTF-8"
              text 
 
-             
-
             }
         }
     )

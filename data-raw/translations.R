@@ -79,7 +79,7 @@ tibble::tribble(
   "short_DFMC", "H.C.Mort", "D.F.Contents","H.C.Muerto",
   "short_SFP","P.Foc.Sup.","P.Surf.Fire","P.Fuego.Sup.",
   "short_CFP","P.Foc.Cap.","P.Crown.Fire","P.Fuego.Copa",
-  
+
 
   # ....... COMBO VARIABLES ......
   # ..............................
