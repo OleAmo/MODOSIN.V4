@@ -9,9 +9,9 @@ siteDrought_app <- function() {
   source('data-raw/polygon_objects_creation.R')
   source('data-raw/palette_builder.R')
   
+  
   ### DB access ################################################################
   siteDroughtdb <- lfcdata::siteDrought()
-  var_thes <- siteDroughtdb$get_data('variables_thesaurus_sitedr')
 
   ## JS code needed ############################################################
   keep_alive_script <- shiny::HTML(
@@ -74,7 +74,11 @@ siteDrought_app <- function() {
       shiny::includeCSS(system.file('resources', 'siteDrought.css', package = 'siteDroughtApp')),
       # corporative image css
       shiny::includeCSS(system.file('resources', 'corp_image.css', package = 'siteDroughtApp')),
-
+      # setting css sitedrought
+      shiny::includeCSS(system.file('resources','siteDrought_settings.css', package = 'siteDroughtApp')),
+      
+      
+      
       # # custom css
       # shiny::includeCSS("inst/resources/siteDrought.css"),
       # # corporative image css
@@ -376,3 +380,5 @@ siteDrought_app <- function() {
   return(siteDroughtApp)
 
 }
+
+

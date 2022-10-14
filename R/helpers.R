@@ -81,13 +81,18 @@ shiny_set_names <- function(nom,lang) {
 
 #       .) Función que traducirá
 #       .) Usará la tabla THESAURUS de la BBDD 
+#       .) DATOS PRÉVIOS:
+#                .) Creamos de nuevo SiteDroughtDB
+#                .) Creamos variable VAR_THES
+#                .) Es la tabla THESAURUS_VARIABLE 
 #       .) ARGUMENTOS.
 #                .) LANG = Lengua per definida en menu del NAV
 #                .) ID = código que usarà el DICCIONARIO para saber QUE TRADUCIR
 
 
 
-
+siteDroughtdb <- lfcdata::siteDrought()
+var_thes <- siteDroughtdb$get_data('variables_thesaurus_sitedr')
 
 
 translate_thesaurus_app <- function(id, lang) {

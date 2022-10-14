@@ -133,9 +133,8 @@ siteDrought_data <- function(
       #           .) Uso los Z-INDEX del CSS
       #           .) El Z-INDEX indica PRIORIDA de aparecer ENCIMA
       #           .) Como MAYOR el Z-INDEX mas encima de todo
-      
-      shiny::tags$style(type = "text/css", ".datepicker { z-index: 99999 !important; }"),
-     
+      #       .) El cambio lo hago en archivo CSS (siteDrought_settings.R)
+    
         
       shiny::dateInput(
         ns("fecha"), translate_app('date_daily_label', lang_declared),

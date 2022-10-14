@@ -108,7 +108,6 @@ help_data <- function(
       #      .) Queremos una descripción que varié
       #      .) Cuando seleccionamos una VARIABLE
 
-      
       shiny::uiOutput(
         ns('help_variables')
       ),
@@ -161,22 +160,16 @@ help_data <- function(
       #       .) Definimos VARIABLE seleccionada (Combo)
       #       .) Usamos la f(x) TRANSLATE THESAURUS APP para crear-la
       
-      
-      
-      # var_selected <- paste0("short_",input$variable_help)
 
-      var_selected <- input$variable_help
+
+      
       output$help_variables <- shiny::renderUI({
-
-        res <- translate_thesaurus_app(var_selected,lang_declared)
-        shiny::HTML(res)
-
+        var_selected <- input$variable_help
+        shiny::HTML(
+          translate_thesaurus_app(var_selected,lang_declared)
+        )
       })
       
-      
-      
-      
-      # shiny_set_names_thesaurus
       
   })
   

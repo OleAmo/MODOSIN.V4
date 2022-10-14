@@ -1,0 +1,16 @@
+
+
+/* ---------------- AJUSTES DE CSS -------------------------
+------------------------------------------------------------ */
+
+
+#help_data-help_variables {  /* SHORT VARIABLES - Tab Help*/
+  text-align: center; 
+  
+}
+
+.datepicker {               /* CALENDARIO - dateInput*/
+  z-index: 99999 
+  !important; 
+  
+}
