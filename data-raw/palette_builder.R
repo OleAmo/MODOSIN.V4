@@ -18,3 +18,8 @@ palettes_dictionary <- list(
 
 )
 
+usethis::use_data(
+  palettes_dictionary,
+  
+  internal = TRUE, overwrite = TRUE
+)

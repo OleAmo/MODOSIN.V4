@@ -38,6 +38,22 @@ peri_ordesa <- all_parques  %>% dplyr::filter(Tipus == "peri_OR")
 peri_aiguestortes <- all_parques  %>% dplyr::filter(Tipus == "peri_AT")
 
 
+
+usethis::use_data(
+  all_polygons,all_parques,
+  provincias,
+  catalunya,
+  parques,
+  ordesa,
+  aiguestortes,
+  peri_total ,
+  peri_ordesa,
+  peri_aiguestortes,
+  
+  internal = TRUE, overwrite = TRUE
+)
+
+
 # format(object.size(parques), units = "auto")
 # format(object.size(all_polygons), units = "auto")
 

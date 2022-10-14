@@ -1,5 +1,6 @@
 ## Script for creating the translations
 
+
 tibble::tribble(
   ~text_id, ~translation_cat, ~translation_eng, ~translation_spa,
 
@@ -157,4 +158,8 @@ tibble::tribble(
 
 
 
-# usethis::use_data( app_traduccions ,internal = TRUE, overwrite = TRUE )
+usethis::use_data(
+  language_dictionary,
+  
+  internal = TRUE, overwrite = TRUE
+)
