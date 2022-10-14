@@ -74,7 +74,55 @@ shiny_set_names <- function(nom,lang) {
   nom %>%
   magrittr::set_names(translate_app(names(.), lang))
 }
- 
+
+
+# ...... FUNCION TRANSLATE THESUAURUS .......
+# ...........................................
+
+#       .) Función que traducirá
+#       .) Usará la tabla THESAURUS de la BBDD 
+#       .) ARGUMENTOS.
+#                .) LANG = Lengua per definida en menu del NAV
+#                .) ID = código que usarà el DICCIONARIO para saber QUE TRADUCIR
+
+
+
+
+
+
+translate_thesaurus_app <- function(id, lang) {
+  id %>%
+    purrr::map_chr(
+      ~ var_thes %>%
+        dplyr::filter(var_short == paste0("short_",.x)) %>% {
+          data_filtered <- .
+          if (nrow(data_filtered) < 1) {
+            .x
+          } else {
+            
+            # ........ NO PROBLEM ENCODING .......
+            # ....................................
+            
+            #    .) dplyr::pull(data_filtered, !! rlang::sym(glue::glue("var_description_short_{lang}")))
+            
+            # ........ SI PROBLEM ENCODING .......
+            # ....................................
+            
+            #    .) A veces SHINY no transforma a UTF-8
+            #    .) La fórmula para hacerlo es 
+            #    .) Encoding(text) <- "UTF-8"
+            
+            
+            text <- dplyr::pull(data_filtered, !! rlang::sym(glue::glue("var_description_short_{lang}")))
+            
+            Encoding(text) <- "UTF-8"
+            text 
+            
+          }
+        }
+    )
+}
+
 
 # ........ FUNCION CALL MODULES ..........
 # ...........................................

@@ -159,34 +159,24 @@ help_data <- function(
       # ......................................
       
       #       .) Definimos VARIABLE seleccionada (Combo)
-      #       .) Usamos la f(x) TRANSLATE APP para crear-la
+      #       .) Usamos la f(x) TRANSLATE THESAURUS APP para crear-la
       
       
-      # ........ VERISON FINAL ......
-      # .............................
       
-      # var_selected <- input$variable_help
-      # var_selected_help <- paste0('help_',var_selected)
-      # 
-      # translate_app(var_selected_help,lang_declared)
-      
-      
-      # ....... VERISON PRUEBA ......
-      # .............................
-      
-      #       .) Versión hasta que no tenga las definiciones finals
-      
-      
+      # var_selected <- paste0("short_",input$variable_help)
+
       var_selected <- input$variable_help
-      var_selected_help <- paste0('help_',var_selected)
-      
       output$help_variables <- shiny::renderUI({
-        
-        part <- "...bla,bla,bla..."
-        res <- translate_app(var_selected_help,lang_declared)
-        shiny::HTML(paste(part,res,part,sep="<br/>"))
-        
+
+        res <- translate_thesaurus_app(var_selected,lang_declared)
+        shiny::HTML(res)
+
       })
+      
+      
+      
+      
+      # shiny_set_names_thesaurus
       
   })
   

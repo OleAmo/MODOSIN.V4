@@ -11,6 +11,7 @@ siteDrought_app <- function() {
   
   ### DB access ################################################################
   siteDroughtdb <- lfcdata::siteDrought()
+  var_thes <- siteDroughtdb$get_data('variables_thesaurus_sitedr')
 
   ## JS code needed ############################################################
   keep_alive_script <- shiny::HTML(
