@@ -22,17 +22,17 @@ tibble::tribble(
   "PET", "Evapo-transpiració potencial (mm/dia)", "Potential evapo-transpiration (mm/day)", "Evap-transpiración potencial (mm/día)",
   
   "REW", "Aigua disponible sòl (%)", "Available soil water (%)", "Agua disponible suelo (%)",
-  "REW_q", "Quantil Aigua disponible sòl (%)", "Quantile Available soil water (%)", "Cuantil Agua disponible suelo (%)",
+  "REW_q", "Percentil Aigua disponible sòl (%)", "Percentile Available soil water (%)", "Percentil Agua disponible suelo (%)",
   
-  "DDS", "Estrés de la vegetació (%)", "Stress on vegetation (%)", "Estrés de la vegetación (%)",
-  "DDS_q", "Quantil Estrés de la vegetació  (%)", "Quantile Stress on vegetation (%)", "Cuantil Estrés de la vegetación (%)",
+  "DDS", "Estrés de la vegetació (%)", "Vegetation Stress(%)", "Estrés de la vegetación (%)",
+  "DDS_q", "Percentil Estrés de la vegetació  (%)", "Percentile Stress on vegetation (%)", "Percentil Estrés de la vegetación (%)",
   
-  "LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Vivo (%)",
-  "LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu (%)", "Quantile Live Fuel Moisture Contents (%)","Cuantil Contendio de Humedad de Combustible Vivo (%)",
+  "LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Content (%)","Contendio de Humedad de Combustible Vivo (%)",
+  "LFMC_q", "Percentil Contingut d’Humitat de Combustible Viu (%)", "Percentile Live Fuel Moisture Content (%)","Percentil Contendio de Humedad de Combustible Vivo (%)",
   
-  "DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Muerto (%)",
-  "SFP","Potencial Foc de Superfície [0-9]","Potential Surface Fire [0-9]","Potencial Fuego de Superficie [0-9]",
-  "CFP","Potencial Foc de Capçada [0-9]","Potential Crown Fire [0-9]","Potencial Fuego de Copa [0-9]",
+  "DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Content (%)","Contendio de Humedad de Combustible Muerto (%)",
+  "SFP","Potencial Foc de Superfície [0-9]","Surface Fire Potential [0-9]","Potencial Fuego de Superficie [0-9]",
+  "CFP","Potencial Foc de Capçada [0-9]","Crown Fire Potential [0-9]","Potencial Fuego de Copa [0-9]",
   
   # .......... VARIABLES HELP .........
   # ...................................
@@ -41,17 +41,17 @@ tibble::tribble(
   "help_PET", "Evapo-transpiració potencial (mm/dia)", "Potential evapo-transpiration (mm/day)", "Evap-transpiración potencial (mm/día)",
   
   "help_REW", "Aigua disponible sòl (%)", "Available soil water (%)", "Agua disponible suelo (%)",
-  "help_REW_q", "Quantil Aigua disponible sòl (%)", "Quantile Available soil water (%)", "Cuantil Agua disponible suelo (%)",
+  "help_REW_q", "Percentil Aigua disponible sòl (%)", "Percentile Available soil water (%)", "Percentil Agua disponible suelo (%)",
   
-  "help_DDS", "Estrés de la vegetació (%)", "Stress on vegetation (%)", "Estrés de la vegetación (%)",
-  "help_DDS_q", "Quantil Estrés de la vegetació  (%)", "Quantile Stress on vegetation (%)", "Cuantil Estrés de la vegetación (%)",
+  "help_DDS", "Estrés de la vegetació (%)", "Vegetation stress (%)", "Estrés de la vegetación (%)",
+  "help_DDS_q", "Percentil Estrés de la vegetació  (%)", "Percentile Stress on vegetation (%)", "Percentil Estrés de la vegetación (%)",
   
-  "help_LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Vivo (%)",
-  "help_LFMC_q", "Quantil Contingut d’Humitat de Combustible Viu (%)", "Quantile Live Fuel Moisture Contents (%)","Cuantil Contendio de Humedad de Combustible Vivo (%)",
+  "help_LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Content (%)","Contendio de Humedad de Combustible Vivo (%)",
+  "help_LFMC_q", "Percentil Contingut d’Humitat de Combustible Viu (%)", "Percentile Live Fuel Moisture Content (%)","Percentil Contendio de Humedad de Combustible Vivo (%)",
   
-  "help_DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Contents (%)","Contendio de Humedad de Combustible Muerto (%)",
-  "help_SFP","Potencial Foc de Superfície [0-9]","Potential Surface Fire [0-9]","Potencial Fuego de Superficie [0-9]",
-  "help_CFP","Potencial Foc de Capçada [0-9]","Potential Crown Fire [0-9]","Potencial Fuego de Copa [0-9]",
+  "help_DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Content (%)","Contendio de Humedad de Combustible Muerto (%)",
+  "help_SFP","Potencial Foc de Superfície [0-9]","Surface Fire Potential [0-9]","Potencial Fuego de Superficie [0-9]",
+  "help_CFP","Potencial Foc de Capçada [0-9]","Crown Fire Potential [0-9]","Potencial Fuego de Copa [0-9]",
   
   
   # .......... VARIABLES .........
@@ -60,7 +60,7 @@ tibble::tribble(
   # "short_Precipitation", "Precipitació", "Precipitation", "Precipitación ",
   # "short_PET", "Evapo-transpiració", "Evapo-transpiration", "Evap-transpiración potencial (mm/día)",
   # 
-  # "short_Quantile", "Quantil Històric", "Historical Quantile", "Cuantil Histórico",
+  # "short_Percentile", "Percentil Històric", "Historical Percentile", "Percentil Histórico",
   # "short_REW", "Aigua disponible", "Available soil", "Agua disponible",
   # "short_DDS", "Estrés vegetació", "Stress vegetation", "Estrés vegetación",
   # "short_LFMC", "H.Combustible Viu", "L.Fuel Moisture","H.Combustible Vivo",
@@ -72,14 +72,14 @@ tibble::tribble(
   "short_Precipitation", "Precip.", "Precip.", "Precip. ",
   "short_PET", "E-T", "E-T", "E-T",
   
-  "short_Quantile", "Q.Històric", "Historical.Q", "C.Histórico",
+  "short_Percentile", "P.Històric", "Historical.P", "P.Histórico",
   "short_REW", "Aigua dis.", "Avai.water", "Agua dis.",
-  "short_DDS", "Estrés veg.", "Stress veg.", "Estrés veg.",
-  "short_LFMC", "H.C.Viu", "L.F.Contents","H.C.Vivo",
+  "short_DDS", "Estrés veg.", "Vegetation Stres.", "Estrés veg.",
+  "short_LFMC", "H.C.Viu", "L.F.Content","H.C.Vivo",
   
-  "short_DFMC", "H.C.Mort", "D.F.Contents","H.C.Muerto",
-  "short_SFP","P.Foc.Sup.","P.Surf.Fire","P.Fuego.Sup.",
-  "short_CFP","P.Foc.Cap.","P.Crown.Fire","P.Fuego.Copa",
+  "short_DFMC", "H.C.Mort", "D.F.Content","H.C.Muerto",
+  "short_SFP","P.Foc.Sup.","Surf.Fire.P","P.Fuego.Sup.",
+  "short_CFP","P.Foc.Cap.","Crown.Fire.P","P.Fuego.Copa",
 
 
   # ....... COMBO VARIABLES ......
@@ -89,7 +89,7 @@ tibble::tribble(
   'climate variables', "Variables Climàtiques", 'Climatic Variables', "Variables Climaticas",
   'drought variables','Sequera','Drought','Sequía',
   'fire variables',"Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
-  'quantiles variables','Comparació Històrica (1981 - 2020)','Historical Comparison (1981 - 2020)','Comparación Histórica (1981 - 2020)',
+  'Percentiles variables','Comparació Històrica (1981 - 2020)','Historical Comparison (1981 - 2020)','Comparación Histórica (1981 - 2020)',
 
   # ........... TÍTULOS ..........
   # ..............................
@@ -105,7 +105,7 @@ tibble::tribble(
   "date_daily_label", 'Data', 'Date', 'Fecha',
   'series_tab_translation', "Sèries temporals", "Time series", "Series temporales",
   "type_legend_label", "Canvi Llegenda", 'Legend Change','Cambio Leyenda',
-  'quantiles_axis_label','Quantils Comparació Històrica (1981 - 2020)','Quantiles Historical Comparison (1981 - 2020)','Cuantiles Comparación Histórica (1981 - 2020)',
+  'Percentiles_axis_label','Percentils Comparació Històrica (1981 - 2020)','Percentiles Historical Comparison (1981 - 2020)','Percentiles Comparación Histórica (1981 - 2020)',
   "save_main_label","Selecciona format per descargar les dades","Select format for downloading data","Selecciona formato para descargas los datos",
   "save_map_button","Guardar el mapa", "Save the map", "Guardar el mapa", 
   "save_table_button", "Guardar la taula","Save the table", "Guardar la tabla", 
@@ -158,8 +158,8 @@ tibble::tribble(
 
 
 
-usethis::use_data(
-  language_dictionary,
-  
-  internal = TRUE, overwrite = TRUE
-)
+# usethis::use_data(
+#   language_dictionary,
+#   
+#   internal = TRUE, overwrite = TRUE
+# )

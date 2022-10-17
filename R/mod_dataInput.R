@@ -50,10 +50,11 @@ siteDrought_data <- function(
       'spa' = 'es',
       'eng' = 'en'              
     )
+    
 
-    # ********************************************
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ------       FECHAS DATE INPUT     ---------
-    # ********************************************
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     #       .) OBJETIVO
     #       .) Quiero LIMITAR el CALENDARIO (DateInput)
@@ -98,9 +99,9 @@ siteDrought_data <- function(
     
     
     
-    # ********************************************
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     # ----------     ETIQUETAS HTML5    ----------
-    # ********************************************
+    # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     #       .) TAGLIST rea una definición de etiqueta HTML
     #       .) Creamos los elementos HTML5 con TAGS
@@ -159,93 +160,68 @@ siteDrought_data <- function(
           "S"="S"), lang_declared)
       ),  
       
-      # ......... RADIO BUTTONS ...........
+      # ..... RADIO BUT LEGEND COLOR ......
       # ...................................
       
+      #      .) Dejo COMENTADA el CANVIO de COLOR de LEYENDA
+      #      .) Me espero a hablar-lo con Miquel y Víctor
       
-      shiny:: radioButtons(
-        ns("legend_modify"),translate_app("type_legend_label", lang_declared),
-        shiny_set_names(c("estandard_label" = "estandard", 
-                          "1st_label" = "tip_1", 
-                          "2nd_label" = "tip_2"),lang_declared)
-      )
+      # shiny:: radioButtons(
+      #   ns("legend_modify"),translate_app("type_legend_label", lang_declared),
+      #   shiny_set_names(c("estandard_label" = "estandard", 
+      #                     "1st_label" = "tip_1", 
+      #                     "2nd_label" = "tip_2"),lang_declared)
+      # )
       
 
     ) # end of tagList
 
   })           
 
-  
 
+  
+  # %%%%%%%%%%%%%%%%%%   OBSERVE SELECT INPUT  %%%%%%%%%%%%%%%%%%%
+  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  #      .) Es un OBSERVER de => LENGUA / ORIGEN 
+  #      .) Crea un SELECTINPUT en el OUTPUT RENDER UI 
+  
+  #      .) Cada vez que variamos LENGUA / ORIGEN
+  #      .) SE CREA un nuevo SELECT INPUT
+  #      .) Donde el OUTPUT indica ( $selectInput_vars )
+  
  
-  # ..................... DEVOLVER REACTIVOS  ....................
-  # ..............................................................
-
-  #      .) Creamos DATA REACTIVE
-  #      .) ASSIGNAMOS los OBERSVERS
-
-  # ...... DATA REACTIVE .........
-  # ..............................
-
-  #      .) Es la variable que ALMACENA TODOS los REACTVES
-  #      .) Cada reactive se ALMACENA con un $
-
-
-  data_reactives <- shiny::reactiveValues()
-
-  # ...... DATA OBSERVE ..........
-  # ..............................
-
-  #      .) Creamos dentro de DATA_REACTIVE
-  #      .) Todos los diferentes apartados con $
-
-  shiny::observe({  
-
-    data_reactives$fecha_reactive  <- input$fecha
-    data_reactives$variable_reactive <- input$variable
-    data_reactives$origen_reactive <- input$origen
-    data_reactives$legend_modify_reactive <- input$legend_modify
+  shiny::observe({   
     
+    # ........ VALUES REACTIVES .........
+    # ...................................
     
+    #       .) Valores REACTIVES
+    #              .) LANGUAGE
+    #              .) ORIGEN
 
-  })
-  
-  
-  # ............ OBSERVE EVENT ................
-  # ...........................................
-  
-  #      .) Es un OBSERVER de un SOLO REACTIVO
-  #      .) En este caso el ORIGEN
-  
-  #      .) En variar ORIGEN (Combo)
-  #      .) Hay un SWITCH que definie FIRE_VARS
-  #      .) Y un OUTPUT RENDER UI
-  #      .) Defeine un NUEVO SelectInput
-  #      .) El SelectInput SE CREA donde el OUTPUT define ( $selectInput_vars )
-  
-  
-  shiny::observeEvent(
-    eventExpr = input$origen,
-    handlerExpr = {
+    
+    shiny::validate(shiny::need(input$origen, 'origen no selected') )
+    
+      lang_reactive   <- shiny::reactive({ lang_declared <- lang()})
+      origen_reactive <- shiny::reactive({ input$origen })
+      
       
       # ......... INICIALIZAR .............
       # ...................................
       
-      #       .) NS = IDs únicos
-      #       .) LANG = F(x) definida en APP.R
-      #       .) DATES_LANG = Cambio de nomenclatura de lengua
+      #       .) NS = ID's únicos
+      #       .) LENGUA = Reactive
+      #       .) ORIGEN = Reactive
       
       ns <- session$ns
       
-      lang_declared <- lang()
-      dates_lang <- switch(
-        lang_declared,
-        'cat' = 'ca',
-        'spa' = 'es',
-        'eng' = 'en'              
-      )
+      lang_declared <- lang_reactive()
+      origen <-  origen_reactive()
+
       
-      # ....... VARIABLES MATOLLAR ........
+      
+      # ..... MATOLLAR / INCIENDIOS .......
       # ...................................
       
       #       .) En el caso MATOLLAR
@@ -253,10 +229,10 @@ siteDrought_data <- function(
       #       .) Por lo tanto:
       #       .) Cuando se seleccione MATOLLAR ("S")
       #       .) No aparecerá CFP
-      
-      origen <-  input$origen
+    
       
       switch (origen,
+
               "S" = fire_variables <- c("LFMC","DFMC","SFP"),
               fire_variables <- c("LFMC","DFMC","SFP","CFP")
       )
@@ -270,6 +246,7 @@ siteDrought_data <- function(
       #           .) variables incendio:  "LFMC","DFMC","SFP","CFP"
       #           .) quantiles : 
       
+      
       drought_vars <- c("REW","DDS") %>%
         magrittr::set_names(translate_app(., lang_declared))
       climate_vars <- c("PET", "Precipitation") %>%
@@ -279,6 +256,12 @@ siteDrought_data <- function(
       quantiles_vars <- c("REW_q","DDS_q","LFMC_q") %>%
         magrittr::set_names(translate_app(., lang_declared))
       
+      
+      # ............. OUTPUT ..............
+      # ...................................
+      
+      #       .) Indicamos DONDE se harà el cambio  ($selectInput_vars)
+      #       .) Indicamos QUE HAREMOS (crear SelectInput)
 
       output$selectInput_vars <- shiny::renderUI({
         
@@ -299,16 +282,46 @@ siteDrought_data <- function(
       
     })
   
-
-  # -------------------------- VALORES REACTIVOS ----------------------------
-  # -------------------------------------------------------------------------
-
+  
+  
+  
+  # %%%%%%%%%%%%%%%%%%%%  DEVOLVER REACTIVOS  %%%%%%%%%%%%%%%%%%%%
+  # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+  #      .) Creamos DATA REACTIVE
+  #      .) ASSIGNAMOS los OBERSVERS
+  
+  # ...... DATA REACTIVE .........
+  # ..............................
+  
+  #      .) Es la variable que ALMACENA TODOS los REACTVES
+  #      .) Cada reactive se ALMACENA con un $
+  
+  
+  data_reactives <- shiny::reactiveValues()
+  
+  # ...... DATA OBSERVE ..........
+  # ..............................
+  
+  #      .) Creamos dentro de DATA_REACTIVE
+  #      .) Todos los diferentes apartados con $
+  
+  shiny::observe({  
+    
+    data_reactives$fecha_reactive  <- input$fecha
+    data_reactives$variable_reactive <- input$variable
+    data_reactives$origen_reactive <- input$origen
+    # data_reactives$legend_modify_reactive <- input$legend_modify
+    
+  })
+  
+  # ......... RETURN .............
+  # ..............................
+  
   #      .) Quiero tener constantemente 4 valores CONTROLADOS
   #      .) FECHA / VARIABLE / ORIGEN / LEGEND MODIFY
   #      .) Cuando VARIAN
   #      .) Las RETORNO para que otros MÓDULOS los aprovechen (el MAPS de LEAFLET)
-
-
 
 
   return(data_reactives)

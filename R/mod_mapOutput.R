@@ -194,8 +194,20 @@ mod_map <- function(
     fecha <- data_reactives$fecha_reactive
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
-    leyenda_modif <- data_reactives$legend_modify_reactive  
     sf <- main_data_reactives$data_day
+    
+    
+    # .......... LEGEND COLOR ...........
+    # ...................................
+    
+    #      .) DESACTVIO CANVIO de COLOR de LEYENDA
+    #      .) Me espero a hablar-lo con Miquel y Víctor
+    #      .) Asigon "ESTANDARD" a valor de LEYENDA
+    
+    # leyenda_modif <- data_reactives$legend_modify_reactive 
+    leyenda_modif <-"estandard"
+    
+    
     
     # ........ LENGUA SELECTED  .........
     # ...................................
