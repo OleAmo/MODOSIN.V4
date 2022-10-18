@@ -225,11 +225,11 @@ mod_mainData <- function(
     
     #             .) para el EJE Y2 del gráfico
     #             .) Solo se activa para los QUANTILES
-    #             .) Simepre tiene el mismo texto => "Quantils Comparació Històrica (1981 - 2020)"
+    #             .) Siempre tiene el mismo texto => "Quantils Comparació Històrica (1981 - 2020)"
     
     #      .) VAR SHORT
     #             .) es una MINI DEFINICION dela variable
-    #             .) la usaremo en el BOX del gráfico
+    #             .) la usaremos en el BOX del gráfico
     
     #      .) VAR SHORT_Q
     #             .) QUANTILES
@@ -241,7 +241,7 @@ mod_mainData <- function(
     
     var_def <- translate_app(variable, lang_declared)
     var_short <- translate_app(paste0("short_",variable), lang_declared)
-    var_short_q <- translate_app("short_Quantile", lang_declared)
+    var_short_q <- translate_app("short_Percentile", lang_declared)
 
     
     # ................ DYGRAPHS DATOS ...................
@@ -302,7 +302,7 @@ mod_mainData <- function(
       var_def <- translate_app(var, lang_declared)
       var_short <- translate_app(paste0("short_",var), lang_declared)
       
-      label_axis_q <- translate_app("quantiles_axis_label", lang_declared)
+      label_axis_q <- translate_app("percentiles_axis_label", lang_declared)
       
     } 
   
