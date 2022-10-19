@@ -99,7 +99,7 @@ translate_thesaurus_app <- function(id, lang) {
   id %>%
     purrr::map_chr(
       ~ var_thes %>%
-        dplyr::filter(var_short == paste0("short_",.x)) %>% {
+        dplyr::filter(var_id == .x ) %>% {
           data_filtered <- .
           if (nrow(data_filtered) < 1) {
             .x
@@ -118,7 +118,7 @@ translate_thesaurus_app <- function(id, lang) {
             #    .) Encoding(text) <- "UTF-8"
             
             
-            text <- dplyr::pull(data_filtered, !! rlang::sym(glue::glue("var_description_short_{lang}")))
+            text <- dplyr::pull(data_filtered, !! rlang::sym(glue::glue("var_description_help_{lang}")))
             
             Encoding(text) <- "UTF-8"
             text 
