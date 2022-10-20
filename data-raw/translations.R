@@ -34,25 +34,7 @@ tibble::tribble(
   "SFP","Potencial Foc de Superfície [0-9]","Surface Fire Potential [0-9]","Potencial Fuego de Superficie [0-9]",
   "CFP","Potencial Foc de Capçada [0-9]","Crown Fire Potential [0-9]","Potencial Fuego de Copa [0-9]",
   
-  # .......... VARIABLES HELP .........
-  # ...................................
-  
-  "help_Precipitation", "Precipitació (mm/dia)", "Precipitation (mm/day)", "Precipitación (mm/día)",
-  "help_PET", "Evapo-transpiració potencial (mm/dia)", "Potential evapo-transpiration (mm/day)", "Evap-transpiración potencial (mm/día)",
-  
-  "help_REW", "Aigua disponible sòl (%)", "Available soil water (%)", "Agua disponible suelo (%)",
-  "help_REW_q", "Percentil Aigua disponible sòl (%)", "Percentile Available soil water (%)", "Percentil Agua disponible suelo (%)",
-  
-  "help_DDS", "Estrés de la vegetació (%)", "Vegetation stress (%)", "Estrés de la vegetación (%)",
-  "help_DDS_q", "Percentil Estrés de la vegetació  (%)", "Percentile Stress on vegetation (%)", "Percentil Estrés de la vegetación (%)",
-  
-  "help_LFMC", "Contingut d’Humitat de Combustible Viu (%)", "Live Fuel Moisture Content (%)","Contendio de Humedad de Combustible Vivo (%)",
-  "help_LFMC_q", "Percentil Contingut d’Humitat de Combustible Viu (%)", "Percentile Live Fuel Moisture Content (%)","Percentil Contendio de Humedad de Combustible Vivo (%)",
-  
-  "help_DFMC", "Contingut d’Humitat de Combustible Mort (%)", "Dead Fuel Moisture Content (%)","Contendio de Humedad de Combustible Muerto (%)",
-  "help_SFP","Potencial Foc de Superfície [0-9]","Surface Fire Potential [0-9]","Potencial Fuego de Superficie [0-9]",
-  "help_CFP","Potencial Foc de Capçada [0-9]","Crown Fire Potential [0-9]","Potencial Fuego de Copa [0-9]",
-  
+ 
   
   # .......... VARIABLES SHORT .........
   # ..............................
