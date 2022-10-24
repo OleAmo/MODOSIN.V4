@@ -271,7 +271,7 @@ siteDrought_data <- function(
             'drought variables' = drought_vars,
             'climate variables' = climate_vars,
             'fire variables' = fire_vars,
-            'quantiles variables' = quantiles_vars
+            'Percentiles variables' = quantiles_vars
           ), lang_declared)
         )
         

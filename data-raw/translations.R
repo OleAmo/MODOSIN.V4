@@ -69,8 +69,8 @@ tibble::tribble(
   
 
   'climate variables', "Variables Climàtiques", 'Climatic Variables', "Variables Climaticas",
-  'drought variables','Sequera','Drought','Sequía',
-  'fire variables',"Variables Risc Incendi", "Fire Risk Variables", "Variables Riesgo Incendio",
+  'drought variables','Indicadors Sequera','Drought Indicators','Indicadores Sequía',
+  'fire variables',"Indicadors Risc Incendi", "Fire Risk Indicators", "Indicadores Riesgo Incendio",
   'Percentiles variables','Comparació Històrica (1981 - 2020)','Historical Comparison (1981 - 2020)','Comparación Histórica (1981 - 2020)',
 
   # ........... TÍTULOS ..........
