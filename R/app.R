@@ -253,7 +253,7 @@ siteDrought_app <- function() {
       shiny::tabPanel(
         title = mod_tab_translateOutput('tech_specs_translation'),
         value = 'tech_spec_panel',
-        # mod_techSpecsOutput('mod_techSpecsOutput')
+        mod_techSpecsOutput('mod_techSpecsOutput')
         
         
       )
@@ -340,12 +340,12 @@ siteDrought_app <- function() {
       main_data_reactives, data_reactives, lang
     )
     
-    # # technical specifications module
-    # shiny::callModule(
-    #   mod_techSpecs, 'mod_techSpecsOutput',
-    #   lang
-    # )
-    #
+    # technical specifications module
+    shiny::callModule(
+      mod_techSpecs, 'mod_techSpecsOutput',
+      lang
+    )
+
      
     # ..... TABS TRANSLATIONS ......
     # ..............................
