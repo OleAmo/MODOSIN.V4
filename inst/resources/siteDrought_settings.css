@@ -14,3 +14,30 @@
   !important; 
   
 }
+
+/* ----- THECNICAL ESPECIFICATIONS ---------
+   ---------------------------------------- */
+
+table {
+  border-collapse: collapse;
+    width: 100%;
+  }
+td, th {
+  
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  border: 1px solid #768299;
+}
+td {
+  border: 1px solid #a1abbf;
+}
+
+
+
+
+
+
+

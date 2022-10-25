@@ -1,15 +1,4 @@
-<style>
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    border: 1px solid #a7bac9;
-  }
-  td, th {
-    border: 1px solid #a7bac9;
-    padding: 8px;
-    text-align: center;
-  }
-</style>
+
 
 ### Introducció
 
