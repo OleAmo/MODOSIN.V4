@@ -172,8 +172,6 @@ mod_map <- function(
   
   shiny::observe({
     
-  
-    
     # ......... INICIALIZAR DATOS ............
     # ........................................
     
