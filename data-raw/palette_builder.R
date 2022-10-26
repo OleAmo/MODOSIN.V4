@@ -1,7 +1,7 @@
 
-palettes_dictionary <- list(
+palettes_dictionary <- list(   
   
-  PET = list(pal = viridis::viridis(100)),
+  PET = list(pal = viridis::viridis(100) ),
   Precipitation = list(pal = viridis::cividis(100)),
   REW = list(pal = viridis::plasma(100)),
   DDS = list(max = 100 , min = 0,pal = viridis::inferno(100)),
@@ -23,3 +23,6 @@ palettes_dictionary <- list(
 #   
 #   internal = TRUE, overwrite = TRUE
 # )
+
+
+ 

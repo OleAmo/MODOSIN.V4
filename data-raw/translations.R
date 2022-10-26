@@ -93,7 +93,7 @@ tibble::tribble(
   "save_table_button", "Guardar la taula","Save the table", "Guardar la tabla", 
   'help_description','Descripció : ','Description : ','Descripción : ',
   'units_description','Unitats : ','Units : ','Unidades : ',
-  
+  'reverse_legend','Invertir Llegenda', 'Reverse Legend','Invertir Leyenda',
   
   # ........... SAVE .............
   # ..............................

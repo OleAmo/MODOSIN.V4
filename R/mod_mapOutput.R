@@ -179,7 +179,7 @@ mod_map <- function(
     
     #      .) VARIABLES REACTIVE:
     #            .) Son la que usaremos para PROYECTAR PLOTS
-    #            .) Vienen de DATA_REACTIVE (fecha, origen, variable)
+    #            .) Vienen de DATA_REACTIVE (fecha, origen, variable, legend_check)
     #            .) Vienen de MAIN_DATA_REACTIVE (sf)
   
     #      .) VARIABLES FUNCION:
@@ -194,8 +194,10 @@ mod_map <- function(
     fecha <- data_reactives$fecha_reactive
     origen <- data_reactives$origen_reactive 
     variable <- data_reactives$variable_reactive
+    legend_check <- data_reactives$legend_check
     sf <- main_data_reactives$data_day
     
+  
     
     # .......... LEGEND COLOR ...........
     # ...................................
@@ -398,7 +400,7 @@ mod_map <- function(
 
     #      .) ELIMINAMOS los NA de la LEYENDA
     #      .) Sino visualmente se complica
-    #      .) Y se tendría que vanviar el CSS de la Leyenda
+    #      .) Y se tendría que cambiar el CSS de la Leyenda
 
     
     variable_valores_noNA <- variable_valores[!is.na(variable_valores)]
@@ -434,11 +436,13 @@ mod_map <- function(
       value <- 0
       pal_plot <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value, reverse = FALSE)
       pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value, reverse = TRUE)
-    
-      value_legend <- variable_valores 
+      value_legend <- variable_valores
+
+      
       
  
     } else {
+      
       
       # ........ VALUE / VALUE_LEGEND .........
       # ........................................
@@ -530,7 +534,7 @@ mod_map <- function(
         
         rampcols_a <- c(rc1, rc2)
         rampcols_b <- c(rc3, rc4)
-         
+ 
         switch (leyenda_modif,
                 "estandard" = palete_value <- palettes_dictionary[[variable]][['pal']],
                 "tip_1"     = palete_value <- rampcols_a,
@@ -550,17 +554,34 @@ mod_map <- function(
         #      .) SI es variable QUANTIL o NO QUANTIL
         #      .) El sentido (REVERSE) de colores Leyenda y Plots es de diferente
         
-
+        #      .) INVERTIR LEYENDA:
+        #      .) Usamos la variable LEGEND_CHECK tipo BOOLEAN 
+        #      .) La obtenemos del MOD_DATAINPUT.R (del CheckBox)
+        
+        
         if (is_quantil(variable)) {   
           
-          pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = FALSE)
-          pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = TRUE)
+              if(legend_check){
+                pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = TRUE)
+                pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = FALSE)
+                
+              } else {
+                pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = FALSE)
+                pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = TRUE)
+                
+              }
           
         } else {
           
-          pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = TRUE)
-          pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = FALSE)
-            
+              if(legend_check){
+                pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = FALSE)
+                pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = TRUE)
+                
+              } else {
+                pal_plot   <- leaflet::colorNumeric(palette = palete_value, domain = value , reverse = TRUE)
+                pal_legend <- leaflet::colorNumeric(palette = palete_value, domain = value_legend , reverse = FALSE)
+              }
+  
         }
      
     }

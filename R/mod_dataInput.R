@@ -168,10 +168,24 @@ siteDrought_data <- function(
       
       # shiny:: radioButtons(
       #   ns("legend_modify"),translate_app("type_legend_label", lang_declared),
-      #   shiny_set_names(c("estandard_label" = "estandard", 
-      #                     "1st_label" = "tip_1", 
+      #   shiny_set_names(c("estandard_label" = "estandard",
+      #                     "1st_label" = "tip_1",
       #                     "2nd_label" = "tip_2"),lang_declared)
       # )
+      
+      
+      # ... CHEK BUTTON LEGEND INVERT .....
+      # ...................................
+      
+      #      .) Check Button
+      #      .) Para invertir Leyenda
+      
+      shinyWidgets::prettyCheckbox(
+        ns('legend_check'),
+        translate_app('reverse_legend', lang_declared),
+        status = 'success', shape = 'curve', fill = TRUE
+      )
+      
       
 
     ) # end of tagList
@@ -311,6 +325,7 @@ siteDrought_data <- function(
     data_reactives$fecha_reactive  <- input$fecha
     data_reactives$variable_reactive <- input$variable
     data_reactives$origen_reactive <- input$origen
+    data_reactives$legend_check <- input$legend_check
     # data_reactives$legend_modify_reactive <- input$legend_modify
     
   })
