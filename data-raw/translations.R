@@ -91,6 +91,9 @@ tibble::tribble(
   "save_main_label","Selecciona format per descargar les dades","Select format for downloading data","Selecciona formato para descargas los datos",
   "save_map_button","Guardar el mapa", "Save the map", "Guardar el mapa", 
   "save_table_button", "Guardar la taula","Save the table", "Guardar la tabla", 
+  'help_description','Descripció : ','Description : ','Descripción : ',
+  'units_description','Unitats : ','Units : ','Unidades : ',
+  
   
   # ........... SAVE .............
   # ..............................

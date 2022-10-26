@@ -166,7 +166,11 @@ help_data <- function(
       output$help_variables <- shiny::renderUI({
         var_selected <- input$variable_help
         shiny::HTML(
-          translate_thesaurus_app(var_selected,lang_declared)
+          translate_app('help_description', lang_declared),
+          translate_thesaurus_app(var_selected,lang_declared,'description'),'</br>',
+          
+          translate_app('units_description', lang_declared),
+          translate_thesaurus_app(var_selected,lang_declared,'units')
         )
       })
       
