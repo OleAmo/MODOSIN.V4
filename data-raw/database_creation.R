@@ -247,13 +247,13 @@ VACUUM ANALYZE public.data_day_fire;", .con = con)
 #     .) Creamos la TABLA con ST_WRITE
 
 insert_data <- function(tabla){
-  start_time <- Sys.time()
+  # start_time <- Sys.time()
   st_write(obj = tabla,
            dsn = con,
            Id(schema="public", table = "data_day_fire"),
            append=FALSE)
-  end_time <- Sys.time()
-  end_time - start_time
+  # end_time <- Sys.time()
+  # end_time - start_time
 }
 
 
