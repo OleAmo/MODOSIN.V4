@@ -38,7 +38,7 @@ mod_techSpecs <- function(
     #       .) Cuando tenga los 3 MD (Markdown) traducidos
     #       .) Aplicaré este còdigo
 
-    # markdown_translated <- glue::glue(  "SiteDrought_technical_especifications_{lang()}.md" )
+    markdown_translated <- glue::glue(  "SiteDrought_technical_especifications_{lang()}.md" )
     
     
     # ...... RMD NO TRANSALATE ........
@@ -47,7 +47,7 @@ mod_techSpecs <- function(
     #       .) solo tengo MD Catalan
     #       .) uso un solo MD
     
-    markdown_translated <-  "SiteDrought_technical_especifications_cat.md" 
+    # markdown_translated <-  "SiteDrought_technical_especifications_cat.md" 
      
     # .......... RENDER RMD ..............
     # ....................................
