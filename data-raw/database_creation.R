@@ -31,31 +31,39 @@ RPostgres::dbExecute(con, create_database)
 RPostgres::dbDisconnect(con)
 
 
-# %%%%%%%%%%%%%%%%%%%%%%   GEOMETRÍA PLOTS_ID   %%%%%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%   CREAR GEOMETRÍA  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-#      .) Cada día se crean 5283 archivos RDS del MEDFATE
-#      .) Cada archivo RDS es UNA PARCELA
-#      .) Cada PARCELA => tiene los 365 días de datos del WHATER BALANCE
+#      .) MEDFATE cada día crea los RDS con la info de cada PLOT
+#          .) Cada día se crean 5316 archivos RDS del MEDFATE
+#          .) Cada archivo RDS es UNA PARCELA
+#          .) Cada PARCELA => tiene los 365 días de datos del WHATER BALANCE
 
-#      .) En esta PRUEVA DE APP
-#      .) Tengo un FOLDER en el LOCALHOST con 5283 RDS 
-#      .) Después en el servidor, el Script, también buscará en una carpeta 
-#      .) En esta carpeta habrá descargadas las 5283 y algo parcelas cada día
+#          .) En esta PRUEVA DE APP
+#          .) Tengo un FOLDER en el LOCALHOST con 5316 RDS 
+#          .) Después en el servidor, el Script, también buscará en una carpeta 
+#          .) En esta carpeta habrá descargadas las 5316 y algo parcelas cada día
+
+#      .) Pero NO OFRECE la geometría de cada plot
+#      .) La obtenemos de un SHAPE
+#      .) plots_geom_all PLOTS_GEOM_ALL.shp
 
 
-# .......... GEOMETRÍA PLOTS_ID .........
+
+
+# ........... CREACIÓN de SF ............
 # .......................................
 
-#     .) La geometría NO la da el MEDFATE 
-#     .) La obtenemos de diferentes formas
+#     .) Necesitamos los 4 SF
+#     .) Los SF tienen orígenes diferentes
+
 #              .) PLOTS PERE          (Miquel Shape) 
 #              .) PLOTS AIGUESTORTES  (Miquel TXT)
 #              .) PLOTS ORDESSA       (Miquel TXT)
 #              .) IFN4                (App NFI)
 
-# ....... PLOTS PERE ..
-# .....................
+# ....... SF = PLOTS PERE ..
+# ..........................
 
 pere_sf <- sf::st_read('COORD_PLOTS/coords_topo.shp') %>% 
   dplyr::mutate(plot_id = paste0("S_",Id), geom = geometry) %>%
@@ -63,10 +71,9 @@ pere_sf <- sf::st_read('COORD_PLOTS/coords_topo.shp') %>%
   sf::st_transform(crs = 4326)
 
 
-# ...PLOTS AiguesTortes
-# .....................
+# ....... SF = PLOTS AiguesTortes
+# ..............................
 
-# CSV (txt transformado a CSV) 
 aiguestortes_csv <- read.csv2('COORD_PLOTS/CSV/plots_AiguesTortes.csv') %>%
   dplyr::mutate(longitude = x, latitude = y) %>%
   dplyr::select(plot_id, longitude, latitude)
@@ -76,10 +83,9 @@ aiguestortes_sf <- st_as_sf(aiguestortes_csv, coords = c("longitude", "latitude"
                             crs = 25831, agr = "constant") %>% sf::st_transform(crs = 4326) %>%
   dplyr::mutate(geom = geometry)
 
-# ...PLOTS ORDESA.....
-# .....................
+# ....... SF =PLOTS ORDESA.....
+# .............................
 
-# CSV (txt transformado a CSV) 
 ordesa_csv <- read.csv2('COORD_PLOTS/CSV/plots_Ordesa_perimetre.csv') %>%
   dplyr::mutate(longitude = x, latitude = y) %>%
   dplyr::select(plot_id, longitude, latitude)
@@ -90,8 +96,11 @@ ordesa_sf <- st_as_sf(ordesa_csv, coords = c("longitude", "latitude"),
   dplyr::mutate(geom = geometry)
 
 
-# IFN4 ............... 
-# .....................
+# ....... SF = IFN4 ........... 
+# .............................
+
+#     .) La geometría de los IFN4 Catalunya
+#     .) La tengo en la BBDD del LOCALHOST
 
 con <- DBI::dbConnect(RPostgres::Postgres(),
                       dbname = 'catalunya', 
@@ -105,11 +114,17 @@ parcelas_nfi <- sf::st_read(dsn = con, Id(schema="creaf", table = "nif_app"))
 RPostgres::dbDisconnect(con)
 
 
-# ...... CREACIÓN PLOTS GEOM ALL ........
+# ........... CREACIÓN SHAPE ............
 # .......................................
 
 #     .) Los GUARDO los 4 SF en el PC como shapes
-#     .) Despues usando QGIS uniré los 3 shapes en 1 shape
+#     .) Después usando QGIS uniré los 4 shapes en 1 shape
+#     .) Uso QGIS para unir los 4 shapes
+
+#     .) Creo un SHAPE con la geometría de TODOS los plots
+#     .) PLOTS_GEOM_ALL.shp
+
+
 
 # st_write(parcelas_nfi,'SHAPE/PLOTS/SEPARADOS/polts_nfi.shp')
 # st_write(aiguestortes_sf,'SHAPE/PLOTS/SEPARADOS/polts_at.shp')
@@ -118,30 +133,30 @@ RPostgres::dbDisconnect(con)
 
 
 
-# .......... PLOTS GEOM ALL .............
+# ......... SF GEOMETRÍA PLOTS ...........
 # .......................................
 
-#     .) Es una tabla con la relación PLOT_ID Geom
-#     .) Son los Plots de:
-#          .)  NFI
-#          .)  AiguesTortes
-#          .)  Pere
-#     .) Lo he creado en QGis uniendo los 3 shapes creados
+#     .) Creo un SF con el shape
+#     .) Tiene todos los plots y su geometría
+#     .) Lo usaré para dar geometría a los plots delos RDS 
+#     .) Y así crear la tabla de la BBDD, Data_Day
+
 
 plots_geom_all <- st_read('SHAPES/PLOTS/plots_geom_all.shp') %>%
   dplyr::mutate(old_idparcela = old_dpr, old_idclasse_nfi3 = old_d_3, old_idclasse_nfi4 = old_d_4) %>%
   dplyr::select(plot_id, old_idparcela, old_idclasse_nfi3, old_idclasse_nfi4)
 
 
-
-
-# %%%%%%%%%%%%%%%%%%%%%   REAR DATA FRAME FIRE   %%%%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%   FUNCIONES para el SF   %%%%%%%%%%%%%%%%%%%%%%%%%
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+#     .) Necesito 2 Funciones para crear el SF data_day_fire
 
+#     .) PLOTS_ID     = Obtiene ID del Plot
+#     .) PLOT_ORIGIN  = Obtiene Origen de Plot (Aiguestortes, nfi4,...)
 
-# ........ OBTENER PLOT_ID Corregidos.........
-# ............................................
+# ........ PLOT_ID ............
+# .............................
 
 #     .) Obtengo los nombres de los archivos (P_15081.rds)
 #     .) les quito el .RDS
@@ -151,11 +166,12 @@ plots_id <- list.files("RDS", pattern="rds$") %>%
   gsub(".rds", "", ., fixed = TRUE)  
 
 
-# ........ FUNCION PLOT_ORIGIN ...............
-# ............................................
+# ....... PLOT_ORIGIN .........
+# .............................
+
 #     .) Obtengo los nombres de los archivos => "y_xxxxx.RDS"
 #     .) Separo con SPLIT "_" y me quedo la primera parte
-#     .) Después en función de si és P o A retorno IFN o AIGUESTORTES
+#     .) Después en función de si és A,P,S,O retorno IFN o AIGUESTORTES
 
 plot_origin <- function(data){
   res <- data %>%
@@ -174,8 +190,17 @@ plot_origin <- function(data){
   
 }
 
-# .......... CREAR DATA DAY FIRE .............
-# ............................................
+# %%%%%%%%%%%%%%%%%%%   CREAR SF = DATA DAY FIRE   %%%%%%%%%%%%%%%%%%%%%%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+#     .) Creamos el SF final
+#     .) Cada día se creará 
+#     .) Necesita RDS + SHAPE geometría plots
+
+
+
+# ......... CARACIÓ SF FINAL  ...........
+# .......................................
 
 #     .) Necesitamos una LISTA para empezar el proceso
 #     .) La LISTA tiene que tener un NAME y un VALUE
