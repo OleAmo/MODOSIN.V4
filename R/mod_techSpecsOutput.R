@@ -48,6 +48,7 @@ mod_techSpecs <- function(
     #       .) uso un solo MD
     
     # markdown_translated <-  "SiteDrought_technical_especifications_cat.md" 
+    # markdown_translated <-"SiteDrought_technical_especifications_cat_MIQUEL.Rmd"
      
     # .......... RENDER RMD ..............
     # ....................................

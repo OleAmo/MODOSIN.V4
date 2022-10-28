@@ -103,293 +103,96 @@ superficie de hoja y de ahí estimar el índice de área foliar. La
 distribución vertical de las raíces en el suelo se estima mediante las
 ecuaciones empíricas obtenidas por Cabon et al. (2018).
 
+### Operativa diaria
 
-
-
-
-```
-  ##################################################################3
-                    
-                   AKIIIII MHE QUEDAT
-                      
-  ##################################################################3
- 
-```
-
-
-
-
-
-
-### Operativa diària
-
-El motor de càlcul de l’aplicació **SiteDrought App** es nodreix de
-dades meteorològiques descarregades de les API del SMC i l’AEMET.
-Aquestes dades es descarregen i s’utilitzen per a interpolar la
-meteorologia del dia en curs sobre la localitat objectiu, tal i com es
-descriu a De Cáceres et al. (2018), i de manera semblant a com fa
-l’aplicació **Meteoland App**. Un cop les dades meteorològiques estan
-disponibles per una localitat, el motor executa el model de balanç
-hídric, tenint en compte l’estat d’humitat del sòl del dia anterior. El
-model genera els fluxos d’aigua que conformen el balanç hídric al sòl i
-actualitza l’estat d’humitat del mateix. A continuació, el motor de
-càlcul estima l’estrés per sequera de la vegetació i el contingut
-d’humitat del combustible viu a partir de l’estat d’humitat del sòl i
-les propietats hidràuliques de les diferents espècies. El motor també
-estima la humitat del combustible mort, seguint l’aproximació de Resco
-De Dios et al. (2015). Finalment, tots aquests paràmetres - així com les
-estimes de la càrrega de combustible de superfície i de capçades, i les
-condicions de vent, temperatura i humitat diàries - permeten estimar dos
-índexos de comportament potencial del foc, derivats de l’aproximació de
+El motor de cálculo de la aplicación **SiteDrought App** se nutre de
+datos meteorológicos descargados de las API del SMC y AEMET.
+Estos datos se descargan y se utilizan para interpolar la
+meteorología del día en curso sobre la localidad objetivo, tal y como se
+describe a De Cáceres et al. (2018), y de forma similar a cómo hace
+la aplicación **Meteoland App**. Una vez que los datos meteorológicos están
+disponibles por una localidad, el motor ejecuta el modelo de balance
+hídrico, teniendo en cuenta el estado de humedad del suelo del día anterior. El
+modelo genera los flujos de agua que conforman el balance hídrico en el suelo y
+actualiza el estado de humedad del mismo. A continuación, el motor de
+cálculo estima el estrés por sequía de la vegetación y el contenido
+de humedad del combustible vive a partir del estado de humedad del suelo y
+las propiedades hidráulicas de las distintas especies. El motor también
+ama la humedad del combustible muerto, siguiendo la aproximación de Resco
+De Dios et al. (2015). Por último, todos estos parámetros - así como las
+estimas de la carga de combustible de superficie y de copas, y las
+condiciones de viento, temperatura y humedad diarias - permiten estimar dos
+índices de comportamiento potencial del fuego, derivados de la aproximación de
 *Fuel Characteristics Classification System* (Prichard et al. 2013).
 
-### Variables de sortida
+### Variables de salida
 
-L’aplicació proporciona informació de diferents variables, agrupades per
-categories:
+La aplicación proporciona información de diferentes variables, agrupadas por
+categorías:
 
-**Variables climàtiques** - Les variables meteorològiques més rellevants
-per al model de balanç hídric són la precipitació (ja sigui en forma
-líquida o sòlida) i l’evapotranspiració potencial:
+**Variables climáticas** - Las variables meteorológicas más relevantes para el modelo de balance hídrico son la precipitación (ya sea en forma líquida o sólida) y la evapotranspiración potencial:
 
-<table>
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 62%" />
-<col style="width: 13%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th>Definició</th>
-<th>Unitats</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Evapotranspiració potencial</td>
-<td>Evapotranspiració potencial diària, calculada a partir de l’equació
-de Penman (1956)</td>
-<td><span
-class="math inline"><em>m</em><em>m</em> ⋅ <em>d</em><sup>−1</sup></span></td>
-</tr>
-<tr class="even">
-<td>Precipitació</td>
-<td>Precipitació diària (inclou pluja i neu)</td>
-<td><span
-class="math inline"><em>m</em><em>m</em> ⋅ <em>d</em><sup>−1</sup></span></td>
-</tr>
-</tbody>
-</table>
+Variable | Definición | Unidades
+--------- | ----------------------- | -----
+Evapotranspiración potencial | Evapotranspiración potencial diaria, calculada a partir de la ecuación de Penman (1956) | $mm \cdot d^{-1}$
+Precipitación | Precipitación diaria (incluye lluvia y nieve) | $mm \cdot d^{-1}$
 
-**Indicadors de sequera** - Dues variables proporcionen informació sobre
-la sequera edàfica i de la vegetació. D’una banda, es proporciona un
-indicador normalitzat de la quantitat d’aigua disponible al sòl. Per a
-la mateixa humitat al sòl algunes espècies pateixen més l’estrés per
-sequera que altres. La conductància relativa de la planta és una mesura
-relativa de reducció de la transpiració deguda a l’estrés per sequera.
-La intensitat d’estrés per sequera es defineix al model com el
-complement de la conductància relativa de la planta.
+**Indicadores de sequía** - Dos variables proporcionan información sobre la sequía edáfica y de la vegetación. Por un lado, se proporciona un indicador normalizado de la cantidad de agua disponible en el suelo. Para la misma humedad en el suelo algunas especies sufren más el estrés por sequía que otras. La conducta relativa de la planta es una medida relativa de reducción de la transpiración debida al estrés por sequía. La intensidad de estrés por sequía se define en el modelo como el complemento de la conductancia relativa de la planta.
 
-<table>
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 62%" />
-<col style="width: 13%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th>Definició</th>
-<th>Unitats</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Aigua extraïble relativa</td>
-<td>Humitat disponible al sòl, normalitzada entre capacitat de camp (que
-correspondria a un valor d’1) i el punt de marciment a -1.5 MPa (que
-correspondria a un valor de 0).</td>
-<td>[0-1]</td>
-</tr>
-<tr class="even">
-<td>Estrés de la vegetació</td>
-<td>Mitjana ponderada de la intensitat de l’estrés diari de les
-diferents espècies, fent servir els valors de LAI com a pesos.</td>
-<td>[0-1]</td>
-</tr>
-</tbody>
-</table>
+Variable | Definición | Unidades
+--------- | ----------------------- | -----
+Agua extraíble relativa | Humedad disponible en el suelo, normalizada entre capacidad de campo (que correspondería a un valor de 1) y el punto de marchitamiento a -1.5 MPa (que correspondería a un valor de 0). | [0-1]
+Estrés de la vegetación | Media ponderada de la intensidad del estrés diario de las diferentes especies, utilizando los valores de LAI como pesos. | [0-1]
 
-**Indicadors de risc d’incendi** - Una altra manera d’expressar l’estrés
-de la vegetació és mitjançant la humitat del combustible viu, que depèn
-de l’estructura de la fulla i el contingut relatiu d’aigua dels teixits
-de la planta.
+**Indicadores de riesgo de incendio** - Otra forma de expresar el estrés de la vegetación es mediante la humedad del combustible vivo, que depende de la estructura de la hoja y el contenido relativo de agua de los tejidos de la planta.
 
-<table>
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 62%" />
-<col style="width: 13%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th>Definició</th>
-<th>Unitats</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Humitat del combustible viu</td>
-<td>Contingut d’humitat del combustible fi viu en relació al pes
-sec. Mitjana ponderada de les diferents espècies, fent servir els valors
-de LAI com a pesos.</td>
-<td>%</td>
-</tr>
-<tr class="even">
-<td>Humitat del combustible mort</td>
-<td>Contingut d’humitat del combustible fi mort en relació al pes sec,
-estimat seguint Resco De Dios (2015).</td>
-<td>%</td>
-</tr>
-<tr class="odd">
-<td>Potencial de foc de superfície</td>
-<td>Index de comportament potencial del foc de superfície, segons una
-modificació del sistema <em>Fuel Characteristics Classification
-System</em> (FCCS; Prichard et al. 2013).</td>
-<td>[0-9]</td>
-</tr>
-<tr class="even">
-<td>Potencial de foc de capçada</td>
-<td>Index de comportament potencial del foc de capçada, segons una
-modificació del sistema <em>Fuel Characteristics Classification
-System</em> (FCCS; Prichard et al. 2013)).</td>
-<td>[0-9]</td>
-</tr>
-</tbody>
-</table>
+Variable | Definición | Unidades
+--------- | ----------------------- | -----
+Humedad del combustible vivo | Contenido de humedad del combustible fino vivo en relación al peso seco. Media ponderada de las diferentes especies, utilizando los valores de LAI como pesos. | %
+Humedad del combustible muerto | Contenido de humedad del combustible fino muerto en relación al peso seco, estimado siguiendo Resco De Dios (2015). | %
+Potencial de fuego de superficie | Índice de comportamiento potencial del fuego de superficie, según una modificación del sistema *Fuel Characteristics Classification System* (FCCS; Prichard et al. 2013). | [0-9]
+Potencial de fuego de copa | Índice de comportamiento potencial del fuego de copa, según una modificación del sistema *Fuel Characteristics Classification System* (FCCS; Prichard et al. 2013)). | [0-9]
 
-**Percentils** - Finalment, l’aplicació ofereix la possibilitat
-d’expressar algunes de les variables anteriors en forma de percentils
-respecte a una distribució de valors històrics, per tal de representar
-fins a quin punt uns nivells donats de sequera o risc d’incendi són
-extrems. El periode històric de referència és fixe i s’ha obtingut
-mitjançant simulacions per al periode 1981-2020 per a cada parcel·la. El
-percentil del 50% correspon a la mediana de la distribució històrica;
-percentils &gt; 50 % indicarien que la variable té valors més alts que
-els històrics; analogament, percentils &lt; 50% indicarien valors més
-baixos que els històrics. Actualment es proporcionen percentils per les
-següents variables:
 
-<table>
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 62%" />
-<col style="width: 13%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Variable</th>
-<th>Definició</th>
-<th>Unitats</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Percentil d’aigua disponible al sòl</td>
-<td>Percentil del valor d’aigua disponible al sòl en relació a la
-distribució de valors de la sèrie històrica (1981-2020)</td>
-<td>%</td>
-</tr>
-<tr class="even">
-<td>Percentil d’estrés de la vegetació</td>
-<td>Percentil del valor d’estrés de la vegetació en relació a la
-distribució de valors de la sèrie històrica (1981-2020)</td>
-<td>%</td>
-</tr>
-<tr class="odd">
-<td>Percentil d’humitat del combustible viu</td>
-<td>Percentil del valor d’humitat del combustible viu en relació a la
-distribució de valors de la sèrie històrica (1981-2020)</td>
-<td>%</td>
-</tr>
-</tbody>
-</table>
+**Percentiles** - Por último, la aplicación ofrece la posibilidad de expresar algunas de las variables anteriores en forma de percentiles respecto a una distribución de valores históricos, para representar hasta qué punto unos niveles dados de sequía o riesgo de incendio son extremos. El período histórico de referencia es fijo y se ha obtenido mediante simulaciones para el período 1981-2020 para cada parcela. El percentil del 50% corresponde a la mediana de la distribución histórica; percentiles > 50% indicarían que la variable tiene valores más altos que los históricos; analogamente, percentiles < 50% indicarían valores más bajos que los históricos. Actualmente se proporcionan percentiles por las siguientes variables:
 
-### Autoria i agraïments
+Variable | Definición | Unidades
+--------- | ----------------------- | -----
+Porcentil de agua disponible en el suelo | Porcentil del valor de agua disponible en el suelo en relación a la distribución de valores de la serie histórica (1981-2020) | %
+Porcentil de estrés de la vegetación | Porcentil del valor de estrés de la vegetación en relación con la distribución de valores de la serie histórica (1981-2020) | %
+Porcentil de humedad del combustible vivo | Porcentil del valor de humedad del combustible vivo en relación a la distribución de valores de la serie histórica (1981-2020) | %
 
-Les següents persones han treballat en el desenvolupament de
-**SiteDrought**:
+### Autoría y agradecimientos
 
--   Motor de càlcul de l’aplicació - **Miquel De Cáceres**
--   Disseny de la base de dades i aplicació shiny - **Oleguer Amorós** i
-    **Victor Granda**
+Las siguientes personas han trabajado en el desarrollo de **SiteDrought**:
 
-Els autors expressen la seva gratitut vers l’[Agencia Estatal de
-Meteorologia (AEMET)](http://www.aemet.es) i el [Servei Meteorologic de
-Catalunya (SMC)](http://www.meteo.cat) per proporcionar diàriament dades
-meteorològiques necessaries per aquesta aplicació; i al Servei de
-Prevenció d’Incendis per als consells en el seu desenvolupament.
+  + Motor de cálculo de la aplicación - **Miquel De Cáceres**
+  + Diseño de la base de datos y aplicación shiny - **Oleguer Amorós** y **Victor Granda**
+ 
+Los autores expresan su gratitud hacia la [Agencia Estatal de Meteorología (AEMET)](http://www.aemet.es) y el [Servicio Meteorológico de Cataluña (SMC)](http://www.meteo.cat ) para proporcionar diariamente datos meteorológicos necesarios para esta aplicación; y al Servicio de Prevención de Incendios para los consejos en su desarrollo.
 
-### Bibliografia
 
--   Ameztegui, A., Cabon, A., De Cáceres, M. & Coll, L. (2017). Managing
-    stand density to enhance the adaptability of Scots pine stands to
-    climate change: A modelling approach. Ecol. Modell., 356, 141–150.
-    <https://doi.org/10.1016/j.ecolmodel.2017.04.006>
--   Cabon A, Martínez-Vilalta J, Martínez-de-Aragón J, De Cáceres
-    M (2018) Applying the eco-hydrological equilibrium hypothesis to
-    model root distribution in water-limited forests. Ecohydrology 11:
-    e2015. <https://doi.org/10.1002/eco.2015>
--   De Cáceres, M., Martinez-Vilalta, J., Coll, L., Llorens, P., Casals,
-    P., Poyatos, R., et al. (2015). Coupling a water balance model with
-    forest inventory data to predict drought stress: the role of forest
-    structural changes vs. climate changes. Agricultural and Forest
-    Meteorology, 213, 77–90.
-    <https://doi.org/10.1016/j.agrformet.2015.06.012>
--   De Cáceres, M., Martin-StPaul, N., Turco, M., Cabon, A., Granda,
-    V., 2018. Estimating daily meteorological data and downscaling
-    climate models over landscapes. Environ. Model. Softw. 108, 186–196.
-    <https://doi.org/10.1016/j.envsoft.2018.08.003>
--   De Cáceres, M., Casals, P., Gabriel, E., Castro, X., 2019.
-    Scaling-up individual-level allometric equations to predict
-    stand-level fuel loading in Mediterranean shrublands. Ann. For. Sci.
-    76, 87. <https://doi.org/10.1007/s13595-019-0873-4>
--   De Cáceres M, Mencuccini M, Martin-StPaul N, Limousin JM, Coll L,
-    Poyatos R, Cabon A, Granda V, Forner A, Valladares F,
-    Martínez-Vilalta J (2021) Unravelling the effect of species mixing
-    on water use and drought stress in Mediterranean forests: a
-    modelling approach. Agricultural and Forest Meteorology 296: 108233.
-    <https://doi.org/10.1016/j.agrformet.2020.108233>
--   Hengl, T., Mendes De Jesus, J., Heuvelink, G.B.M., Gonzalez, M.R.,
-    Kilibarda, M., Blagotí, A., Shangguan, W., Wright, M.N., Geng, X.,
-    Bauer-Marschallinger, B., Guevara, M.A., Vargas, R., Macmillan,
-    R.A., Batjes, N.H., Leenaars, J.G.B., Ribeiro, E., Wheeler, I.,
-    Mantel, S., Kempen, B., 2017. SoilGrids250m: Global Gridded Soil
-    Information Based on Machine Learning. PLoS One 12, e0169748.
-    <https://doi.org/10.1371/journal.pone.0169748>
--   Miezite LE, Ameztegui A, De Cáceres M, Coll L, Morán-Ordóñez A,
-    Vega-García C, Rodrigues M (2022). Trajectories of wildfire behavior
-    under climate change. Can forest management mitigate the increasing
-    hazard? Journal of Environmental Management 322: 116134.
-    <https://doi.org/10.1016/j.jenvman.2022.116134>
--   Penman, H. L. 1956. Evaporation: An introductory survey. Netherlands
-    Journal of Agricultural Science, 4, 9-29.
--   Prichard, S. J., D. V Sandberg, R. D. Ottmar, E. Eberhardt, A.
-    Andreu, P. Eagle, and K. Swedin. (2013). Classification System
-    Version 3.0: Technical Documentation.
--   Resco de Dios, V., A. W. Fellows, R. H. Nolan, M. M. Boer, R. A.
-    Bradstock, F. Domingo, and M. L. Goulden. (2015). A semi-mechanistic
-    model for predicting the moisture content of fine litter.
-    Agricultural and Forest Meteorology 203:64–73.
-    <https://doi.org/10.1016/j.agrformet.2015.01.002>
--   Sánchez-Pinillos M, De Cáceres M, Casals P, Alvarez A, Beltrán M,
-    Pausas JG, Vayreda J, Coll L. (2021). Spatial and temporal
-    variations of overstory and understory fuels in Mediterranean
-    landscapes. Forest Ecology and Management 490: 119094.
-    <https://doi.org/10.1016/j.foreco.2021.119094>
--   Shangguan, W., Hengl, T., Mendes de Jesus, J., Yuan, H., Dai,
-    Y., 2017. Mapping the global depth to bedrock for land surface
-    modeling. J. Adv. Model. Earth Syst. 9, 65–88.
-    <https://doi.org/10.1002/2016MS000686>
+
+### Bibliografía
+
+
++ Ameztegui, A., Cabon, A., De Cáceres, M. & Coll, L. (2017). Managing stand density to enhance the adaptability of Scots pine stands to climate change: A modelling approach. Ecol. Modell., 356, 141–150. https://doi.org/10.1016/j.ecolmodel.2017.04.006
++ Cabon A, Martínez-Vilalta J, Martínez-de-Aragón J, De Cáceres M (2018) Applying the eco-hydrological equilibrium hypothesis to model root distribution in water-limited forests. Ecohydrology  11: e2015.  https://doi.org/10.1002/eco.2015
++ De Cáceres, M., Martinez-Vilalta, J., Coll, L., Llorens, P., Casals, P., Poyatos, R., et al. (2015). Coupling a water balance model with forest inventory data to predict drought stress: the role of forest structural changes vs. climate changes. Agricultural and Forest Meteorology, 213, 77–90. https://doi.org/10.1016/j.agrformet.2015.06.012
++ De Cáceres, M., Martin-StPaul, N., Turco, M., Cabon, A., Granda, V., 2018. Estimating daily meteorological data and downscaling climate models over landscapes. Environ. Model. Softw. 108, 186–196. https://doi.org/10.1016/j.envsoft.2018.08.003
++ De Cáceres, M., Casals, P., Gabriel, E., Castro, X., 2019. Scaling-up individual-level allometric equations to predict stand-level fuel loading in Mediterranean shrublands. Ann. For. Sci. 76, 87. https://doi.org/10.1007/s13595-019-0873-4
++ De Cáceres M, Mencuccini M, Martin-StPaul N, Limousin JM, Coll L, Poyatos R, Cabon A, Granda
+V, Forner A, Valladares F, Martínez-Vilalta J (2021) Unravelling the effect of species mixing on water
+use and drought stress in Mediterranean forests: a modelling approach. Agricultural and Forest
+Meteorology 296: 108233. https://doi.org/10.1016/j.agrformet.2020.108233 
++ Hengl, T., Mendes De Jesus, J., Heuvelink, G.B.M., Gonzalez, M.R., Kilibarda, M., Blagotí, A., Shangguan, W., Wright, M.N., Geng, X., Bauer-Marschallinger, B., Guevara, M.A., Vargas, R., Macmillan, R.A., Batjes, N.H., Leenaars, J.G.B., Ribeiro, E., Wheeler, I., Mantel, S., Kempen, B., 2017. SoilGrids250m: Global Gridded Soil Information Based on Machine Learning. PLoS One 12, e0169748. https://doi.org/10.1371/journal.pone.0169748
++ Miezite LE, Ameztegui A, De Cáceres M, Coll L, Morán-Ordóñez A, Vega-García C, Rodrigues M
+(2022). Trajectories of wildfire behavior under climate change. Can forest management mitigate the
+increasing hazard? Journal of Environmental Management 322: 116134. https://doi.org/10.1016/j.jenvman.2022.116134
++ Penman, H. L. 1956. Evaporation: An introductory survey. Netherlands Journal of Agricultural Science, 4, 9-29.
++ Prichard, S. J., D. V Sandberg, R. D. Ottmar, E. Eberhardt, A. Andreu, P. Eagle, and K. Swedin. (2013). Classification System Version 3.0: Technical Documentation.
++ Resco de Dios, V., A. W. Fellows, R. H. Nolan, M. M. Boer, R. A. Bradstock, F. Domingo, and M. L. Goulden. (2015). A semi-mechanistic model for predicting the moisture content of fine litter. Agricultural and Forest Meteorology 203:64–73. https://doi.org/10.1016/j.agrformet.2015.01.002
++ Sánchez-Pinillos M, De Cáceres M, Casals P, Alvarez A, Beltrán M, Pausas JG, Vayreda J, Coll L.
+(2021). Spatial and temporal variations of overstory and understory fuels in Mediterranean landscapes.
+Forest Ecology and Management 490: 119094. https://doi.org/10.1016/j.foreco.2021.119094
++ Shangguan, W., Hengl, T., Mendes de Jesus, J., Yuan, H., Dai, Y., 2017. Mapping the global depth to bedrock for land surface modeling. J. Adv. Model. Earth Syst. 9, 65–88. https://doi.org/10.1002/2016MS000686
