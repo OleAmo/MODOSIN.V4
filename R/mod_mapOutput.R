@@ -194,7 +194,6 @@ mod_map <- function(
     variable <- data_reactives$variable_reactive
     legend_check <- data_reactives$legend_check
     sf <- main_data_reactives$data_day
-    
   
     
     # .......... LEGEND COLOR ...........
@@ -204,8 +203,8 @@ mod_map <- function(
     #      .) Me espero a hablar-lo con Miquel y Víctor
     #      .) Asigon "ESTANDARD" a valor de LEYENDA
     
-    # leyenda_modif <- data_reactives$legend_modify_reactive 
-    leyenda_modif <-"estandard"
+    leyenda_modif <- data_reactives$legend_modify_reactive
+    # leyenda_modif <-"estandard"
     
     
     
@@ -436,9 +435,7 @@ mod_map <- function(
       pal_legend <- leaflet::colorNumeric(palette = palettes_dictionary[[variable]][['pal']], domain = value, reverse = TRUE)
       value_legend <- variable_valores
 
-      
-      
- 
+
     } else {
       
       
