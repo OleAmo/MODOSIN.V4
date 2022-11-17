@@ -36,6 +36,14 @@ td {
 }
 
 
+/* -------- DYGRAPH Time Series ------------
+   ---------------------------------------- */
+
+.dygraph-axis-label-y2 {   /* esconder valores al eje Y2 del time serie*/
+    display: none;
+}
+
+
 
 
 

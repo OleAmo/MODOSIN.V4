@@ -387,6 +387,7 @@ mod_mainData <- function(
 
       dygraphs::dySeries(label = var_short_q, axis = 'y2', strokeWidth = width_2) %>%
       dygraphs::dyAxis("y2", label = label_axis_q, valueRange = valueRange(var_q)) %>%
+       
       
       dygraphs::dyOptions(fillGraph = TRUE, fillAlpha = 0.1)  %>%
       dygraphs::dyEvent(fecha, fecha, labelLoc = "top")
