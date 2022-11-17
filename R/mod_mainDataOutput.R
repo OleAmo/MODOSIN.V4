@@ -204,7 +204,7 @@ mod_mainData <- function(
     
     data_day<- main_data_reactives$data_day
     data_day_clicked_plot <- data_day %>% dplyr::filter(plot_id == click_plot_id)
-    
+
     
     # ....... VARIABLES PARA GRAFICOS ........
     # ........................................
